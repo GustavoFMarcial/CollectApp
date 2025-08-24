@@ -15,16 +15,13 @@ namespace CollectApp.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [DisplayName("Empresa para coleta")]
-        // [Required(ErrorMessage = "Campo empresa para coletar é obrigatório")]
-        // // [StringLength(20, ErrorMessage = "Empresa para coleta dever ter no máximo 20 caracteres")]
         public string? Company { get; set; }
 
         [DisplayName("Data da coleta")]
-        // [Required(ErrorMessage = "Campo data de coleta é obrigatório")]
-        // [DataType(DataType.Date, ErrorMessage = "Insira uma data válida")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CollectAt { get; set; }
 
+        [Required]
         public string? Status { get; set; } = "A coletar";
     }
 }

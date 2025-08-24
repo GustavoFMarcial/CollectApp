@@ -1,3 +1,4 @@
+@using CollectApp.ViewModels
 @model IEnumerable<CollectApp.Models.Collect>
 @{
     ViewData["Title"] = "Collects list";
@@ -14,10 +15,12 @@
                 <th>@Html.DisplayNameFor(model => model.Company)</th>
                 <th>@Html.DisplayNameFor(model => model.CollectAt)</th>
                 <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th></th>
             </tr>
         </thead>
     @foreach (Collect collect in Model)
     {
+        CollectChangeStatusViewModel c = new  CollectChangeStatusViewModel{Id = collect.Id, Status = collect.Status};
         <tbody>
             <tr>
                 <td>@Html.DisplayFor(item => collect.Id)</td>
@@ -25,6 +28,9 @@
                 <td>@Html.DisplayFor(item => collect.Company)</td>
                 <td>@Html.DisplayFor(item => collect.CollectAt)</td>
                 <td>@Html.DisplayFor(item => collect.Status)</td>
+                <td>
+                    @await Html.PartialAsync("_CollectsStatusButton", c)
+                </td>
             </tr>
         </tbody>
     }        

@@ -360,3 +360,4 @@ C:\Users\Gustavo F. Marcial\desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\
 C:\Users\Gustavo F. Marcial\desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\CollectApp.csproj.AssemblyReference.cache
 C:\Users\Gustavo F. Marcial\desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\CollectApp.csproj.Up2Date
 C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\compressed\2yau7x9cw9-0ham2bhq4i.gz
+C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\CollectApp.sourcelink.json
