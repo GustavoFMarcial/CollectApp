@@ -14,14 +14,21 @@ namespace CollectApp.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        [DisplayName("Empresa para coleta")]
+        [DisplayName("Origem coleta")]
         public string? Company { get; set; }
 
-        [DisplayName("Data da coleta")]
+        [DisplayName("Data coleta")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CollectAt { get; set; }
 
-        [Required]
+        public int? Volume { get; set; }
+
+        [DisplayName("Peso")]
+        public int? Weigth { get; set; }
+
+        [DisplayName("Loja")]
+        public string? Filial { get; set; }
+
         public string? Status { get; set; } = "A coletar";
     }
 }
