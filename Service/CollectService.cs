@@ -1,8 +1,6 @@
 using CollectApp.Data;
 using Microsoft.EntityFrameworkCore;
 using CollectApp.Models;
-using CollectApp.ViewModels;
-using CollectApp.Controllers;
 
 namespace CollectApp.Services
 {
@@ -20,15 +18,9 @@ namespace CollectApp.Services
             return await _context.Collects.ToListAsync();
         }
 
-        public void CreateCollect(CreateCollectViewModel collect)
+        public void AddCollect(Collect collect)
         {
-            Collect c = new Collect
-            {
-                Company = collect.Company,
-                CollectAt = collect.CollectAt,
-            };
-
-            _context.Collects.Add(c);
+            _context.Collects.Add(collect);
         }
 
         public async Task<int> SaveChangesCollectsAsync()
@@ -55,15 +47,6 @@ namespace CollectApp.Services
             collect.Status = status;
             _context.Attach(collect);
             _context.Entry(collect).Property(c => c.Status).IsModified = true;
-        }
-
-        public void UpdateCollectFields(Collect collect, EditCollectViewModel collectEdit)
-        {
-            collect.CollectAt = collectEdit.CollectAt;
-            collect.Company = collectEdit.Company;
-            collect.Volume = collectEdit.Volume;
-            collect.Weigth = collectEdit.Weight;
-            collect.Filial = collectEdit.Filial;
         }
     }
 }

@@ -21,7 +21,26 @@ public class CollectController : Controller
 
     public async Task<IActionResult> ListCollects()
     {
-        return View(await _collectService.GetAllCollectsListAsycn());
+        List<Collect> collects = await _collectService.GetAllCollectsListAsycn();
+
+        List<CollectListItemViewModel> clivm = collects.Select(c => new CollectListItemViewModel
+        {
+            Id = c.Id,
+            CreatedAt = c.CreatedAt,
+            Company = c.Company,
+            CollectAt = c.CollectAt,
+            Status = c.Status,
+            Volume = c.Volume,
+            Weigth = c.Weigth,
+            Filial = c.Filial,
+            ChangeStatus = new ChangeStatusCollectViewModel
+            {
+                Id = c.Id,
+                Status = c.Status
+            }
+        }).ToList();
+
+        return View(clivm);
     }
 
     public IActionResult CreateCollect()
@@ -42,8 +61,13 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        _collectService.CreateCollect(collect);
+        Collect c = new Collect
+        {
+            Company = collect.Company,
+            CollectAt = collect.CollectAt,
+        };
 
+        _collectService.AddCollect(c);
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));
@@ -91,7 +115,12 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        _collectService.UpdateCollectFields(collect, collectEdit);
+        collect.CollectAt = collectEdit.CollectAt;
+        collect.Company = collectEdit.Company;
+        collect.Volume = collectEdit.Volume;
+        collect.Weigth = collectEdit.Weight;
+        collect.Filial = collectEdit.Filial;
+        
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));

@@ -1,5 +1,5 @@
 @using CollectApp.ViewModels
-@model IEnumerable<CollectApp.Models.Collect>
+@model IEnumerable<CollectApp.ViewModels.CollectListItemViewModel>
 @{
     ViewData["Title"] = "Lista de coletas";
 }
@@ -21,9 +21,8 @@
                 <th></th>
             </tr>
         </thead>
-    @foreach (Collect collect in Model)
+    @foreach (CollectListItemViewModel collect in Model)
     {
-        ChangeStatusCollectViewModel c = new  ChangeStatusCollectViewModel{Id = collect.Id, Status = collect.Status};
         <tbody>
             <tr>
                 <td>@Html.DisplayFor(item => collect.Id)</td>
@@ -35,7 +34,7 @@
                 <td>@Html.DisplayFor(item => collect.Weigth)</td>
                 <td>@Html.DisplayFor(item => collect.Filial)</td>
                 <td>
-                    @await Html.PartialAsync("_CollectsStatusButton", c)
+                    @await Html.PartialAsync("_CollectsStatusButton", collect.ChangeStatus)
                 </td>
             </tr>
         </tbody>
