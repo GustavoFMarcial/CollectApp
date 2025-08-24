@@ -49,23 +49,26 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangeCollectStatus(int? id, string status)
+    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,Status")] CollectChangeStatusViewModel collect)
     {
-        Console.WriteLine(id);
-        Console.WriteLine(status);
         if (!ModelState.IsValid)
         {
             return RedirectToAction(nameof(ListCollects));
         }
 
-        Collect? collect = await _collectService.FindCollectAsync(id);
+        Collect? _collect = await _collectService.FindCollectAsync(collect.Id);
 
-        if (collect == null)
+        if (_collect == null)
         {
             return NotFound();
         }
 
-        _collectService.UpdateCollectStatus(collect, status);
+        if (collect.Status == null)
+        {
+           return RedirectToAction(nameof(ListCollects)); 
+        }
+
+        _collectService.UpdateCollectStatus(_collect, collect.Status);
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));
