@@ -1,7 +1,5 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-using Microsoft.VisualBasic;
 
 namespace CollectApp.Models
 {
@@ -18,6 +16,7 @@ namespace CollectApp.Models
         public string? Company { get; set; }
 
         [DisplayName("Data coleta")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CollectAt { get; set; }
 

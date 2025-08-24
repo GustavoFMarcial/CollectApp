@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CollectApp.Attributes
 {
-    public class StatusAttribute : ValidationAttribute
+    public class StatusValidationAttribute : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {

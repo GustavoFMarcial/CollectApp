@@ -4,6 +4,7 @@ using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.CodeAnalysis.Differencing;
 
 namespace CollectApp.Controllers;
 
@@ -29,7 +30,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt,Volume,Weight,Filial")] CollectCreateEditViewModel collect)
+    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collect)
     {
         if (!ModelState.IsValid)
         {
@@ -48,8 +49,56 @@ public class CollectController : Controller
         return RedirectToAction(nameof(ListCollects));
     }
 
+    public async Task<IActionResult> EditCollect(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        Collect? collect = await _collectService.FindCollectAsync(id);
+
+        if (collect == null)
+        {
+            return NotFound();
+        }
+
+        EditCollectViewModel ecvm = new EditCollectViewModel
+        {
+            Id = collect.Id,
+            Company = collect.Company,
+            CollectAt = collect.CollectAt,
+            Volume = collect.Volume,
+            Weight = collect.Weigth,
+            Filial = collect.Filial,
+        };
+
+        return View(ecvm);
+    }
+
     [HttpPost]
-    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,Status")] CollectChangeStatusViewModel collect)
+    public async Task<IActionResult> EditCollect([Bind("Id,Company,CollectAt,Volume,Weight,Filial")] EditCollectViewModel collectEdit)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(collectEdit);
+        }
+
+        Collect? collect = await _collectService.FindCollectAsync(collectEdit.Id);
+
+        if (collect == null)
+        {
+            return NotFound();
+        }
+
+        _collectService.UpdateCollectFields(collect, collectEdit);
+        await _collectService.SaveChangesCollectsAsync();
+
+        return RedirectToAction(nameof(ListCollects));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,Status")] ChangeStatusCollectViewModel collect)
     {
         if (!ModelState.IsValid)
         {
@@ -73,4 +122,8 @@ public class CollectController : Controller
 
         return RedirectToAction(nameof(ListCollects));
     }
+}
+
+public class CollectCreateViewModel
+{
 }

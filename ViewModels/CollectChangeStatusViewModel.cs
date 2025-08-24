@@ -3,13 +3,13 @@ using CollectApp.Attributes;
 
 namespace CollectApp.ViewModels
 {
-    public class CollectChangeStatusViewModel
+    public class ChangeStatusCollectViewModel
     {
         [Required]
         public int Id { get; set; }
 
         [Required]
-        [Status]
+        [StatusValidation]
         public string? Status { get; set; }
     }
 }

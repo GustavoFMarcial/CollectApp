@@ -23,7 +23,7 @@
         </thead>
     @foreach (Collect collect in Model)
     {
-        CollectChangeStatusViewModel c = new  CollectChangeStatusViewModel{Id = collect.Id, Status = collect.Status};
+        ChangeStatusCollectViewModel c = new  ChangeStatusCollectViewModel{Id = collect.Id, Status = collect.Status};
         <tbody>
             <tr>
                 <td>@Html.DisplayFor(item => collect.Id)</td>
