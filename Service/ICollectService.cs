@@ -10,6 +10,6 @@ namespace CollectApp.Services
         public void AddCollect(Collect collect);
         public Task<int> SaveChangesCollectsAsync();
 
-        public void UpdateCollectStatus(Collect collect, string status);
+        public void UpdateCollectStatus(Collect collect);
     }
 }

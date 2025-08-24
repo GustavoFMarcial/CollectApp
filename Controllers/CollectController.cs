@@ -120,39 +120,37 @@ public class CollectController : Controller
         collect.Volume = collectEdit.Volume;
         collect.Weigth = collectEdit.Weight;
         collect.Filial = collectEdit.Filial;
-        
+
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,Status")] ChangeStatusCollectViewModel collect)
+    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,Status")] ChangeStatusCollectViewModel changeStatus)
     {
         if (!ModelState.IsValid)
         {
             return RedirectToAction(nameof(ListCollects));
         }
 
-        Collect? _collect = await _collectService.FindCollectAsync(collect.Id);
+        Collect? collect = await _collectService.FindCollectAsync(changeStatus.Id);
 
-        if (_collect == null)
+        if (collect == null)
         {
             return NotFound();
         }
 
-        if (collect.Status == null)
+        if (changeStatus.Status == null)
         {
            return RedirectToAction(nameof(ListCollects)); 
         }
 
-        _collectService.UpdateCollectStatus(_collect, collect.Status);
+        collect.Status = changeStatus.Status;
+        
+        _collectService.UpdateCollectStatus(collect);
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));
     }
-}
-
-public class CollectCreateViewModel
-{
 }

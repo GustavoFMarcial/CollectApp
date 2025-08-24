@@ -33,18 +33,8 @@ namespace CollectApp.Services
             return await _context.Collects.FindAsync(id);
         }
 
-        public void UpdateCollectStatus(Collect collect, string status)
-        {
-            if (status == "collected")
-            {
-                status = "Coletado";
-            }
-            else
-            {
-                status = "Deletado";
-            }
-
-            collect.Status = status;
+        public void UpdateCollectStatus(Collect collect)
+        {          
             _context.Attach(collect);
             _context.Entry(collect).Property(c => c.Status).IsModified = true;
         }

@@ -6,7 +6,7 @@ namespace CollectApp.Attributes
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            string[] status = ["collected", "deleted"];
+            string[] status = ["Coletado", "Deletado"];
 
             if (value is not string strValue || !status.Contains(strValue))
             {
