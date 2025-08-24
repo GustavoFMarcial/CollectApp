@@ -19,7 +19,7 @@ namespace CollectApp.Services
             return await _context.Collects.ToListAsync();
         }
 
-        public void CreateCollect(CollectCreateViewModel collect)
+        public void CreateCollect(CollectCreateEditViewModel collect)
         {
             Collect c = new Collect
             {

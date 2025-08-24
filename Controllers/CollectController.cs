@@ -29,7 +29,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt")] CollectCreateViewModel collect)
+    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt,Volume,Weight,Filial")] CollectCreateEditViewModel collect)
     {
         if (!ModelState.IsValid)
         {
