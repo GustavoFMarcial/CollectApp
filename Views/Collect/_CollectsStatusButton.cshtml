@@ -1,18 +1,24 @@
 @model CollectApp.ViewModels.ChangeStatusCollectViewModel
 
-<div class="d-flex justify-content-end gap-1">
+<div class="d-flex justify-content-end gap-2">
     <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
         <input asp-for="Id" type="hidden" value="@Model.Id">
         <input asp-for="Status" type="hidden" value="Coletado">
-        <button class="btn btn-primary">Coletado</button>
+        <button class="btn p-0 border-0 bg-transparent">
+            <img src="~/assets/img/check-icon.svg" alt="Check button" width="24" height="24" />
+        </button>
     </form>
     <form asp-controller="Collect" asp-action="" method="post">
-        <a asp-action="EditCollect" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+        <a asp-action="EditCollect" asp-route-id="@Model.Id" class="">
+            <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
+        </a>
     </form>
     <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
         <input asp-for="Id" type="hidden" value="@Model.Id">
         <input asp-for="Status" type="hidden" value="Deletado">
-        <button class="btn btn-primary">Deletado</button>
+        <button class="btn p-0 border-0 bg-transparent">
+            <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
+        </button>
     </form>
 </div>
 

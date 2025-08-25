@@ -361,3 +361,6 @@ C:\Users\Gustavo F. Marcial\desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\
 C:\Users\Gustavo F. Marcial\desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\CollectApp.csproj.Up2Date
 C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\compressed\2yau7x9cw9-0ham2bhq4i.gz
 C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\CollectApp.sourcelink.json
+C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\compressed\2mqu1s5c5w-rstmv5v8th.gz
+C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\compressed\qynj1hpyvv-ckn87msijp.gz
+C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\obj\Debug\net9.0\compressed\s5t18d8bxj-vaejam7imp.gz
