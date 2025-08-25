@@ -10,7 +10,7 @@ namespace CollectApp.Attributes
 
             if (value is not string strValue || !status.Contains(strValue))
             {
-                return new ValidationResult("Invalid status");
+                return new ValidationResult("Status inválido");
             }
 
             return ValidationResult.Success;

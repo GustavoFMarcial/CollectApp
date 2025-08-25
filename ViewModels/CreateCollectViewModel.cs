@@ -1,11 +1,13 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using CollectApp.Attributes;
 
 namespace CollectApp.ViewModels
 {
     public class CreateCollectViewModel
     {
         [DisplayName("Origem coleta")]
+        [CompanyValidation]
         [Required(ErrorMessage = "Campo empresa para coletar é obrigatório")]
         [StringLength(20, ErrorMessage = "Empresa para coleta dever ter no máximo 20 caracteres")]
         public string? Company { get; set; }
@@ -24,6 +26,7 @@ namespace CollectApp.ViewModels
         public int? Weight { get; set; }
 
         [DisplayName("Loja")]
+        [FilialValidation]
         public string? Filial { get; set; }
     }
 }
