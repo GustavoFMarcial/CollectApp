@@ -17,49 +17,49 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CollectApp
 build_property.RootNamespace = CollectApp
-build_property.ProjectDir = C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\
+build_property.ProjectDir = C:\Users\gustavo.marcial\projetos\CollectApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp
+build_property.MSBuildProjectDirectory = C:\Users\gustavo.marcial\projetos\CollectApp
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/Collect/CreateCollect.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/Collect/CreateCollect.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sbGVjdFxDcmVhdGVDb2xsZWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/Collect/EditCollect.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/Collect/EditCollect.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sbGVjdFxFZGl0Q29sbGVjdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/Collect/ListCollects.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/Collect/ListCollects.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sbGVjdFxMaXN0Q29sbGVjdHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/Collect/_CollectsStatusButton.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/Collect/_CollectsStatusButton.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sbGVjdFxfQ29sbGVjdHNTdGF0dXNCdXR0b24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/Shared/Error.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/_ViewImports.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/_ViewStart.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Gustavo F. Marcial/Desktop/coisas/Dev. Course/C\#/projects/ASP.NET Core/CollectApp/Views/Shared/_Layout.cshtml]
+[C:/Users/gustavo.marcial/projetos/CollectApp/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-7470qpgtb6

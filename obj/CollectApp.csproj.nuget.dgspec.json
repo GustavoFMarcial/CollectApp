@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\CollectApp.csproj": {}
+    "C:\\Users\\gustavo.marcial\\projetos\\CollectApp\\CollectApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\CollectApp.csproj": {
+    "C:\\Users\\gustavo.marcial\\projetos\\CollectApp\\CollectApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\CollectApp.csproj",
+        "projectUniqueName": "C:\\Users\\gustavo.marcial\\projetos\\CollectApp\\CollectApp.csproj",
         "projectName": "CollectApp",
-        "projectPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\CollectApp.csproj",
-        "packagesPath": "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\obj\\",
+        "projectPath": "C:\\Users\\gustavo.marcial\\projetos\\CollectApp\\CollectApp.csproj",
+        "packagesPath": "C:\\Users\\gustavo.marcial\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gustavo.marcial\\projetos\\CollectApp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Gustavo F. Marcial\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\gustavo.marcial\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

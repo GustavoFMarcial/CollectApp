@@ -65,6 +65,9 @@ public class CollectController : Controller
         {
             Company = collect.Company,
             CollectAt = collect.CollectAt,
+            Volume = collect.Volume,
+            Weigth = collect.Weight,
+            Filial = collect.Filial,
         };
 
         _collectService.AddCollect(c);
