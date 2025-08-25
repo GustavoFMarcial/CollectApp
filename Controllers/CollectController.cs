@@ -49,28 +49,28 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collect)
+    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collectCreate)
     {
         if (!ModelState.IsValid)
         {
-            return View(collect);
+            return View(collectCreate);
         }
 
-        if (collect == null)
+        if (collectCreate == null)
         {
             return NotFound();
         }
 
-        Collect c = new Collect
+        Collect collect = new Collect
         {
-            Company = collect.Company,
-            CollectAt = collect.CollectAt,
-            Volume = collect.Volume,
-            Weigth = collect.Weight,
-            Filial = collect.Filial,
+            Company = collectCreate.Company,
+            CollectAt = collectCreate.CollectAt,
+            Volume = collectCreate.Volume,
+            Weigth = collectCreate.Weight,
+            Filial = collectCreate.Filial,
         };
 
-        _collectService.AddCollect(c);
+        _collectService.AddCollect(collect);
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));

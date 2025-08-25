@@ -7,7 +7,7 @@ namespace CollectApp.ViewModels
     {
         public int Id { get; set; }
 
-        [DisplayName("Coleta criada")]
+        [DisplayName("Criação coleta")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
