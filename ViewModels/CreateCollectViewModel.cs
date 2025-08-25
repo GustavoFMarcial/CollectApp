@@ -5,7 +5,7 @@ namespace CollectApp.ViewModels
 {
     public class CreateCollectViewModel
     {
-        [DisplayName("Empresa coleta")]
+        [DisplayName("Origem coleta")]
         [Required(ErrorMessage = "Campo empresa para coletar é obrigatório")]
         [StringLength(20, ErrorMessage = "Empresa para coleta dever ter no máximo 20 caracteres")]
         public string? Company { get; set; }
