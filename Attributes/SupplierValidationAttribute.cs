@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CollectApp.Attributes
 {
-    public class CompanyValidationAttribute : ValidationAttribute
+    public class SupplierValidationAttribute : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
