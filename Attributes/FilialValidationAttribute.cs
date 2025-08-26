@@ -11,7 +11,7 @@ namespace CollectApp.Attributes
 
             if (value is not string strValue || !filial.Contains(strValue))
             {
-                return new ValidationResult("Filial inválida");
+                return new ValidationResult("Loja inválida");
             }
 
             return ValidationResult.Success;
