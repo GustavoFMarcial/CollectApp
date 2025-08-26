@@ -12,7 +12,7 @@ namespace CollectApp.ViewModels
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        [DisplayName("Origem coleta")]
+        [DisplayName("Fornecedor")]
         public string? Supplier { get; set; }
 
         [DisplayName("Data coleta")]

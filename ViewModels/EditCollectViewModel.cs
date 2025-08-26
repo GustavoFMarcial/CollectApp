@@ -9,7 +9,7 @@ namespace CollectApp.ViewModels
         [Required]
         public int Id { get; set; }
 
-        [DisplayName("Origem coleta")]
+        [DisplayName("Fornecedor")]
         [CompanyValidation]
         [Required(ErrorMessage = "Campo empresa para coletar é obrigatório")]
         [StringLength(20, ErrorMessage = "Empresa para coleta dever ter no máximo 20 caracteres")]
