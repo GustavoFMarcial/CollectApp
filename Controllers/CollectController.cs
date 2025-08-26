@@ -27,7 +27,7 @@ public class CollectController : Controller
         {
             Id = c.Id,
             CreatedAt = c.CreatedAt,
-            Company = c.Company,
+            Supplier = c.Supplier,
             CollectAt = c.CollectAt,
             Status = c.Status,
             Volume = c.Volume,
@@ -49,25 +49,28 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collect)
+    public async Task<IActionResult> CreateCollect([Bind("Supplier,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collectCreate)
     {
         if (!ModelState.IsValid)
         {
-            return View(collect);
+            return View(collectCreate);
         }
 
-        if (collect == null)
+        if (collectCreate == null)
         {
             return NotFound();
         }
 
-        Collect c = new Collect
+        Collect collect = new Collect
         {
-            Company = collect.Company,
-            CollectAt = collect.CollectAt,
+            Supplier = collectCreate.Supplier,
+            CollectAt = collectCreate.CollectAt,
+            Volume = collectCreate.Volume,
+            Weigth = collectCreate.Weight,
+            Filial = collectCreate.Filial,
         };
 
-        _collectService.AddCollect(c);
+        _collectService.AddCollect(collect);
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));
@@ -90,7 +93,7 @@ public class CollectController : Controller
         EditCollectViewModel ecvm = new EditCollectViewModel
         {
             Id = collect.Id,
-            Company = collect.Company,
+            Supplier = collect.Supplier,
             CollectAt = collect.CollectAt,
             Volume = collect.Volume,
             Weight = collect.Weigth,
@@ -101,7 +104,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditCollect([Bind("Id,Company,CollectAt,Volume,Weight,Filial")] EditCollectViewModel collectEdit)
+    public async Task<IActionResult> EditCollect([Bind("Id,Supplier,CollectAt,Volume,Weight,Filial")] EditCollectViewModel collectEdit)
     {
         if (!ModelState.IsValid)
         {
@@ -116,7 +119,7 @@ public class CollectController : Controller
         }
 
         collect.CollectAt = collectEdit.CollectAt;
-        collect.Company = collectEdit.Company;
+        collect.Supplier = collectEdit.Supplier;
         collect.Volume = collectEdit.Volume;
         collect.Weigth = collectEdit.Weight;
         collect.Filial = collectEdit.Filial;

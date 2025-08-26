@@ -4,7 +4,7 @@
     <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
         <input asp-for="Id" type="hidden" value="@Model.Id">
         <input asp-for="Status" type="hidden" value="Coletado">
-        <button class="btn p-0 border-0 bg-transparent">
+        <button class="p-0 border-0 bg-transparent">
             <img src="~/assets/img/check-icon.svg" alt="Check button" width="24" height="24" />
         </button>
     </form>
@@ -16,7 +16,7 @@
     <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
         <input asp-for="Id" type="hidden" value="@Model.Id">
         <input asp-for="Status" type="hidden" value="Deletado">
-        <button class="btn p-0 border-0 bg-transparent">
+        <button class="p-0 border-0 bg-transparent">
             <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
         </button>
     </form>

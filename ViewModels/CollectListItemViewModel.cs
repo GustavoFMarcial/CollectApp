@@ -7,13 +7,13 @@ namespace CollectApp.ViewModels
     {
         public int Id { get; set; }
 
-        [DisplayName("Coleta criada")]
+        [DisplayName("Criação coleta")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        [DisplayName("Origem coleta")]
-        public string? Company { get; set; }
+        [DisplayName("Fornecedor")]
+        public string? Supplier { get; set; }
 
         [DisplayName("Data coleta")]
         [DataType(DataType.Date)]
