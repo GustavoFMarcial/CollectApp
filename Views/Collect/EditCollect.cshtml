@@ -8,30 +8,30 @@
     <form asp-controller="Collect" asp-action="EditCollect" method="post">
         <div asp-validation-summary="ModelOnly"></div>
         <input asp-for="Id" type="hidden">
-        <div class="form-group col-4">
+        <div class="form-group col-4 position-relative">
             <label asp-for="Company"></label>
             <input asp-for="Company" class="form-control">
-            <span asp-validation-for="Company" class="text-danger position-fixed span-font-size"></span>
+            <span asp-validation-for="Company" class="text-danger position-absolute span-font-size"></span>
         </div>
-        <div class="form-group mt-4 col-4">
+        <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="CollectAt"></label>
             <input asp-for="CollectAt" type="date" class="form-control">
-            <span asp-validation-for="CollectAt" class="text-danger position-fixed span-font-size"></span>
+            <span asp-validation-for="CollectAt" class="text-danger position-absolute span-font-size"></span>
         </div>
-        <div class="form-group mt-4 col-4">
+        <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Volume"></label>
             <input asp-for="Volume" class="form-control">
-            <span asp-validation-for="Volume" class="text-danger position-fixed span-font-size"></span>
+            <span asp-validation-for="Volume" class="text-danger position-absolute span-font-size"></span>
         </div>
-        <div class="form-group mt-4 col-4">
+        <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Weight"></label>
             <input asp-for="Weight" class="form-control">
-            <span asp-validation-for="Weight" class="text-danger position-fixed span-font-size"></span>
+            <span asp-validation-for="Weight" class="text-danger position-absolute span-font-size"></span>
         </div>
-        <div class="form-group mt-4 col-4">
+        <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Filial"></label>
             <input asp-for="Filial" class="form-control">
-            <span asp-validation-for="Filial" class="text-danger position-fixed span-font-size"></span>
+            <span asp-validation-for="Filial" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="text-end mt-4 col-4">
             <button type="submit" class="btn btn-primary">Submit</button>
