@@ -13,7 +13,7 @@ namespace CollectApp.ViewModels
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [DisplayName("Origem coleta")]
-        public string? Company { get; set; }
+        public string? Supplier { get; set; }
 
         [DisplayName("Data coleta")]
         [DataType(DataType.Date)]

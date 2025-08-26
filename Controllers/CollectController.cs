@@ -27,7 +27,7 @@ public class CollectController : Controller
         {
             Id = c.Id,
             CreatedAt = c.CreatedAt,
-            Company = c.Company,
+            Supplier = c.Supplier,
             CollectAt = c.CollectAt,
             Status = c.Status,
             Volume = c.Volume,
@@ -63,7 +63,7 @@ public class CollectController : Controller
 
         Collect collect = new Collect
         {
-            Company = collectCreate.Company,
+            Supplier = collectCreate.Supplier,
             CollectAt = collectCreate.CollectAt,
             Volume = collectCreate.Volume,
             Weigth = collectCreate.Weight,
@@ -93,7 +93,7 @@ public class CollectController : Controller
         EditCollectViewModel ecvm = new EditCollectViewModel
         {
             Id = collect.Id,
-            Company = collect.Company,
+            Supplier = collect.Supplier,
             CollectAt = collect.CollectAt,
             Volume = collect.Volume,
             Weight = collect.Weigth,
@@ -119,7 +119,7 @@ public class CollectController : Controller
         }
 
         collect.CollectAt = collectEdit.CollectAt;
-        collect.Company = collectEdit.Company;
+        collect.Supplier = collectEdit.Supplier;
         collect.Volume = collectEdit.Volume;
         collect.Weigth = collectEdit.Weight;
         collect.Filial = collectEdit.Filial;
