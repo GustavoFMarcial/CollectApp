@@ -11,7 +11,7 @@ namespace CollectApp.Models
         public DateTime CollectAt { get; set; }
         public int? Volume { get; set; }
         public int? Weigth { get; set; }
-        public string? Filial { get; set; }
+        public string? Filial { get; set; } 
         public string? Status { get; set; } = "A coletar";
     }
 }

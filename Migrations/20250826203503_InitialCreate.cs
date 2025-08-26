@@ -18,8 +18,12 @@ namespace CollectApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CollectAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Supplier = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CollectAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Volume = table.Column<int>(type: "int", nullable: true),
+                    Weigth = table.Column<int>(type: "int", nullable: true),
+                    Filial = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

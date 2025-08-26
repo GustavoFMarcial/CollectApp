@@ -33,9 +33,6 @@ namespace CollectApp.Migrations
                     b.Property<DateTime>("CollectAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Company")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -43,6 +40,9 @@ namespace CollectApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Supplier")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Volume")
