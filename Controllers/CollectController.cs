@@ -49,7 +49,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCollect([Bind("Company,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collectCreate)
+    public async Task<IActionResult> CreateCollect([Bind("Supplier,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collectCreate)
     {
         if (!ModelState.IsValid)
         {
@@ -104,7 +104,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditCollect([Bind("Id,Company,CollectAt,Volume,Weight,Filial")] EditCollectViewModel collectEdit)
+    public async Task<IActionResult> EditCollect([Bind("Id,Supplier,CollectAt,Volume,Weight,Filial")] EditCollectViewModel collectEdit)
     {
         if (!ModelState.IsValid)
         {

@@ -13,7 +13,7 @@ namespace CollectApp.Attributes
 
             if (value is not string strValue || !company.Contains(strValue))
             {
-                return new ValidationResult("Origem coleta inválido");
+                return new ValidationResult("Fornecedor inválido");
             }
 
             return ValidationResult.Success;
