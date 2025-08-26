@@ -28,7 +28,7 @@ namespace CollectApp.ViewModels
         public int? Weight { get; set; }
 
         [DisplayName("Loja")]
-        [FilialValidation]
+        [SupplierValidation]
         public string? Filial { get; set; }
     }
 }
