@@ -7,8 +7,8 @@ namespace CollectApp.ViewModels
     public class CreateCollectViewModel
     {
         [DisplayName("Fornecedor")]
+        [Required(ErrorMessage = "Campo fornecedor é obrigatório")]
         [SupplierValidation]
-        [Required(ErrorMessage = "Campo empresa para coletar é obrigatório")]
         [StringLength(20, ErrorMessage = "Empresa para coleta dever ter no máximo 20 caracteres")]
         public string? Supplier { get; set; }
 
@@ -26,7 +26,8 @@ namespace CollectApp.ViewModels
         public int? Weight { get; set; }
 
         [DisplayName("Loja")]
-        [SupplierValidation]
+        [Required(ErrorMessage = "Campo Loja é obrigatório")]
+        [FilialValidation]
         public string? Filial { get; set; }
     }
 }
