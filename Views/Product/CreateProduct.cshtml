@@ -1,0 +1,29 @@
+@model CollectApp.ViewModels.CreateProductViewModel
+@{
+    ViewData["Title"] = "Inserir produto";
+}
+
+<div class="container">
+    <h1 class="mb-4">Insira um produto</h1>
+    <form asp-controller="Product" asp-action="CreateProduct" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form-group col-4 position-relative">
+            <label asp-for="SKU"></label>
+            <input asp-for="SKU" class="form-control">
+            <span asp-validation-for="SKU" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control">
+            <span asp-validation-for="Description" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="text-end mt-4 col-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

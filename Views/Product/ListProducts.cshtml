@@ -1,0 +1,36 @@
+@using CollectApp.ViewModels
+@model IEnumerable<CollectApp.ViewModels.ProductListViewModel>
+@{
+    ViewData["Title"] = "Lista de produtos";
+}
+
+<div class="container">
+    <h1 class="mb-2">Lista de produtos</h1>
+    <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Product" asp-action="CreateProduct">Inserir produto</a>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
+                <th>@Html.DisplayNameFor(model => model.SKU)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th></th>
+            </tr>
+        </thead>
+    @foreach (ProductListViewModel product in Model)
+    {
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(item => product.Id)</td>
+                <td>@Html.DisplayFor(item => product.SKU)</td>
+                <td>@Html.DisplayFor(item => product.Description)</td>
+                <th class="text-end">
+                    <a asp-action="EditProduct" asp-route-id="@product.Id">
+                        <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
+                    </a>
+                </th>
+            </tr>
+        </tbody>
+    }        
+    </table>
+</div>

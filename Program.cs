@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICollectService, CollectService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddDbContext<CollectAppContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("CollectAppContext"));

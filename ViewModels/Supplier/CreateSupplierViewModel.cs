@@ -35,7 +35,6 @@ namespace CollectApp.ViewModels
         [DisplayName("UF")]
         [Required(ErrorMessage = "Campo UF é obrigatório")]
         [RegularExpression(@"^[A-Za-z]{2}$", ErrorMessage = "Campo UF deve conter 2 caracteres (exempo \"SP\").")]
-        [StringLength(2, MinimumLength = 2)]
         public string? State { get; set; }
 
         [DisplayName("CEP")]
