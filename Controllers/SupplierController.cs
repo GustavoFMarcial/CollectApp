@@ -26,8 +26,8 @@ namespace CollectApp.Controllers
             {
                 Id = s.Id,
                 Name = s.Name,
-                Address = s.Address,
                 CNPJ = s.CNPJ,
+                Address = $"Rua {s.Street}, Bairro {s.Neighborhood}, nº {s.Number}, {s.City}/{s.State} - CEP {s.ZipCode}",
             }).ToList();
 
             return View(slvm);
@@ -39,7 +39,7 @@ namespace CollectApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSupplier([Bind("Name,CNPJ,Address")] CreateSupplierViewModel supplierCreate)
+        public async Task<IActionResult> CreateSupplier([Bind("Name,CNPJ,Street,Neighborhood,Number,City,State,ZipCode")] CreateSupplierViewModel supplierCreate)
         {
             if (!ModelState.IsValid)
             {
@@ -55,7 +55,12 @@ namespace CollectApp.Controllers
             {
                 Name = supplierCreate.Name,
                 CNPJ = supplierCreate.CNPJ,
-                Address = supplierCreate.Address,
+                Street = supplierCreate.Street,
+                Neighborhood = supplierCreate.Neighborhood,
+                Number = supplierCreate.Number,
+                City = supplierCreate.City,
+                State = supplierCreate.State,
+                ZipCode = supplierCreate.ZipCode,
             };
 
             _supplierService.AddSupplier(supplier);
@@ -85,14 +90,19 @@ namespace CollectApp.Controllers
                 Id = supplier.Id,
                 Name = supplier.Name,
                 CNPJ = supplier.CNPJ,
-                Address = supplier.Address,
+                Street = supplier.Street,
+                Neighborhood = supplier.Neighborhood,
+                Number = supplier.Number,
+                City = supplier.City,
+                State = supplier.State,
+                ZipCode = supplier.ZipCode,
             };
 
             return View(esvm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditSupplier([Bind("Id,Name,CNPJ,Address")] EditSupplierViewModel supplierEdit)
+        public async Task<IActionResult> EditSupplier([Bind("Id,Name,CNPJ,Street,Neighborhood,Number,City,State,ZipCode")] EditSupplierViewModel supplierEdit)
         {
             if (!ModelState.IsValid)
             {
@@ -108,7 +118,12 @@ namespace CollectApp.Controllers
 
             supplier.Name = supplierEdit.Name;
             supplier.CNPJ = supplierEdit.CNPJ;
-            supplier.Address = supplierEdit.Address;
+            supplier.Street = supplierEdit.Street;
+            supplier.Neighborhood = supplierEdit.Neighborhood;
+            supplier.Number = supplierEdit.Number;
+            supplier.City = supplierEdit.City;
+            supplier.State = supplierEdit.State;
+            supplier.ZipCode = supplierEdit.ZipCode;
 
             await _supplierService.SaveChangesSuppliersAsync();
 
