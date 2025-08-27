@@ -14,7 +14,7 @@ namespace CollectApp.ViewModels
         public string? Name { get; set; }
 
         [Required(ErrorMessage = "Campo CNPJ é obrigatório")]
-        [RegularExpression(@"^\d{14}$", ErrorMessage = "O CNPJ deve conter exatamente 14 dígitos numéricos.")]
+        [StringLength(18, MinimumLength = 18, ErrorMessage = "Campo CNPJ deve ter 14 dígitos")]
         public string? CNPJ { get; set; }
 
         [DisplayName("Endereço")]
