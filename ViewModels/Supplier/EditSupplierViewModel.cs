@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using CollectApp.Attributes;
 
 namespace CollectApp.ViewModels
 {
@@ -13,6 +14,7 @@ namespace CollectApp.ViewModels
         public string? Name { get; set; }
 
         [Required(ErrorMessage = "Campo CNPJ é obrigatório")]
+        [RegularExpression(@"^\d{14}$", ErrorMessage = "O CNPJ deve conter exatamente 14 dígitos numéricos.")]
         public string? CNPJ { get; set; }
 
         [DisplayName("Endereço")]

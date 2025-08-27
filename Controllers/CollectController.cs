@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.CodeAnalysis.Differencing;
 
 namespace CollectApp.Controllers;
 
