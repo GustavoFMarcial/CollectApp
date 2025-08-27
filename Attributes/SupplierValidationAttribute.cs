@@ -7,7 +7,7 @@ namespace CollectApp.Attributes
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             string[] company = [
-                "GMS", "RT Colors", "Potência", "Kaitos", "Papel Safra", "AL Industria",
+                "GMS", "FVT", "RT Colors", "Potência", "Kaitos", "Papel Safra", "AL Industria",
                 "C&A", "Glasspack", "UHP", "Floresta",
                 ];
 

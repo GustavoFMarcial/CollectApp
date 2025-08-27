@@ -1,0 +1,38 @@
+@using CollectApp.ViewModels
+@model IEnumerable<CollectApp.ViewModels.SupplierListViewModel>
+@{
+    ViewData["Title"] = "Lista de fornecedores";
+}
+
+<div class="container">
+    <h1 class="mb-2">Lista de fornecedores</h1>
+    <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Supplier" asp-action="Createsupplier">Inserir fornecedor</a>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.CNPJ)</th>
+                <th>@Html.DisplayNameFor(model => model.Address)</th>
+                <th></th>
+            </tr>
+        </thead>
+    @foreach (SupplierListViewModel supplier in Model)
+    {
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(item => supplier.Id)</td>
+                <td>@Html.DisplayFor(item => supplier.Name)</td>
+                <td>@Html.DisplayFor(item => supplier.CNPJ)</td>
+                <td>@Html.DisplayFor(item => supplier.Address)</td>
+                <th class="text-end">
+                    <a asp-action="EditSupplier" asp-route-id="@supplier.Id">
+                        <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
+                    </a>
+                </th>
+            </tr>
+        </tbody>
+    }        
+    </table>
+</div>

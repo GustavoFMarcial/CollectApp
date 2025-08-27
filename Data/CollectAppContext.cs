@@ -9,5 +9,7 @@ namespace CollectApp.Data
         { }
 
         public DbSet<Collect> Collects { get; set; } = default!;
+        public DbSet<Supplier> Suppliers { get; set; } = default!;
+        public DbSet<Product> Products { get; set; } = default!;
     }
 }

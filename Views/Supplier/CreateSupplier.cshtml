@@ -1,0 +1,34 @@
+@model CollectApp.ViewModels.CreateSupplierViewModel
+@{
+    ViewData["Title"] = "Inserir fornecedor";
+}
+
+<div class="container">
+    <h1 class="mb-4">Insira um fornecedor</h1>
+    <form asp-controller="Supplier" asp-action="CreateSupplier" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form-group col-4 position-relative">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control">
+            <span asp-validation-for="Name" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="CNPJ"></label>
+            <input asp-for="CNPJ" class="form-control">
+            <span asp-validation-for="CNPJ" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" class="form-control">
+            <span asp-validation-for="Address" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="text-end mt-4 col-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
