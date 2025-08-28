@@ -23,7 +23,6 @@ namespace CollectApp.Controllers
             List<ProductListViewModel> plvm = products.Select(p => new ProductListViewModel
             {
                 Id = p.Id,
-                SKU = p.SKU,
                 Description = p.Description
             }).ToList();
 
@@ -45,7 +44,6 @@ namespace CollectApp.Controllers
 
             Product product = new Product
             {
-                SKU = productCreate.SKU,
                 Description = productCreate.Description,
             };
 

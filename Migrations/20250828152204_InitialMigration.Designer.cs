@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectApp.Migrations
 {
     [DbContext(typeof(CollectAppContext))]
-    [Migration("20250827201342_InitialMigration")]
+    [Migration("20250828152204_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -71,9 +71,6 @@ namespace CollectApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SKU")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

@@ -12,7 +12,6 @@
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Id)</th>
-                <th>@Html.DisplayNameFor(model => model.SKU)</th>
                 <th>@Html.DisplayNameFor(model => model.Description)</th>
                 <th></th>
             </tr>
@@ -22,7 +21,6 @@
         <tbody>
             <tr>
                 <td>@Html.DisplayFor(item => product.Id)</td>
-                <td>@Html.DisplayFor(item => product.SKU)</td>
                 <td>@Html.DisplayFor(item => product.Description)</td>
                 <th class="text-end">
                     <a asp-action="EditProduct" asp-route-id="@product.Id">
