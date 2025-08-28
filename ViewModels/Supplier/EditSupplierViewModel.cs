@@ -15,7 +15,7 @@ namespace CollectApp.ViewModels
         public string? Name { get; set; }
 
         [Required(ErrorMessage = "Campo CNPJ é obrigatório")]
-        [StringLength(18, MinimumLength = 18, ErrorMessage = "Campo CNPJ deve ter 14 dígitos")]
+        [RegularExpression(@"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$", ErrorMessage = "CNPJ inválido. Formato esperado: 00.000.000/0000-00")]
         public string? CNPJ { get; set; }
 
         [DisplayName("Rua")]
@@ -41,6 +41,7 @@ namespace CollectApp.ViewModels
 
         [DisplayName("CEP")]
         [Required(ErrorMessage = "Campo CEP é obrigatório")]
+        [RegularExpression(@"^\d{5}-\d{3}$", ErrorMessage = "CEP inválido. Formato esperado: 00000-000")]
         public string? ZipCode { get; set; }
     }
 }
