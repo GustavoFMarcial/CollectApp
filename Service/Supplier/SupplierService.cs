@@ -30,7 +30,7 @@ namespace CollectApp.Services
 
             if (supplierExist)
             {
-                return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
+                return OperationResult.Fail(0,"Já existe um fornecedor cadastrado com o CNPJ fornecido");
             }
 
             _context.Suppliers.Add(supplier);
@@ -43,7 +43,7 @@ namespace CollectApp.Services
 
             if (supplierExist)
             {
-                return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
+                return OperationResult.Fail(0,"Já existe um fornecedor cadastrado com o CNPJ fornecido");
             }
 
             return OperationResult.Ok();

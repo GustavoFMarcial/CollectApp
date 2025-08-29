@@ -24,7 +24,7 @@ namespace CollectApp.Services
 
             if (productExist)
             {
-                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
+                return OperationResult.Fail(0, $"Já existe um produto cadastrado com a descrição fornecida");
             }
 
             _context.Products.Add(product);
@@ -37,7 +37,12 @@ namespace CollectApp.Services
 
             if (productExist)   
             {
-                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
+                Product? p = await _context.Products.FindAsync(product.Id);
+                // if (p == null)
+                // {
+                //     return
+                // }
+                return OperationResult.Fail(p.Id, $"Já existe um produto cadastrado com a descrição fornecida");
             }
 
             return OperationResult.Ok();

@@ -125,7 +125,7 @@ namespace CollectApp.Controllers
 
             OperationResult result = await _supplierService.EditSupplier(supplier);
 
-            if (!result.Success)
+            if (!result.Success && supplierEdit.Id != supplier.Id)
             {
                 ViewBag.Message = result.Message;
                 ViewBag.ShowModal = true;

@@ -102,7 +102,7 @@ namespace CollectApp.Controllers
 
             OperationResult result = await _productService.EditProduct(product);
 
-            if (!result.Success)
+            if (!result.Success || result.Id != product.Id)
             {
                 ViewBag.Message = result.Message;
                 ViewBag.ShowModal = true;
