@@ -26,9 +26,13 @@
                     <a asp-action="EditProduct" asp-route-id="@product.Id">
                         <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
                     </a>
+                    <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
+                    </button>
                 </th>
             </tr>
         </tbody>
+        @await Html.PartialAsync("_DeleteProductModal", product.Id)
     }        
     </table>
 </div>

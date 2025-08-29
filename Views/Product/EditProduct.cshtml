@@ -1,0 +1,25 @@
+@model CollectApp.ViewModels.EditProductViewModel
+@{
+    ViewData["Title"] = "Editar produto";
+}
+
+<div class="container">
+    <h1 class="mb-4">Editar produto</h1>
+    <form asp-controller="Product" asp-action="EditProduct" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input asp-for="Id" type="hidden">
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" autofocus>
+            <span asp-validation-for="Description" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="text-end mt-4 col-4">
+            <button asp-route-id="Id" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -129,5 +129,26 @@ namespace CollectApp.Controllers
 
             return RedirectToAction(nameof(ListSuppliers));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSupplier(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Supplier? supplier = await _supplierService.FindSupplierAsync(id);
+
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            _supplierService.DeleteSupplier(supplier);
+            await _supplierService.SaveChangesSuppliersAsync();
+
+            return RedirectToAction(nameof(ListSuppliers));
+        }
     }
 }

@@ -2,6 +2,7 @@ using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Differencing;
 
 namespace CollectApp.Controllers
 {
@@ -48,6 +49,71 @@ namespace CollectApp.Controllers
             };
 
             _productService.AddProduct(product);
+            await _productService.SaveChangesProductsAsync();
+
+            return RedirectToAction(nameof(ListProducts));
+        }
+
+        public async Task<IActionResult> EditProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product? product = await _productService.FindProductAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            EditProductViewModel epvm = new EditProductViewModel
+            {
+                Id = product.Id,
+                Description = product.Description,
+            };
+
+            return View(epvm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct([Bind("Id,Description")] EditProductViewModel productEdit)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(productEdit);
+            }
+
+            Product? product = await _productService.FindProductAsync(productEdit.Id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.Description = productEdit.Description;
+            await _productService.SaveChangesProductsAsync();
+
+            return RedirectToAction(nameof(ListProducts));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product? product = await _productService.FindProductAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _productService.DeleteProduct(product);
             await _productService.SaveChangesProductsAsync();
 
             return RedirectToAction(nameof(ListProducts));

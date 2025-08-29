@@ -32,5 +32,10 @@ namespace CollectApp.Services
         {
             return await _context.SaveChangesAsync();
         }
+
+        public void DeleteProduct(Product product)
+        {
+            _context.Products.Remove(product);
+        }
     }
 }

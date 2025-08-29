@@ -9,7 +9,7 @@ namespace CollectApp.Services
         public Task<Collect?> FindCollectAsync(int? id);
         public void AddCollect(Collect collect);
         public Task<int> SaveChangesCollectsAsync();
-
         public void UpdateCollectStatus(Collect collect);
+        public void DeleteCollect(Collect collect);
     }
 }

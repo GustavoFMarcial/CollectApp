@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CollectApp.Data;
 using CollectApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,11 @@ namespace CollectApp.Services
         public async Task<Supplier?> FindSupplierAsync(int? id)
         {
             return await _context.Suppliers.FindAsync(id);
+        }
+
+        public void DeleteSupplier(Supplier supplier)
+        {
+            _context.Suppliers.Remove(supplier);
         }
     }
 }

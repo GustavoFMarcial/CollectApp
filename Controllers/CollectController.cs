@@ -144,12 +144,33 @@ public class CollectController : Controller
 
         if (changeStatus.Status == null)
         {
-           return RedirectToAction(nameof(ListCollects)); 
+            return RedirectToAction(nameof(ListCollects));
         }
 
         collect.Status = changeStatus.Status;
-        
+
         _collectService.UpdateCollectStatus(collect);
+        await _collectService.SaveChangesCollectsAsync();
+
+        return RedirectToAction(nameof(ListCollects));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteCollect(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        Collect? collect = await _collectService.FindCollectAsync(id);
+
+        if (collect == null)
+        {
+            return NotFound();
+        }
+
+        _collectService.DeleteCollect(collect);
         await _collectService.SaveChangesCollectsAsync();
 
         return RedirectToAction(nameof(ListCollects));

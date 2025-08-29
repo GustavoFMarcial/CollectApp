@@ -34,9 +34,14 @@ namespace CollectApp.Services
         }
 
         public void UpdateCollectStatus(Collect collect)
-        {          
+        {
             _context.Attach(collect);
             _context.Entry(collect).Property(c => c.Status).IsModified = true;
+        }
+
+        public void DeleteCollect(Collect collect)
+        {
+            _context.Collects.Remove(collect);
         }
     }
 }
