@@ -35,7 +35,7 @@ namespace CollectApp.Services
         {
             bool productExist = await ProductExist(product);
 
-            if (productExist)
+            if (productExist)   
             {
                 return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
             }

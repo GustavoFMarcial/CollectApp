@@ -22,9 +22,9 @@
                 <th></th>
             </tr>
         </thead>
+        <tbody>
     @foreach (CollectListItemViewModel collect in Model)
     {
-        <tbody>
             <tr>
                 <td>@Html.DisplayFor(item => collect.Id)</td>
                 <td>@Html.DisplayFor(item => collect.CreatedAt)</td>
@@ -38,7 +38,7 @@
                     @await Html.PartialAsync("_CollectsStatusButton", collect.ChangeStatus)
                 </td>
             </tr>
-        </tbody>
-    }        
+    }   
+        </tbody>     
     </table>
 </div>

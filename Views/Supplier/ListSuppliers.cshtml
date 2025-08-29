@@ -18,9 +18,9 @@
                 <th></th>
             </tr>
         </thead>
+        <tbody>
     @foreach (SupplierListViewModel supplier in Model)
     {
-        <tbody>
             <tr>
                 <td>@Html.DisplayFor(item => supplier.Id)</td>
                 <td>@Html.DisplayFor(item => supplier.Name)</td>
@@ -30,13 +30,13 @@
                     <a asp-action="EditSupplier" asp-route-id="@supplier.Id">
                         <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
                     </a>
-                    <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@supplier.Id">
                         <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
                     </button>
                 </th>
             </tr>
-        </tbody>
-        @await Html.PartialAsync("_DeleteSupplierModal", supplier.Id)
-    }        
+            @await Html.PartialAsync("_DeleteSupplierModal", supplier.Id)
+    }      
+        </tbody>  
     </table>
 </div>
