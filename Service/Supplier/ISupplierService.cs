@@ -6,8 +6,10 @@ namespace CollectApp.Services
     {
         public Task<List<Supplier>> GetAllSuppliersListAsycn();
         public Task<Supplier?> FindSupplierAsync(int? id);
-        public void AddSupplier(Supplier supplier);
+        public Task<OperationResult> AddSupplier(Supplier supplier);
+        public Task<OperationResult> EditSupplier(Supplier supplier);
         public Task<int> SaveChangesSuppliersAsync();
         public void DeleteSupplier(Supplier supplier);
+        public Task<bool> SupplierExist(Supplier supplier);
     }
 }

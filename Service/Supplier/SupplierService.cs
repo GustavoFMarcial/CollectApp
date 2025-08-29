@@ -19,9 +19,34 @@ namespace CollectApp.Services
             return await _context.Suppliers.ToListAsync();
         }
 
-        public void AddSupplier(Supplier supplier)
+        public async Task<bool> SupplierExist(Supplier supplier)
         {
+            return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplier.CNPJ);
+        }
+
+        public async Task<OperationResult> AddSupplier(Supplier supplier)
+        {
+            bool supplierExist = await SupplierExist(supplier);
+
+            if (supplierExist)
+            {
+                return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
+            }
+
             _context.Suppliers.Add(supplier);
+            return OperationResult.Ok();
+        }
+
+        public async Task<OperationResult> EditSupplier(Supplier supplier)
+        {
+            bool supplierExist = await SupplierExist(supplier);
+
+            if (supplierExist)
+            {
+                return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
+            }
+
+            return OperationResult.Ok();
         }
 
         public async Task<int> SaveChangesSuppliersAsync()

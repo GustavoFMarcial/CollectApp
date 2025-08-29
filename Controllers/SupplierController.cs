@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
@@ -63,10 +64,16 @@ namespace CollectApp.Controllers
                 ZipCode = supplierCreate.ZipCode,
             };
 
-            _supplierService.AddSupplier(supplier);
-            await _supplierService.SaveChangesSuppliersAsync();
+            OperationResult result = await _supplierService.AddSupplier(supplier);
 
-            Console.WriteLine(supplier.Id);
+            if (!result.Success)
+            {
+                ViewBag.Message = result.Message;
+                ViewBag.ShowModal = true;
+                return View(supplierCreate);
+            }
+
+            await _supplierService.SaveChangesSuppliersAsync();
 
             return RedirectToAction(nameof(ListSuppliers));
         }
@@ -114,6 +121,15 @@ namespace CollectApp.Controllers
             if (supplier == null)
             {
                 return NotFound();
+            }
+
+            OperationResult result = await _supplierService.EditSupplier(supplier);
+
+            if (!result.Success)
+            {
+                ViewBag.Message = result.Message;
+                ViewBag.ShowModal = true;
+                return View(supplierEdit);
             }
 
             supplier.Name = supplierEdit.Name;
