@@ -36,7 +36,7 @@ namespace CollectApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([Bind("SKU,Description")] CreateProductViewModel productCreate)
+        public async Task<IActionResult> CreateProduct([Bind("Description")] CreateProductViewModel productCreate)
         {
             if (!ModelState.IsValid)
             {
@@ -48,7 +48,15 @@ namespace CollectApp.Controllers
                 Description = productCreate.Description,
             };
 
-            _productService.AddProduct(product);
+            OperationResult result = await _productService.AddProduct(product);
+
+            if (!result.Success)
+            {
+                ViewBag.Message = result.Message;
+                ViewBag.ShowModal = true;
+                return View(productCreate);
+            }
+
             await _productService.SaveChangesProductsAsync();
 
             return RedirectToAction(nameof(ListProducts));
@@ -90,6 +98,15 @@ namespace CollectApp.Controllers
             if (product == null)
             {
                 return NotFound();
+            }
+
+            OperationResult result = await _productService.EditProduct(product);
+
+            if (!result.Success)
+            {
+                ViewBag.Message = result.Message;
+                ViewBag.ShowModal = true;
+                return View(productEdit);
             }
 
             product.Description = productEdit.Description;

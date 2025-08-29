@@ -6,8 +6,10 @@ namespace CollectApp.Services
     {
         public Task<List<Product>> GetAllProductsListAsycn();
         public Task<Product?> FindProductAsync(int? id);
-        public void AddProduct(Product product);
+        public Task<OperationResult> AddProduct(Product product);
         public Task<int> SaveChangesProductsAsync();
         public void DeleteProduct(Product product);
+        public Task<bool> ProductExist(Product product);
+        public Task<OperationResult> EditProduct(Product product);
     }
 }

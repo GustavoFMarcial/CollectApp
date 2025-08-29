@@ -6,5 +6,3 @@ $(document).ready(function () {
     $('#CNPJ').mask('00.000.000/0000-00');
     $('#ZipCode').mask('00000-000');
 });
-
-

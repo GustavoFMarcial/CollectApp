@@ -13,9 +13,34 @@ namespace CollectApp.Services
             _context = context;
         }
 
-        public void AddProduct(Product product)
+        public async Task<bool> ProductExist(Product product)
         {
+            return await _context.Products.AnyAsync(p => p.Description == product.Description);
+        }
+
+        public async Task<OperationResult> AddProduct(Product product)
+        {
+            bool productExist = await ProductExist(product);
+
+            if (productExist)
+            {
+                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
+            }
+
             _context.Products.Add(product);
+            return OperationResult.Ok();
+        }
+
+        public async Task<OperationResult> EditProduct(Product product)
+        {
+            bool productExist = await ProductExist(product);
+
+            if (productExist)
+            {
+                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
+            }
+
+            return OperationResult.Ok();
         }
 
         public async Task<Product?> FindProductAsync(int? id)

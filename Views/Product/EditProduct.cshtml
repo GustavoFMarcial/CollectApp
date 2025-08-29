@@ -19,7 +19,21 @@
     </form>
 </div>
 
+@await Html.PartialAsync("_ProductModalError", ViewBag.Message as string)
+
 @section Scripts 
 {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var showModal = '@ViewBag.ShowModal' === 'True';
+            if (showModal) {
+                var modalElement = document.getElementById('errorCreateProductModal');
+                if (modalElement) {
+                    var modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+        });
+    </script>
 }
