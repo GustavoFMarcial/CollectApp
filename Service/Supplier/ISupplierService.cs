@@ -11,6 +11,5 @@ namespace CollectApp.Services
         public Task<OperationResult> EditSupplier(EditSupplierViewModel supplierEdit);
         public Task<int> SaveChangesSuppliersAsync();
         public void DeleteSupplier(Supplier supplier);
-        // public Task<bool> SupplierExist(Supplier supplier);
     }
 }

@@ -20,11 +20,6 @@ namespace CollectApp.Services
             return await _context.Suppliers.ToListAsync();
         }
 
-        // public async Task<bool> SupplierExist(Supplier supplier)
-        // {
-        //     return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplier.CNPJ && s.Id != supplier.Id);
-        // }
-
         public async Task<OperationResult> AddSupplier(Supplier supplier)
         {
             bool supplierExist = await _context.Suppliers.AnyAsync(s => s.CNPJ == supplier.CNPJ && s.Id != supplier.Id);

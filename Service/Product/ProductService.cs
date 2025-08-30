@@ -14,11 +14,6 @@ namespace CollectApp.Services
             _context = context;
         }
 
-        // public async Task<bool> ProductExist(Product product)
-        // {
-        //     return await _context.Products.AnyAsync(p => p.Description == product.Description && p.Id != product.Id);
-        // }
-
         public async Task<OperationResult> AddProduct(Product product)
         {
             bool productExist = await _context.Products.AnyAsync(p => p.Description == product.Description && p.Id != product.Id);
@@ -39,7 +34,6 @@ namespace CollectApp.Services
 
             if (productExist)   
             {
-                // Console.WriteLine("Vai se fuder filho da puta");
                 return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
             }
 
