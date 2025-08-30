@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectApp.Migrations
 {
     [DbContext(typeof(CollectAppContext))]
-    [Migration("20250828225255_NomeDaMigration")]
+    [Migration("20250830120747_NomeDaMigration")]
     partial class NomeDaMigration
     {
         /// <inheritdoc />
@@ -42,11 +42,14 @@ namespace CollectApp.Migrations
                     b.Property<string>("Filial")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Supplier")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Volume")
                         .HasColumnType("int");
@@ -55,6 +58,10 @@ namespace CollectApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Collects");
                 });
@@ -116,6 +123,25 @@ namespace CollectApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("CollectApp.Models.Collect", b =>
+                {
+                    b.HasOne("CollectApp.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollectApp.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Supplier");
                 });
 #pragma warning restore 612, 618
         }

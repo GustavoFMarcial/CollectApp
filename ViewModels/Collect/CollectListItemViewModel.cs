@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using CollectApp.Models;
 
 namespace CollectApp.ViewModels
 {
@@ -13,12 +14,15 @@ namespace CollectApp.ViewModels
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [DisplayName("Fornecedor")]
-        public string? Supplier { get; set; }
+        public Supplier? Supplier { get; set; }
 
         [DisplayName("Data coleta")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CollectAt { get; set; }
+
+        [DisplayName("Produto")]
+        public Product? Product { get; set; }
 
         public int? Volume { get; set; }
 

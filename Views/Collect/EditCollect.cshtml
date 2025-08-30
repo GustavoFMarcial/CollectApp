@@ -19,6 +19,11 @@
             <span asp-validation-for="CollectAt" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="Product"></label>
+            <input asp-for="Product" type="date" class="form-control">
+            <span asp-validation-for="Product" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Volume"></label>
             <input asp-for="Volume" class="form-control">
             <span asp-validation-for="Volume" class="text-danger position-absolute span-font-size"></span>

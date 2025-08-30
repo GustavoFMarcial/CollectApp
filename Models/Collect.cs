@@ -7,8 +7,11 @@ namespace CollectApp.Models
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public string? Supplier { get; set; }
+        public int SupplierId { get; set; }
+        public Supplier? Supplier { get; set; }
         public DateTime CollectAt { get; set; }
+        public int ProductId { get; set; }
+        public Product? Product { get; set; }
         public int? Volume { get; set; }
         public int? Weigth { get; set; }
         public string? Filial { get; set; } 
