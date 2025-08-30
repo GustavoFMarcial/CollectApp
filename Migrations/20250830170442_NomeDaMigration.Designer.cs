@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectApp.Migrations
 {
     [DbContext(typeof(CollectAppContext))]
-    [Migration("20250830120747_NomeDaMigration")]
+    [Migration("20250830170442_NomeDaMigration")]
     partial class NomeDaMigration
     {
         /// <inheritdoc />

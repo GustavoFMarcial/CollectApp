@@ -13,9 +13,9 @@
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Id)</th>
                 <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
-                <th>@Html.DisplayNameFor(model => model.Supplier)</th>
+                <th>@Html.DisplayNameFor(model => model.SupplierName)</th>
                 <th>@Html.DisplayNameFor(model => model.CollectAt)</th>
-                <th>@Html.DisplayNameFor(model => model.Product)</th>
+                <th>@Html.DisplayNameFor(model => model.ProductDescription)</th>
                 <th>@Html.DisplayNameFor(model => model.Status)</th>
                 <th>@Html.DisplayNameFor(model => model.Volume)</th>
                 <th>@Html.DisplayNameFor(model => model.Weigth)</th>
@@ -29,9 +29,9 @@
             <tr>
                 <td>@Html.DisplayFor(item => collect.Id)</td>
                 <td>@Html.DisplayFor(item => collect.CreatedAt)</td>
-                <td>@Html.DisplayFor(item => collect.Supplier)</td>
+                <td>@Html.DisplayFor(item => collect.SupplierName)</td>
                 <td>@Html.DisplayFor(item => collect.CollectAt)</td>
-                <th>@Html.DisplayNameFor(model => model.Product)</th>
+                <td>@Html.DisplayFor(Item => collect.ProductDescription)</td>
                 <td>@Html.DisplayFor(item => collect.Status)</td>
                 <td>@Html.DisplayFor(item => collect.Volume)</td>
                 <td>@Html.DisplayFor(item => collect.Weigth)</td>

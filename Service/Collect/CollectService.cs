@@ -15,7 +15,7 @@ namespace CollectApp.Services
 
         public async Task<List<Collect>> GetAllCollectsListAsycn()
         {
-            return await _context.Collects.ToListAsync();
+            return await _context.Collects.Include(c => c.Supplier).Include(c => c.Product).ToListAsync();
         }
 
         public void AddCollect(Collect collect)
@@ -33,6 +33,16 @@ namespace CollectApp.Services
             return await _context.Collects.FindAsync(id);
         }
 
+        public async Task<Supplier?> FindSupplierAsync(int? id)
+        {
+            return await _context.Suppliers.FindAsync(id);
+        }
+
+        public async Task<Product?> FindProductAsync(int? id)
+        {
+            return await _context.Products.FindAsync(id);
+        }
+
         public void UpdateCollectStatus(Collect collect)
         {
             _context.Attach(collect);
@@ -47,6 +57,11 @@ namespace CollectApp.Services
         public async Task<List<Product>> GetRegisteredProductsAsync()
         {
             return await _context.Products.ToListAsync();
+        }
+
+        public async Task<List<Supplier>> GetRegisteredSuppliersAsync()
+        {
+            return await _context.Suppliers.ToListAsync();
         }
     }
 }

@@ -7,14 +7,14 @@ namespace CollectApp.ViewModels
     public class CollectListItemViewModel
     {
         public int Id { get; set; }
-
+        
         [DisplayName("Criação coleta")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [DisplayName("Fornecedor")]
-        public Supplier? Supplier { get; set; }
+        public string? SupplierName { get; set; } = string.Empty;
 
         [DisplayName("Data coleta")]
         [DataType(DataType.Date)]
@@ -22,7 +22,7 @@ namespace CollectApp.ViewModels
         public DateTime CollectAt { get; set; }
 
         [DisplayName("Produto")]
-        public Product? Product { get; set; }
+        public string? ProductDescription { get; set; } = string.Empty;
 
         public int? Volume { get; set; }
 

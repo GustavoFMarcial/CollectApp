@@ -7,10 +7,13 @@ namespace CollectApp.Services
     {
         public Task<List<Collect>> GetAllCollectsListAsycn();
         public Task<Collect?> FindCollectAsync(int? id);
+        public Task<Supplier?> FindSupplierAsync(int? id);
+        public Task<Product?> FindProductAsync(int? id);
         public void AddCollect(Collect collect);
         public Task<int> SaveChangesCollectsAsync();
         public void UpdateCollectStatus(Collect collect);
         public void DeleteCollect(Collect collect);
         public Task<List<Product>> GetRegisteredProductsAsync();
+        public Task<List<Supplier>> GetRegisteredSuppliersAsync();
     }
 }

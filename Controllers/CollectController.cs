@@ -4,6 +4,7 @@ using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace CollectApp.Controllers;
 
@@ -26,8 +27,9 @@ public class CollectController : Controller
         {
             Id = c.Id,
             CreatedAt = c.CreatedAt,
-            Supplier = c.Supplier,
+            SupplierName = c.Supplier != null ? c.Supplier.Name : "-",
             CollectAt = c.CollectAt,
+            ProductDescription = c.Product != null ? c.Product.Description : "-",
             Status = c.Status,
             Volume = c.Volume,
             Weigth = c.Weigth,
@@ -45,17 +47,19 @@ public class CollectController : Controller
     public async Task<IActionResult> CreateCollect()
     {
         List<Product> RegisteredProducts = await _collectService.GetRegisteredProductsAsync();
+        List<Supplier> RegisteredSuppliers = await _collectService.GetRegisteredSuppliersAsync();
 
         CreateCollectViewModel ccvm = new CreateCollectViewModel
         {
-            Products = RegisteredProducts,
+            ProductsList = RegisteredProducts,
+            SuppliersList = RegisteredSuppliers,
         };
 
         return View(ccvm);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCollect([Bind("Supplier,CollectAt,Volume,Weight,Filial")] CreateCollectViewModel collectCreate)
+    public async Task<IActionResult> CreateCollect([Bind("SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,Filial")] CreateCollectViewModel collectCreate)
     {
         if (!ModelState.IsValid)
         {
@@ -67,10 +71,21 @@ public class CollectController : Controller
             return NotFound();
         }
 
+        Supplier? supplier = await _collectService.FindSupplierAsync(collectCreate.SupplierId);
+        Product? product = await _collectService.FindProductAsync(collectCreate.ProductId);
+
+        if (supplier == null || product == null)
+        {
+            return NotFound();
+        }
+
         Collect collect = new Collect
         {
-            Supplier = collectCreate.Supplier,
+            SupplierId = supplier.Id,
+            Supplier = supplier,
             CollectAt = collectCreate.CollectAt,
+            ProductId = product.Id,
+            Product = product,
             Volume = collectCreate.Volume,
             Weigth = collectCreate.Weight,
             Filial = collectCreate.Filial,
