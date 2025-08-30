@@ -13,24 +13,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const itemProduct = document.getElementById("itemProduct");
     const inputProductId = document.getElementById("ProductId");
     const items = document.querySelectorAll("#listProducts .itemProduct");
-
+    
     if (!inputProduct || !listProducts || itemProduct) return;
 
     const showList = () => listProducts.classList.remove("d-none");
     const hideList = () => listProducts.classList.add("d-none");
 
-    const hasValue = () => inputProduct.value.trim().length > 0;
-
-    inputProduct.addEventListener("input", () => {
-        hasValue() ? showList() : hideList();
-    });
+    // inputProduct.addEventListener("input", () => {
+        
+    // });
 
     inputProduct.addEventListener("blur", () => {
         setTimeout(hideList, 150);
     });
 
     inputProduct.addEventListener("click", () => {
-        if (hasValue()) showList();
+        showList();
     });
 
     items.forEach(item => {
@@ -53,18 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const showList = () => listSuppliers.classList.remove("d-none");
     const hideList = () => listSuppliers.classList.add("d-none");
 
-    const hasValue = () => inputSupplier.value.trim().length > 0;
+    // inputSupplier.addEventListener("input", () => {
 
-    inputSupplier.addEventListener("input", () => {
-        hasValue() ? showList() : hideList();
-    });
+    // });
 
     inputSupplier.addEventListener("blur", () => {
         setTimeout(hideList, 150);
     });
 
     inputSupplier.addEventListener("click", () => {
-        if (hasValue()) showList();
+        showList();
     });
 
     items.forEach(item => {
