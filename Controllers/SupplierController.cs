@@ -123,9 +123,9 @@ namespace CollectApp.Controllers
                 return NotFound();
             }
 
-            OperationResult result = await _supplierService.EditSupplier(supplier);
+            OperationResult result = await _supplierService.EditSupplier(supplierEdit);
 
-            if (!result.Success && supplierEdit.Id != supplier.Id)
+            if (!result.Success)
             {
                 ViewBag.Message = result.Message;
                 ViewBag.ShowModal = true;

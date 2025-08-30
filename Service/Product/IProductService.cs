@@ -1,4 +1,5 @@
 using CollectApp.Models;
+using CollectApp.ViewModels;
 
 namespace CollectApp.Services
 {
@@ -9,7 +10,7 @@ namespace CollectApp.Services
         public Task<OperationResult> AddProduct(Product product);
         public Task<int> SaveChangesProductsAsync();
         public void DeleteProduct(Product product);
-        public Task<bool> ProductExist(Product product);
-        public Task<OperationResult> EditProduct(Product product);
+        // public Task<bool> ProductExist(Product product);
+        public Task<OperationResult> EditProduct(EditProductViewModel productEdit);
     }
 }

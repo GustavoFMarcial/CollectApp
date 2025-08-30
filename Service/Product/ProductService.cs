@@ -1,5 +1,6 @@
 using CollectApp.Data;
 using CollectApp.Models;
+using CollectApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectApp.Services
@@ -13,36 +14,33 @@ namespace CollectApp.Services
             _context = context;
         }
 
-        public async Task<bool> ProductExist(Product product)
-        {
-            return await _context.Products.AnyAsync(p => p.Description == product.Description);
-        }
+        // public async Task<bool> ProductExist(Product product)
+        // {
+        //     return await _context.Products.AnyAsync(p => p.Description == product.Description && p.Id != product.Id);
+        // }
 
         public async Task<OperationResult> AddProduct(Product product)
         {
-            bool productExist = await ProductExist(product);
+            bool productExist = await _context.Products.AnyAsync(p => p.Description == product.Description && p.Id != product.Id);
 
             if (productExist)
             {
-                return OperationResult.Fail(0, $"Já existe um produto cadastrado com a descrição fornecida");
+                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
             }
 
             _context.Products.Add(product);
+
             return OperationResult.Ok();
         }
 
-        public async Task<OperationResult> EditProduct(Product product)
+        public async Task<OperationResult> EditProduct(EditProductViewModel productEdit)
         {
-            bool productExist = await ProductExist(product);
+            bool productExist = await _context.Products.AnyAsync(p => p.Description == productEdit.Description && p.Id != productEdit.Id);
 
             if (productExist)   
             {
-                Product? p = await _context.Products.FindAsync(product.Id);
-                // if (p == null)
-                // {
-                //     return
-                // }
-                return OperationResult.Fail(p.Id, $"Já existe um produto cadastrado com a descrição fornecida");
+                // Console.WriteLine("Vai se fuder filho da puta");
+                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
             }
 
             return OperationResult.Ok();

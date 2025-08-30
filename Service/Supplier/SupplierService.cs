@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using CollectApp.Data;
 using CollectApp.Models;
+using CollectApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectApp.Services
@@ -19,31 +20,31 @@ namespace CollectApp.Services
             return await _context.Suppliers.ToListAsync();
         }
 
-        public async Task<bool> SupplierExist(Supplier supplier)
-        {
-            return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplier.CNPJ);
-        }
+        // public async Task<bool> SupplierExist(Supplier supplier)
+        // {
+        //     return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplier.CNPJ && s.Id != supplier.Id);
+        // }
 
         public async Task<OperationResult> AddSupplier(Supplier supplier)
         {
-            bool supplierExist = await SupplierExist(supplier);
+            bool supplierExist = await _context.Suppliers.AnyAsync(s => s.CNPJ == supplier.CNPJ && s.Id != supplier.Id);
 
             if (supplierExist)
             {
-                return OperationResult.Fail(0,"Já existe um fornecedor cadastrado com o CNPJ fornecido");
+                return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
             }
 
             _context.Suppliers.Add(supplier);
             return OperationResult.Ok();
         }
 
-        public async Task<OperationResult> EditSupplier(Supplier supplier)
+        public async Task<OperationResult> EditSupplier(EditSupplierViewModel supplierEdit)
         {
-            bool supplierExist = await SupplierExist(supplier);
+            bool supplierExist = await _context.Suppliers.AnyAsync(s => s.CNPJ == supplierEdit.CNPJ && s.Id != supplierEdit.Id);
 
             if (supplierExist)
             {
-                return OperationResult.Fail(0,"Já existe um fornecedor cadastrado com o CNPJ fornecido");
+                return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
             }
 
             return OperationResult.Ok();

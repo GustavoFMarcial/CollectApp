@@ -4,7 +4,6 @@ namespace CollectApp.Services
     {
         public bool Success { get; set; }
         public string? Message { get; set; }
-        public int Id { get; set; }
 
         public static OperationResult Ok(string? message = null) => new OperationResult
         {
@@ -12,11 +11,10 @@ namespace CollectApp.Services
             Message = message,
         };
 
-        public static OperationResult Fail(int id, string? message = null) => new OperationResult
+        public static OperationResult Fail(string? message = null) => new OperationResult
         {
             Success = false,
             Message = message,
-            Id = id,
         };
     }
 }

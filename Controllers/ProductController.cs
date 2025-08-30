@@ -93,16 +93,16 @@ namespace CollectApp.Controllers
                 return View(productEdit);
             }
 
-            Product? product = await _productService.FindProductAsync(productEdit.Id);
+            Product? product = await _productService.FindProductAsync(productEdit.Id);;
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            OperationResult result = await _productService.EditProduct(product);
+            OperationResult result = await _productService.EditProduct(productEdit);
 
-            if (!result.Success || result.Id != product.Id)
+            if (!result.Success)
             {
                 ViewBag.Message = result.Message;
                 ViewBag.ShowModal = true;

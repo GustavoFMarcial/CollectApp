@@ -5,6 +5,7 @@ namespace CollectApp.ViewModels
 {
     public class EditProductViewModel
     {
+        [Required]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Campo descrição é obrigatório")]
