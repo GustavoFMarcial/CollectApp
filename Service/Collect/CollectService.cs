@@ -43,5 +43,10 @@ namespace CollectApp.Services
         {
             _context.Collects.Remove(collect);
         }
+
+        public async Task<List<Product>> GetRegisteredProductsAsync()
+        {
+            return await _context.Products.ToListAsync();
+        }
     }
 }

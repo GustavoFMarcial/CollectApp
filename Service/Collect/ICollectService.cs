@@ -11,5 +11,6 @@ namespace CollectApp.Services
         public Task<int> SaveChangesCollectsAsync();
         public void UpdateCollectStatus(Collect collect);
         public void DeleteCollect(Collect collect);
+        public Task<List<Product>> GetRegisteredProductsAsync();
     }
 }

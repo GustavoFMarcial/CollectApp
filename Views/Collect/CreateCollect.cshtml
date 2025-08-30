@@ -19,7 +19,14 @@
         </div>
         <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Product"></label>
-            <input asp-for="Product" class="form-control">
+            <input asp-for="Product" class="form-control" autocomplete="off">
+            <ul id="listProducts" class="d-none position-absolute z-3">
+        @if (@Model.Products != null){
+            @foreach (Product product in @Model.Products){
+                <li class="itemProduct">@product.Description</li>
+            }
+        }
+            </ul>
             <span asp-validation-for="Product" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
+using System.Threading.Tasks;
 
 namespace CollectApp.Controllers;
 
@@ -41,9 +42,16 @@ public class CollectController : Controller
         return View(clivm);
     }
 
-    public IActionResult CreateCollect()
+    public async Task<IActionResult> CreateCollect()
     {
-        return View();
+        List<Product> RegisteredProducts = await _collectService.GetRegisteredProductsAsync();
+
+        CreateCollectViewModel ccvm = new CreateCollectViewModel
+        {
+            Products = RegisteredProducts,
+        };
+
+        return View(ccvm);
     }
 
     [HttpPost]
