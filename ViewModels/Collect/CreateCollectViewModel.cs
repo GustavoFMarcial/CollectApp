@@ -40,6 +40,6 @@ namespace CollectApp.ViewModels
         public string? Filial { get; set; }
 
         // public List<Product>? ProductsList { get; set; }
-        public List<Supplier>? SuppliersList { get; set; }
+        // public List<Supplier>? SuppliersList { get; set; }
     }
 }

@@ -60,9 +60,9 @@ namespace CollectApp.Services
             return await _context.Products.Where(p => p.Description.Contains(input)).ToListAsync();
         }
 
-        public async Task<List<Supplier>> GetRegisteredSuppliersAsync()
+       public async Task<List<Supplier>> GetFilteredSuppliersAsync(string input)
         {
-            return await _context.Suppliers.ToListAsync();
+            return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
         }
     }
 }

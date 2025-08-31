@@ -41,18 +41,16 @@ public class CollectController : Controller
         return View(clivm);
     }
 
-    public async Task<IActionResult> CreateCollect()
+    public IActionResult CreateCollect()
     {
-        // List<Product> RegisteredProducts = await _collectService.GetRegisteredProductsAsync();
-        List<Supplier> RegisteredSuppliers = await _collectService.GetRegisteredSuppliersAsync();
+        return View();
+    }
 
-        CreateCollectViewModel ccvm = new CreateCollectViewModel
-        {
-            // ProductsList = RegisteredProducts,
-            SuppliersList = RegisteredSuppliers,
-        };
-
-        return View(ccvm);
+    [HttpPost]
+    public async Task<IActionResult> FilterSuppliersList([FromBody] FilterRequestInputProduct request)
+    {
+        List<Supplier> ProductsList = await _collectService.GetFilteredSuppliersAsync(request.Input);
+        return Json(ProductsList);
     }
 
     [HttpPost]

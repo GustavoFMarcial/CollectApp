@@ -9,9 +9,9 @@ $(document).ready(function () {
 
 document.addEventListener("DOMContentLoaded", () => {
     const inputProduct = document.getElementById("Product");
+    const inputProductId = document.getElementById("ProductId");
     const listProducts = document.getElementById("listProducts");
     const itemProduct = document.getElementById("itemProduct");
-    const inputProductId = document.getElementById("ProductId");
     
     if (!inputProduct || !listProducts || itemProduct) return;
 
@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const hideList = () => listProducts.classList.add("d-none");
 
     inputProduct.addEventListener("input", () => {
+        if (inputProduct.value.trim().length == 0) return;
+
         fetch("/Collect/FilterProductsList", {
             method: "POST", 
             headers: {
@@ -48,11 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     });
 
-    inputProduct.addEventListener("blur", () => {
-        setTimeout(hideList, 150);
-    });
-
-    inputProduct.addEventListener("click", () => {
+    inputProduct.addEventListener("focus", () => {
         showList();
     });
 
@@ -60,15 +58,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target.classList.contains("itemProduct")) {
             inputProduct.value = e.target.textContent;
             inputProductId.value = e.target.dataset.id;
+            hideList();
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!listProducts.contains(e.target) && e.target !== inputProduct) {
+            hideList();
         }
     });
 })
 
 document.addEventListener("DOMContentLoaded", () => {
     const inputSupplier = document.getElementById("Supplier");
+    const inputSupplierId = document.getElementById("SupplierId");
     const listSuppliers = document.getElementById("listSuppliers");
     const itemSupplier = document.getElementById("itemSupplier");
-    const inputSupplierId = document.getElementById("SupplierId");
     const items = document.querySelectorAll("#listSuppliers .itemSupplier");
 
     if (!inputSupplier || !listSuppliers || itemSupplier) return;
@@ -76,22 +81,47 @@ document.addEventListener("DOMContentLoaded", () => {
     const showList = () => listSuppliers.classList.remove("d-none");
     const hideList = () => listSuppliers.classList.add("d-none");
 
-    // inputSupplier.addEventListener("input", () => {
+    inputSupplier.addEventListener("input", () => {
+        if (inputSupplier.value.trim().length == 0) return;
 
-    // });
-
-    inputSupplier.addEventListener("blur", () => {
-        setTimeout(hideList, 150);
+        fetch("/Collect/FilterSuppliersList", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ input: inputSupplier.value })
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((suppliers) => {
+            console.log(suppliers);
+            listSuppliers.textContent = "";
+            suppliers.forEach((supplier) => {
+                var newListItem = document.createElement("li");
+                newListItem.textContent = supplier.name;
+                newListItem.dataset.id = supplier.id;
+                newListItem.classList.add("itemSupplier");
+                listSuppliers.appendChild(newListItem);
+            })
+        })
     });
 
-    inputSupplier.addEventListener("click", () => {
+    inputSupplier.addEventListener("focus", () => {
         showList();
     });
 
-    items.forEach(item => {
-        item.addEventListener("click", function() {
-            inputSupplier.value = this.textContent;
-            inputSupplierId.value = this.dataset.id;
-        });
+    listSuppliers.addEventListener("click", (e) => {
+        if (e.target.classList.contains("itemSupplier")) {
+            inputSupplier.value = e.target.textContent;
+            inputSupplierId.value = e.target.dataset.id;
+            hideList();
+        }
     });
+
+    document.addEventListener("click", (e) => {
+        if (!listSuppliers.contains(e.target) && e.target !== inputSupplier){
+            hideList();
+        }
+    })
 })
