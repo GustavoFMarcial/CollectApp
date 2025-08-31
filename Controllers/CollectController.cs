@@ -1,10 +1,7 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace CollectApp.Controllers;
 
@@ -46,16 +43,23 @@ public class CollectController : Controller
 
     public async Task<IActionResult> CreateCollect()
     {
-        List<Product> RegisteredProducts = await _collectService.GetRegisteredProductsAsync();
+        // List<Product> RegisteredProducts = await _collectService.GetRegisteredProductsAsync();
         List<Supplier> RegisteredSuppliers = await _collectService.GetRegisteredSuppliersAsync();
 
         CreateCollectViewModel ccvm = new CreateCollectViewModel
         {
-            ProductsList = RegisteredProducts,
+            // ProductsList = RegisteredProducts,
             SuppliersList = RegisteredSuppliers,
         };
 
         return View(ccvm);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> FilterProductsList([FromBody] FilterRequestInputProduct request)
+    {
+        List<Product> ProductsList = await _collectService.GetFilteredProductsAsync(request.Input);
+        return Json(ProductsList);
     }
 
     [HttpPost]

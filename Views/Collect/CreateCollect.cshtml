@@ -31,11 +31,11 @@
             <input id="Product" class="form-control" autocomplete="off">
             <input asp-for="ProductId" type="hidden">
             <ul id="listProducts" class="d-none position-absolute z-3">
-        @if (@Model.ProductsList != null){
+        @* @if (@Model.ProductsList != null){
             @foreach (Product product in @Model.ProductsList){
                 <li class="itemProduct" data-id="@product.Id">@product.Description</li>
             }
-        }
+        } *@
             </ul>
             <span asp-validation-for="Product" class="text-danger position-absolute span-font-size"></span>
         </div>

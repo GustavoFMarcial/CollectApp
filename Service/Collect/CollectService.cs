@@ -1,6 +1,7 @@
 using CollectApp.Data;
 using Microsoft.EntityFrameworkCore;
 using CollectApp.Models;
+using CollectApp.ViewModels;
 
 namespace CollectApp.Services
 {
@@ -54,9 +55,9 @@ namespace CollectApp.Services
             _context.Collects.Remove(collect);
         }
 
-        public async Task<List<Product>> GetRegisteredProductsAsync()
+        public async Task<List<Product>> GetFilteredProductsAsync(string input)
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.Where(p => p.Description.Contains(input)).ToListAsync();
         }
 
         public async Task<List<Supplier>> GetRegisteredSuppliersAsync()
