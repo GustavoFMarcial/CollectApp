@@ -8,6 +8,62 @@ $(document).ready(function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    const inputSupplier = document.getElementById("Supplier");
+    const inputSupplierId = document.getElementById("SupplierId");
+    const listSuppliers = document.getElementById("listSuppliers");
+    const itemSupplier = document.getElementById("itemSupplier");
+
+    if (!inputSupplier || !listSuppliers || itemSupplier) return;
+
+    const showList = () => listSuppliers.classList.remove("d-none");
+    const hideList = () => listSuppliers.classList.add("d-none");
+
+    inputSupplier.addEventListener("input", () => {
+        if (inputSupplier.value.trim().length == 0) return;
+
+        fetch("/Collect/FilterSuppliersList", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ input: inputSupplier.value })
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((suppliers) => {
+            console.log(suppliers);
+            listSuppliers.textContent = "";
+            suppliers.forEach((supplier) => {
+                var newListItem = document.createElement("li");
+                newListItem.textContent = supplier.name;
+                newListItem.dataset.id = supplier.id;
+                newListItem.classList.add("itemSupplier");
+                listSuppliers.appendChild(newListItem);
+            })
+        })
+    });
+
+    inputSupplier.addEventListener("focus", () => {
+        showList();
+    });
+
+    listSuppliers.addEventListener("click", (e) => {
+        if (e.target.classList.contains("itemSupplier")) {
+            inputSupplier.value = e.target.textContent;
+            inputSupplierId.value = e.target.dataset.id;
+            hideList();
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!listSuppliers.contains(e.target) && e.target !== inputSupplier){
+            hideList();
+        }
+    })
+})
+
+document.addEventListener("DOMContentLoaded", () => {
     const inputProduct = document.getElementById("Product");
     const inputProductId = document.getElementById("ProductId");
     const listProducts = document.getElementById("listProducts");
@@ -67,60 +123,4 @@ document.addEventListener("DOMContentLoaded", () => {
             hideList();
         }
     });
-})
-
-document.addEventListener("DOMContentLoaded", () => {
-    const inputSupplier = document.getElementById("Supplier");
-    const inputSupplierId = document.getElementById("SupplierId");
-    const listSuppliers = document.getElementById("listSuppliers");
-    const itemSupplier = document.getElementById("itemSupplier");
-
-    if (!inputSupplier || !listSuppliers || itemSupplier) return;
-
-    const showList = () => listSuppliers.classList.remove("d-none");
-    const hideList = () => listSuppliers.classList.add("d-none");
-
-    inputSupplier.addEventListener("input", () => {
-        if (inputSupplier.value.trim().length == 0) return;
-
-        fetch("/Collect/FilterSuppliersList", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ input: inputSupplier.value })
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((suppliers) => {
-            console.log(suppliers);
-            listSuppliers.textContent = "";
-            suppliers.forEach((supplier) => {
-                var newListItem = document.createElement("li");
-                newListItem.textContent = supplier.name;
-                newListItem.dataset.id = supplier.id;
-                newListItem.classList.add("itemSupplier");
-                listSuppliers.appendChild(newListItem);
-            })
-        })
-    });
-
-    inputSupplier.addEventListener("focus", () => {
-        showList();
-    });
-
-    listSuppliers.addEventListener("click", (e) => {
-        if (e.target.classList.contains("itemSupplier")) {
-            inputSupplier.value = e.target.textContent;
-            inputSupplierId.value = e.target.dataset.id;
-            hideList();
-        }
-    });
-
-    document.addEventListener("click", (e) => {
-        if (!listSuppliers.contains(e.target) && e.target !== inputSupplier){
-            hideList();
-        }
-    })
 })
