@@ -38,8 +38,5 @@ namespace CollectApp.ViewModels
         [Required(ErrorMessage = "Campo Loja é obrigatório")]
         [FilialValidation]
         public string? Filial { get; set; }
-
-        // public List<Product>? ProductsList { get; set; }
-        // public List<Supplier>? SuppliersList { get; set; }
     }
 }
