@@ -74,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputSupplierId = document.getElementById("SupplierId");
     const listSuppliers = document.getElementById("listSuppliers");
     const itemSupplier = document.getElementById("itemSupplier");
-    const items = document.querySelectorAll("#listSuppliers .itemSupplier");
 
     if (!inputSupplier || !listSuppliers || itemSupplier) return;
 
