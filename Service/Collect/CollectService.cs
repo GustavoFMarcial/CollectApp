@@ -69,5 +69,10 @@ namespace CollectApp.Services
         {
             return await _context.Suppliers.ToListAsync();
         }
+
+        public async Task<List<Product>> GetRegisteredProductsAsync()
+        {
+            return await _context.Products.ToListAsync();
+        }
     }
 }

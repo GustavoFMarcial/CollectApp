@@ -16,5 +16,6 @@ namespace CollectApp.Services
         public Task<List<Product>> GetFilteredProductsAsync(string input);
         public Task<List<Supplier>> GetFilteredSuppliersAsync(string input);
         public Task<List<Supplier>> GetRegisteredSuppliersAsync();
+        public Task<List<Product>> GetRegisteredProductsAsync();
     }
 }

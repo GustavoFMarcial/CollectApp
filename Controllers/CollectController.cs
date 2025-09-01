@@ -53,6 +53,12 @@ public class CollectController : Controller
         return Json(SuppliersList);
     }
 
+    public async Task<IActionResult> GetProducts()
+    {
+        List<Product> ProductsList = await _collectService.GetRegisteredProductsAsync();
+        return Json(ProductsList);
+    }
+
     [HttpPost]
     public async Task<IActionResult> FilterSuppliersList([FromBody] FilterRequestInputProduct request)
     {

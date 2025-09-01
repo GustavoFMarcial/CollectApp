@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 newButton.dataset.name = supplier.name;
 
                 newTableData1.textContent = supplier.id;
-                newTableData1.dataset.id = supplier.id;
                 newTableData2.textContent = supplier.name;
                 newTableData3.appendChild(newButton);
                 newTableData3.classList.add("text-end");
