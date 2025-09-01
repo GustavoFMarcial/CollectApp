@@ -31,9 +31,18 @@
         </div>
         <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Product"></label>
-            <input id="Product" class="form-control" autocomplete="off">
+            <div class="position-relative">
+                <input id="Product" class="form-control pe-5" readonly>
+                <button type="button" 
+                        class="p-0 border-0 bg-transparent position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%);"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#searchProductModal"
+                        id="searchProductsButton">
+                    <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
+                </button>
+            </div>
             <input asp-for="ProductId" type="hidden">
-            <ul id="listProducts" class="d-none position-absolute z-3"></ul>
             <span asp-validation-for="Product" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">
@@ -59,6 +68,7 @@
 </div>
 
 @await Html.PartialAsync("_SupplierSearchModal")
+@await Html.PartialAsync("_ProductSearchModal")
 
 @section Scripts 
 {
