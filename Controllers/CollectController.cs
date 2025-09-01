@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
+using System.Threading.Tasks;
 
 namespace CollectApp.Controllers;
 
@@ -46,11 +47,17 @@ public class CollectController : Controller
         return View();
     }
 
+    public async Task<IActionResult> GetSuppliers()
+    {
+        List<Supplier> SuppliersList = await _collectService.GetRegisteredSuppliersAsync();
+        return Json(SuppliersList);
+    }
+
     [HttpPost]
     public async Task<IActionResult> FilterSuppliersList([FromBody] FilterRequestInputProduct request)
     {
-        List<Supplier> ProductsList = await _collectService.GetFilteredSuppliersAsync(request.Input);
-        return Json(ProductsList);
+        List<Supplier> SuppliersList = await _collectService.GetFilteredSuppliersAsync(request.Input);
+        return Json(SuppliersList);
     }
 
     [HttpPost]
