@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectApp.Migrations
 {
     [DbContext(typeof(CollectAppContext))]
-    [Migration("20250901115348_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250902231614_NomeDaMigration")]
+    partial class NomeDaMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,23 @@ namespace CollectApp.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Collects");
+                });
+
+            modelBuilder.Entity("CollectApp.Models.Filial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Filials");
                 });
 
             modelBuilder.Entity("CollectApp.Models.Product", b =>

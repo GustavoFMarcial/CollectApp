@@ -63,6 +63,23 @@ namespace CollectApp.Migrations
                     b.ToTable("Collects");
                 });
 
+            modelBuilder.Entity("CollectApp.Models.Filial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Filials");
+                });
+
             modelBuilder.Entity("CollectApp.Models.Product", b =>
                 {
                     b.Property<int>("Id")
