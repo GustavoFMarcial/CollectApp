@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     suppliersList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectSupplier");
         if (button){
-            inputSupplier.value = button.dataset.name;
+            inputSupplier.innerText = button.dataset.name;
             inputSupplierId.value = button.dataset.id;
             modal.hide();
         }

@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
     productsList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectProduct");
         if (button){
-            inputProduct.value = button.dataset.description;
+            inputProduct.innerText = button.dataset.description;
             inputProductId.value = button.dataset.id;
             modal.hide();
         }
