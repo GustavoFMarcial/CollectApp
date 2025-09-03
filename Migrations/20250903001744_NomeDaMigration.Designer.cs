@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectApp.Migrations
 {
     [DbContext(typeof(CollectAppContext))]
-    [Migration("20250902231614_NomeDaMigration")]
+    [Migration("20250903001744_NomeDaMigration")]
     partial class NomeDaMigration
     {
         /// <inheritdoc />
@@ -39,8 +39,8 @@ namespace CollectApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Filial")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FilialId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -58,6 +58,8 @@ namespace CollectApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FilialId");
 
                     b.HasIndex("ProductId");
 
@@ -144,6 +146,12 @@ namespace CollectApp.Migrations
 
             modelBuilder.Entity("CollectApp.Models.Collect", b =>
                 {
+                    b.HasOne("CollectApp.Models.Filial", "Filial")
+                        .WithMany()
+                        .HasForeignKey("FilialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CollectApp.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -155,6 +163,8 @@ namespace CollectApp.Migrations
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Filial");
 
                     b.Navigation("Product");
 

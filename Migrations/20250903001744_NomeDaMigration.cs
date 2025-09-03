@@ -71,12 +71,18 @@ namespace CollectApp.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Volume = table.Column<int>(type: "int", nullable: true),
                     Weigth = table.Column<int>(type: "int", nullable: true),
-                    Filial = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FilialId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Collects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Collects_Filials_FilialId",
+                        column: x => x.FilialId,
+                        principalTable: "Filials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Collects_Products_ProductId",
                         column: x => x.ProductId,
@@ -90,6 +96,11 @@ namespace CollectApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Collects_FilialId",
+                table: "Collects",
+                column: "FilialId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Collects_ProductId",

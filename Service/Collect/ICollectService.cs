@@ -9,6 +9,7 @@ namespace CollectApp.Services
         public Task<Collect?> FindCollectAsync(int? id);
         public Task<Supplier?> FindSupplierAsync(int? id);
         public Task<Product?> FindProductAsync(int? id);
+        public Task<Filial?> FindFilialAsync(int? id);
         public void AddCollect(Collect collect);
         public Task<int> SaveChangesCollectsAsync();
         public void UpdateCollectStatus(Collect collect);

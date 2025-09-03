@@ -14,7 +14,9 @@ namespace CollectApp.Models
         public Product? Product { get; set; }
         public int? Volume { get; set; }
         public int? Weigth { get; set; }
-        public string? Filial { get; set; } 
+        public int FilialId { get; set; }
+        public Filial? Filial { get; set; }
+        // public string? Filial { get; set; } 
         public string? Status { get; set; } = "A coletar";
     }
 }

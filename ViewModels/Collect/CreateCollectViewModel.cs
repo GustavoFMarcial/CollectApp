@@ -34,9 +34,12 @@ namespace CollectApp.ViewModels
         [Range(1, 20000, ErrorMessage = "Peso deve ser entre 1 e 20000")]
         public int? Weight { get; set; }
 
+        [Required]
+        public int FilialId { get; set; }
+
         [DisplayName("Loja")]
-        [Required(ErrorMessage = "Campo Loja é obrigatório")]
-        [FilialValidation]
-        public string? Filial { get; set; }
+        // [Required(ErrorMessage = "Campo Loja é obrigatório")]
+        // [FilialValidation]
+        public Filial? Filial { get; set; }
     }
 }

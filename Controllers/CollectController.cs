@@ -3,6 +3,7 @@ using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace CollectApp.Controllers;
 
@@ -31,7 +32,7 @@ public class CollectController : Controller
             Status = c.Status,
             Volume = c.Volume,
             Weigth = c.Weigth,
-            Filial = c.Filial,
+            Filial = c.Filial != null ? c.Filial.Name : "-",
             ChangeStatus = new ChangeStatusCollectViewModel
             {
                 Id = c.Id,
@@ -88,8 +89,9 @@ public class CollectController : Controller
 
         Supplier? supplier = await _collectService.FindSupplierAsync(collectCreate.SupplierId);
         Product? product = await _collectService.FindProductAsync(collectCreate.ProductId);
+        Filial? filial = await _collectService.FindFilialAsync(collectCreate.FilialId);
 
-        if (supplier == null || product == null)
+        if (supplier == null || product == null || filial == null)
         {
             return NotFound();
         }
@@ -103,7 +105,7 @@ public class CollectController : Controller
             Product = product,
             Volume = collectCreate.Volume,
             Weigth = collectCreate.Weight,
-            Filial = collectCreate.Filial,
+            Filial = filial,
         };
 
         _collectService.AddCollect(collect);

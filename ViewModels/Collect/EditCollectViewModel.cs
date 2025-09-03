@@ -33,8 +33,8 @@ namespace CollectApp.ViewModels
         public int? Weight { get; set; }
 
         [DisplayName("Loja")]
-        [Required(ErrorMessage = "Campo Loja é obrigatório")]
-        [FilialValidation]
-        public string? Filial { get; set; }
+        // [Required(ErrorMessage = "Campo Loja é obrigatório")]
+        // [FilialValidation]
+        public Filial? Filial { get; set; }
     }
 }
