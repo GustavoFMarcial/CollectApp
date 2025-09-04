@@ -60,6 +60,12 @@ public class CollectController : Controller
         return Json(ProductsList);
     }
 
+    public async Task<IActionResult> GetFilials()
+    {
+        List<Filial> FilialsList = await _collectService.GetRegisteredFilialsAsync();
+        return Json(FilialsList);
+    }
+
     [HttpPost]
     public async Task<IActionResult> FilterSuppliersList([FromBody] FilterRequestInputProduct request)
     {
@@ -75,7 +81,14 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCollect([Bind("SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,Filial")] CreateCollectViewModel collectCreate)
+    public async Task<IActionResult> FilterFilialsList([FromBody] FilterRequestInputProduct request)
+    {
+        List<Filial> FilialsList = await _collectService.GetFilteredFilialsAsync(request.Input);
+        return Json(FilialsList);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCollect([Bind("SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] CreateCollectViewModel collectCreate)
     {
         if (!ModelState.IsValid)
         {
@@ -84,6 +97,7 @@ public class CollectController : Controller
 
         if (collectCreate == null)
         {
+            Console.WriteLine("a");
             return NotFound();
         }
 
@@ -93,6 +107,8 @@ public class CollectController : Controller
 
         if (supplier == null || product == null || filial == null)
         {
+            Console.WriteLine("b");
+            Console.WriteLine(collectCreate.FilialId);
             return NotFound();
         }
 

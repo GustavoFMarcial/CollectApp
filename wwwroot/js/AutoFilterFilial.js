@@ -1,23 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const inputSupplier = document.getElementById("Supplier");
-    const inputSupplierId = document.getElementById("SupplierId");
-    const suppliersList = document.getElementById("suppliersList")
-    const searchSuppliersButton = document.getElementById("searchSuppliersButton");
-    const searchSupplierInput = document.getElementById("searchSupplierInput");
-    const modalEl = document.getElementById("searchSupplierModal");
+    const inputFilial = document.getElementById("Filial");
+    const inputFilialId = document.getElementById("FilialId");
+    const filialsList = document.getElementById("filialsList")
+    const searchFilialsButton = document.getElementById("searchFilialsButton");
+    const searchFilialInput = document.getElementById("searchFilialInput");
+    const modalEl = document.getElementById("searchFilialModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
 
-    if (!inputSupplier || !inputSupplierId || !suppliersList) return;
+    if (!inputFilial || !inputFilialId || !filialsList) return;
 
-    searchSuppliersButton.addEventListener("click", () => {
-        fetch("/Collect/GetSuppliers")
+    searchFilialsButton.addEventListener("click", () => {
+        fetch("/Collect/GetFilials")
         .then((response) => {
             return response.json();
         })
-        .then((suppliers) => {
-            console.log(suppliers);
-            suppliersList.textContent = "";
-            suppliers.forEach((supplier) => {
+        .then((filials) => {
+            console.log(filials);
+            filialsList.textContent = "";
+            filials.forEach((filial) => {
                 var newTableRow = document.createElement("tr");
 
                 var newTableData1 = document.createElement("td");
@@ -34,12 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 newCheckImg.height = 24;
 
                 newButton.appendChild(newCheckImg);
-                newButton.className = "buttonSelectSupplier p-0 border-0 bg-transparent";
-                newButton.dataset.id = supplier.id;
-                newButton.dataset.name = supplier.name;
+                newButton.className = "buttonSelectFilial p-0 border-0 bg-transparent";
+                newButton.dataset.id = filial.id;
+                newButton.dataset.name = filial.name;
 
-                newTableData1.textContent = supplier.id;
-                newTableData2.textContent = supplier.name;
+                newTableData1.textContent = filial.id;
+                newTableData2.textContent = filial.name;
                 newTableData3.appendChild(newButton);
                 newTableData3.classList.add("text-end");
 
@@ -47,28 +47,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 newTableRow.appendChild(newTableData2);
                 newTableRow.appendChild(newTableData3);
 
-                suppliersList.appendChild(newTableRow);
+                filialsList.appendChild(newTableRow);
             })
         })
     });
 
-    searchSupplierInput.addEventListener("input", () => {
-        if (searchSupplierInput.value.trim().length == 0) return;
+    searchFilialInput.addEventListener("input", () => {
+        if (searchFilialInput.value.trim().length == 0) return;
 
-        fetch("/Collect/FilterSuppliersList", {
+        fetch("/Collect/FilterFilialsList", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ input: searchSupplierInput.value })
+            body: JSON.stringify({ input: searchFilialInput.value })
         })
         .then((response) => {
             return response.json();
         })
-        .then((suppliers) => {
-            console.log(suppliers);
-            suppliersList.textContent = "";
-            suppliers.forEach((supplier) => {
+        .then((filials) => {
+            console.log(filials);
+            filialsList.textContent = "";
+            filials.forEach((filial) => {
                 var newTableRow = document.createElement("tr");
 
                 var newTableData1 = document.createElement("td");
@@ -85,12 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 newCheckImg.height = 24;
 
                 newButton.appendChild(newCheckImg);
-                newButton.className = "buttonSelectSupplier p-0 border-0 bg-transparent";
-                newButton.dataset.id = supplier.id;
-                newButton.dataset.name = supplier.name;
+                newButton.className = "buttonSelectFilial p-0 border-0 bg-transparent";
+                newButton.dataset.id = filial.id;
+                newButton.dataset.name = filial.name;
 
-                newTableData1.textContent = supplier.id;
-                newTableData2.textContent = supplier.name;
+                newTableData1.textContent = filial.id;
+                newTableData2.textContent = filial.name;
                 newTableData3.appendChild(newButton);
                 newTableData3.classList.add("text-end");
 
@@ -98,16 +98,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 newTableRow.appendChild(newTableData2);
                 newTableRow.appendChild(newTableData3);
 
-                suppliersList.appendChild(newTableRow);
+                filialsList.appendChild(newTableRow);
             })
         })
     });
 
-    suppliersList.addEventListener("click", (e) => {
-        const button = e.target.closest(".buttonSelectSupplier");
+    filialsList.addEventListener("click", (e) => {
+        const button = e.target.closest(".buttonSelectFilial");
         if (button){
-            inputSupplier.innerText = button.dataset.name;
-            inputSupplierId.value = button.dataset.id;
+            inputFilial.innerText = button.dataset.name;
+            inputFilialId.value = button.dataset.id;
             modal.hide();
         }
     });

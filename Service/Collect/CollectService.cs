@@ -70,6 +70,11 @@ namespace CollectApp.Services
             return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
         }
 
+        public async Task<List<Filial>> GetFilteredFilialsAsync(string input)
+        {
+            return await _context.Filials.Where(f => f.Name.Contains(input)).ToListAsync();
+        }
+
         public async Task<List<Supplier>> GetRegisteredSuppliersAsync()
         {
             return await _context.Suppliers.ToListAsync();
@@ -78,6 +83,11 @@ namespace CollectApp.Services
         public async Task<List<Product>> GetRegisteredProductsAsync()
         {
             return await _context.Products.ToListAsync();
+        }
+
+        public async Task<List<Filial>> GetRegisteredFilialsAsync()
+        {
+            return await _context.Filials.ToListAsync();
         }
     }
 }

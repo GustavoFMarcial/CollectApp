@@ -16,7 +16,9 @@ namespace CollectApp.Services
         public void DeleteCollect(Collect collect);
         public Task<List<Product>> GetFilteredProductsAsync(string input);
         public Task<List<Supplier>> GetFilteredSuppliersAsync(string input);
+        public Task<List<Filial>> GetFilteredFilialsAsync(string input);
         public Task<List<Supplier>> GetRegisteredSuppliersAsync();
         public Task<List<Product>> GetRegisteredProductsAsync();
+        public Task<List<Filial>> GetRegisteredFilialsAsync();
     }
 }
