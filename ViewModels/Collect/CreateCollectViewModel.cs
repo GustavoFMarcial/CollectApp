@@ -11,9 +11,8 @@ namespace CollectApp.ViewModels
         public int SupplierId { get; set; }
 
         [DisplayName("Fornecedor")]
-        // [SupplierValidation]
-        [StringLength(20, ErrorMessage = "Empresa para coleta dever ter no máximo 20 caracteres")]
-        public Supplier? Supplier { get; set; }
+        [Required(ErrorMessage = "Campo fornecedor é obrigatório")]
+        public string? Supplier { get; set; }
 
         [DisplayName("Data coleta")]
         [Required(ErrorMessage = "Campo data de coleta é obrigatório")]
@@ -25,7 +24,8 @@ namespace CollectApp.ViewModels
         public int ProductId { get; set; }
 
         [DisplayName("Produto")]
-        public Product? Product { get; set; }
+        [Required(ErrorMessage = "Campo produto é obrigatório")]
+        public string? Product { get; set; }
 
         [Range(1, 1000, ErrorMessage = "Volume deve ser entre 1 e 1000")]
         public int? Volume { get; set; }
@@ -38,8 +38,7 @@ namespace CollectApp.ViewModels
         public int FilialId { get; set; }
 
         [DisplayName("Loja")]
-        // [Required(ErrorMessage = "Campo Loja é obrigatório")]
-        // [FilialValidation]
-        public Filial? Filial { get; set; }
+        [Required(ErrorMessage = "Campo filial é obrigatório")]
+        public string? Filial { get; set; }
     }
 }

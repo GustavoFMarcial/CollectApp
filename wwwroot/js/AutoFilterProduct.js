@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     productsList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectProduct");
         if (button){
-            inputProduct.innerText = button.dataset.description;
+            inputProduct.value = button.dataset.description;
             inputProductId.value = button.dataset.id;
             modal.hide();
         }

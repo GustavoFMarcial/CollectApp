@@ -31,7 +31,11 @@ namespace CollectApp.Services
 
         public async Task<Collect?> FindCollectAsync(int? id)
         {
-            return await _context.Collects.FindAsync(id);
+            return await _context.Collects
+                .Include(c => c.Supplier)
+                .Include(c => c.Product)
+                .Include(c => c.Filial)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Supplier?> FindSupplierAsync(int? id)

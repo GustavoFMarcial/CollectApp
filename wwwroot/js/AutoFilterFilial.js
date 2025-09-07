@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     filialsList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectFilial");
         if (button){
-            inputFilial.innerText = button.dataset.name;
+            inputFilial.value = button.dataset.name;
             inputFilialId.value = button.dataset.id;
             modal.hide();
         }

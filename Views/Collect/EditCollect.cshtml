@@ -1,3 +1,4 @@
+@using System.Text.Json
 @model CollectApp.ViewModels.EditCollectViewModel
 @{
     ViewData["Title"] = "Editar coleta";
@@ -8,19 +9,41 @@
     <form asp-controller="Collect" asp-action="EditCollect" method="post">
         <div asp-validation-summary="ModelOnly"></div>
         <input asp-for="Id" type="hidden">
-        <div class="form-group col-4 position-relative">
+        <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Supplier"></label>
-            <input asp-for="Supplier" class="form-control">
+            <div class="position-relative">
+                <input asp-for="Supplier" id="Supplier" class="form-control pe-5" readonly>
+                <button type="button" 
+                        class="p-0 border-0 bg-transparent position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%);"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#searchSupplierModal"
+                        id="searchSuppliersButton">
+                    <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
+                </button>
+            </div>
+            <input asp-for="SupplierId" type="hidden">
             <span asp-validation-for="Supplier" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="CollectAt"></label>
-            <input asp-for="CollectAt" type="date" class="form-control">
+            <input asp-for="CollectAt" class="form-control">
             <span asp-validation-for="CollectAt" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Product"></label>
-            <input asp-for="Product" type="date" class="form-control">
+            <div class="position-relative">
+                <input asp-for="Product" id="Product" class="form-control pe-5" readonly>
+                <button type="button" 
+                        class="p-0 border-0 bg-transparent position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%);"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#searchProductModal"
+                        id="searchProductsButton">
+                    <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
+                </button>
+            </div>
+            <input asp-for="ProductId" type="hidden">
             <span asp-validation-for="Product" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">
@@ -35,7 +58,18 @@
         </div>
         <div class="form-group mt-4 col-4 position-relative">
             <label asp-for="Filial"></label>
-            <input asp-for="Filial" class="form-control">
+            <div class="position-relative">
+                <input asp-for="Filial" id="Filial" class="form-control pe-5" readonly>
+                <button type="button" 
+                        class="p-0 border-0 bg-transparent position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%);"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#searchFilialModal"
+                        id="searchFilialsButton">
+                    <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
+                </button>
+            </div>
+            <input asp-for="FilialId" type="hidden">
             <span asp-validation-for="Filial" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="text-end mt-4 col-4">
@@ -44,6 +78,10 @@
         </div>
     </form>
 </div>
+
+@await Html.PartialAsync("_SupplierSearchModal")
+@await Html.PartialAsync("_ProductSearchModal")
+@await Html.PartialAsync("_FilialSearchModal")
 
 @section Scripts 
 {

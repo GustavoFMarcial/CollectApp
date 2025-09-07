@@ -9,9 +9,9 @@
     <form asp-controller="Collect" asp-action="CreateCollect" method="post">
         <div asp-validation-summary="ModelOnly"></div>
         <div class="form-group mt-4 col-4 position-relative">
-            <label asp-for="Supplier"></label>
+            <label>Fornecedor</label>
             <div class="position-relative">
-                <div id="Supplier" class="form-control pe-5"></div>
+                <input asp-for="Supplier" id="Supplier" class="form-control pe-5" readonly>
                 <button type="button" 
                         class="p-0 border-0 bg-transparent position-absolute"
                         style="top: 50%; right: 10px; transform: translateY(-50%);"
@@ -30,9 +30,9 @@
             <span asp-validation-for="CollectAt" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">
-            <label asp-for="Product"></label>
+            <label>Produto</label>
             <div class="position-relative">
-                <div id="Product" class="form-control pe-5"></div>
+                <input asp-for="Product" id="Product" class="form-control pe-5" readonly>
                 <button type="button" 
                         class="p-0 border-0 bg-transparent position-absolute"
                         style="top: 50%; right: 10px; transform: translateY(-50%);"
@@ -56,9 +56,9 @@
             <span asp-validation-for="Weight" class="text-danger position-absolute span-font-size"></span>
         </div>
         <div class="form-group mt-4 col-4 position-relative">
-            <label asp-for="Filial"></label>
+            <label>Loja</label>
             <div class="position-relative">
-                <div id="Filial" class="form-control pe-5"></div>
+                <input asp-for="Filial" id="Filial" class="form-control pe-5" readonly>
                 <button type="button" 
                         class="p-0 border-0 bg-transparent position-absolute"
                         style="top: 50%; right: 10px; transform: translateY(-50%);"

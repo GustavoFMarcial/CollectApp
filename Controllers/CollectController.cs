@@ -97,7 +97,6 @@ public class CollectController : Controller
 
         if (collectCreate == null)
         {
-            Console.WriteLine("a");
             return NotFound();
         }
 
@@ -107,8 +106,6 @@ public class CollectController : Controller
 
         if (supplier == null || product == null || filial == null)
         {
-            Console.WriteLine("b");
-            Console.WriteLine(collectCreate.FilialId);
             return NotFound();
         }
 
@@ -121,6 +118,7 @@ public class CollectController : Controller
             Product = product,
             Volume = collectCreate.Volume,
             Weigth = collectCreate.Weight,
+            FilialId = filial.Id,
             Filial = filial,
         };
 
@@ -138,8 +136,8 @@ public class CollectController : Controller
         }
 
         Collect? collect = await _collectService.FindCollectAsync(id);
-
-        if (collect == null)
+ 
+        if (collect == null || collect.Supplier == null || collect.Product == null || collect.Filial == null)
         {
             return NotFound();
         }
@@ -147,18 +145,22 @@ public class CollectController : Controller
         EditCollectViewModel ecvm = new EditCollectViewModel
         {
             Id = collect.Id,
-            Supplier = collect.Supplier,
+            SupplierId = collect.SupplierId,
+            Supplier = collect.Supplier.Name,
             CollectAt = collect.CollectAt,
+            ProductId = collect.ProductId,
+            Product = collect.Product.Description,
             Volume = collect.Volume,
             Weight = collect.Weigth,
-            Filial = collect.Filial,
+            FilialId = collect.FilialId,
+            Filial = collect.Filial.Name,
         };
 
         return View(ecvm);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditCollect([Bind("Id,Supplier,CollectAt,Volume,Weight,Filial")] EditCollectViewModel collectEdit)
+    public async Task<IActionResult> EditCollect([Bind("Id,SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] EditCollectViewModel collectEdit)
     {
         if (!ModelState.IsValid)
         {
@@ -172,11 +174,24 @@ public class CollectController : Controller
             return NotFound();
         }
 
+        Supplier? supplier = await _collectService.FindSupplierAsync(collectEdit.SupplierId);
+        Product? product = await _collectService.FindProductAsync(collectEdit.ProductId);
+        Filial? filial = await _collectService.FindFilialAsync(collectEdit.FilialId);
+
+        if (supplier == null || product == null || filial == null)
+        {
+            return NotFound();
+        }
+
+        collect.SupplierId = supplier.Id;
+        collect.Supplier = supplier;
         collect.CollectAt = collectEdit.CollectAt;
-        collect.Supplier = collectEdit.Supplier;
+        collect.ProductId = product.Id;
+        collect.Product = product;
         collect.Volume = collectEdit.Volume;
         collect.Weigth = collectEdit.Weight;
-        collect.Filial = collectEdit.Filial;
+        collect.FilialId = filial.Id;
+        collect.Filial = filial;
 
         await _collectService.SaveChangesCollectsAsync();
 

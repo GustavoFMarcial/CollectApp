@@ -94,7 +94,7 @@ body {
     background-color: #f8f9fa;
 }
 
-div.form-control {
+input.form-control {
   display: block;
   width: 100%;
   min-height: calc(1.5em + .75rem + 2px);
@@ -111,7 +111,7 @@ div.form-control {
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-div.form-control:focus {
+input.form-control:focus {
   color: #212529;
   background-color: #fff;
   border-color: #86b7fe;
