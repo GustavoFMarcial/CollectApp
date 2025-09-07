@@ -166,5 +166,18 @@ namespace CollectApp.Controllers
 
             return RedirectToAction(nameof(ListSuppliers));
         }
+
+        public async Task<IActionResult> GetSuppliers()
+        {
+            List<Supplier> SuppliersList = await _supplierService.GetAllSuppliersListAsycn();
+            return Json(SuppliersList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FilterSuppliersList([FromBody] FilterRequestInputProduct request)
+        {
+            List<Supplier> SuppliersList = await _supplierService.GetFilteredSuppliersAsync(request.Input);
+            return Json(SuppliersList);
+        }
     }
 }

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!inputFilial || !inputFilialId || !filialsList) return;
 
     searchFilialsButton.addEventListener("click", () => {
-        fetch("/Collect/GetFilials")
+        fetch("/Filial/GetFilials")
         .then((response) => {
             return response.json();
         })
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     searchFilialInput.addEventListener("input", () => {
         if (searchFilialInput.value.trim().length == 0) return;
 
-        fetch("/Collect/FilterFilialsList", {
+        fetch("/Filial/FilterFilialsList", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

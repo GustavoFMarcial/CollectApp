@@ -2,43 +2,23 @@ using Microsoft.AspNetCore.Mvc;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace CollectApp.Controllers;
 
 public class CollectController : Controller
 {
-    private readonly ILogger<CollectController> _looger;
+    private readonly ILogger<CollectController> _logger;
     private readonly ICollectService _collectService;
 
     public CollectController(ILogger<CollectController> logger, ICollectService collectService)
     {
-        _looger = logger;
+        _logger = logger;
         _collectService = collectService;
     }
 
     public async Task<IActionResult> ListCollects()
     {
-        List<Collect> collects = await _collectService.GetAllCollectsListAsycn();
-
-        List<CollectListItemViewModel> clivm = collects.Select(c => new CollectListItemViewModel
-        {
-            Id = c.Id,
-            CreatedAt = c.CreatedAt,
-            SupplierName = c.Supplier != null ? c.Supplier.Name : "-",
-            CollectAt = c.CollectAt,
-            ProductDescription = c.Product != null ? c.Product.Description : "-",
-            Status = c.Status,
-            Volume = c.Volume,
-            Weigth = c.Weigth,
-            Filial = c.Filial != null ? c.Filial.Name : "-",
-            ChangeStatus = new ChangeStatusCollectViewModel
-            {
-                Id = c.Id,
-                Status = c.Status
-            }
-        }).ToList();
+        List<CollectListItemViewModel> clivm = await _collectService.SetCollectListItemViewModel();
 
         return View(clivm);
     }
@@ -46,45 +26,6 @@ public class CollectController : Controller
     public IActionResult CreateCollect()
     {
         return View();
-    }
-
-    public async Task<IActionResult> GetSuppliers()
-    {
-        List<Supplier> SuppliersList = await _collectService.GetRegisteredSuppliersAsync();
-        return Json(SuppliersList);
-    }
-
-    public async Task<IActionResult> GetProducts()
-    {
-        List<Product> ProductsList = await _collectService.GetRegisteredProductsAsync();
-        return Json(ProductsList);
-    }
-
-    public async Task<IActionResult> GetFilials()
-    {
-        List<Filial> FilialsList = await _collectService.GetRegisteredFilialsAsync();
-        return Json(FilialsList);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> FilterSuppliersList([FromBody] FilterRequestInputProduct request)
-    {
-        List<Supplier> SuppliersList = await _collectService.GetFilteredSuppliersAsync(request.Input);
-        return Json(SuppliersList);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> FilterProductsList([FromBody] FilterRequestInputProduct request)
-    {
-        List<Product> ProductsList = await _collectService.GetFilteredProductsAsync(request.Input);
-        return Json(ProductsList);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> FilterFilialsList([FromBody] FilterRequestInputProduct request)
-    {
-        List<Filial> FilialsList = await _collectService.GetFilteredFilialsAsync(request.Input);
-        return Json(FilialsList);
     }
 
     [HttpPost]
@@ -100,30 +41,7 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        Supplier? supplier = await _collectService.FindSupplierAsync(collectCreate.SupplierId);
-        Product? product = await _collectService.FindProductAsync(collectCreate.ProductId);
-        Filial? filial = await _collectService.FindFilialAsync(collectCreate.FilialId);
-
-        if (supplier == null || product == null || filial == null)
-        {
-            return NotFound();
-        }
-
-        Collect collect = new Collect
-        {
-            SupplierId = supplier.Id,
-            Supplier = supplier,
-            CollectAt = collectCreate.CollectAt,
-            ProductId = product.Id,
-            Product = product,
-            Volume = collectCreate.Volume,
-            Weigth = collectCreate.Weight,
-            FilialId = filial.Id,
-            Filial = filial,
-        };
-
-        _collectService.AddCollect(collect);
-        await _collectService.SaveChangesCollectsAsync();
+        await _collectService.CreateCollect(collectCreate);
 
         return RedirectToAction(nameof(ListCollects));
     }
@@ -135,26 +53,7 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        Collect? collect = await _collectService.FindCollectAsync(id);
- 
-        if (collect == null || collect.Supplier == null || collect.Product == null || collect.Filial == null)
-        {
-            return NotFound();
-        }
-
-        EditCollectViewModel ecvm = new EditCollectViewModel
-        {
-            Id = collect.Id,
-            SupplierId = collect.SupplierId,
-            Supplier = collect.Supplier.Name,
-            CollectAt = collect.CollectAt,
-            ProductId = collect.ProductId,
-            Product = collect.Product.Description,
-            Volume = collect.Volume,
-            Weight = collect.Weigth,
-            FilialId = collect.FilialId,
-            Filial = collect.Filial.Name,
-        };
+        EditCollectViewModel ecvm = await _collectService.SetEditCollectViewModel(id);
 
         return View(ecvm);
     }
@@ -167,33 +66,7 @@ public class CollectController : Controller
             return View(collectEdit);
         }
 
-        Collect? collect = await _collectService.FindCollectAsync(collectEdit.Id);
-
-        if (collect == null)
-        {
-            return NotFound();
-        }
-
-        Supplier? supplier = await _collectService.FindSupplierAsync(collectEdit.SupplierId);
-        Product? product = await _collectService.FindProductAsync(collectEdit.ProductId);
-        Filial? filial = await _collectService.FindFilialAsync(collectEdit.FilialId);
-
-        if (supplier == null || product == null || filial == null)
-        {
-            return NotFound();
-        }
-
-        collect.SupplierId = supplier.Id;
-        collect.Supplier = supplier;
-        collect.CollectAt = collectEdit.CollectAt;
-        collect.ProductId = product.Id;
-        collect.Product = product;
-        collect.Volume = collectEdit.Volume;
-        collect.Weigth = collectEdit.Weight;
-        collect.FilialId = filial.Id;
-        collect.Filial = filial;
-
-        await _collectService.SaveChangesCollectsAsync();
+        await _collectService.EditCollect(collectEdit);
 
         return RedirectToAction(nameof(ListCollects));
     }
@@ -206,22 +79,7 @@ public class CollectController : Controller
             return RedirectToAction(nameof(ListCollects));
         }
 
-        Collect? collect = await _collectService.FindCollectAsync(changeStatus.Id);
-
-        if (collect == null)
-        {
-            return NotFound();
-        }
-
-        if (changeStatus.Status == null)
-        {
-            return RedirectToAction(nameof(ListCollects));
-        }
-
-        collect.Status = changeStatus.Status;
-
-        _collectService.UpdateCollectStatus(collect);
-        await _collectService.SaveChangesCollectsAsync();
+        await _collectService.UpdateCollectStatus(changeStatus);
 
         return RedirectToAction(nameof(ListCollects));
     }
@@ -241,8 +99,7 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        _collectService.DeleteCollect(collect);
-        await _collectService.SaveChangesCollectsAsync();
+        await _collectService.DeleteCollect(id);
 
         return RedirectToAction(nameof(ListCollects));
     }

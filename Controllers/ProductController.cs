@@ -93,7 +93,7 @@ namespace CollectApp.Controllers
                 return View(productEdit);
             }
 
-            Product? product = await _productService.FindProductAsync(productEdit.Id);;
+            Product? product = await _productService.FindProductAsync(productEdit.Id); ;
 
             if (product == null)
             {
@@ -134,6 +134,19 @@ namespace CollectApp.Controllers
             await _productService.SaveChangesProductsAsync();
 
             return RedirectToAction(nameof(ListProducts));
+        }
+
+        public async Task<IActionResult> GetProducts()
+        {
+            List<Product> ProductsList = await _productService.GetAllProductsListAsycn();
+            return Json(ProductsList);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> FilterProductsList([FromBody] FilterRequestInputProduct request)
+        {
+            List<Product> ProductsList = await _productService.GetFilteredProductsAsync(request.Input);
+            return Json(ProductsList);
         }
     }
 }

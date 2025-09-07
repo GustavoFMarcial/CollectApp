@@ -50,6 +50,11 @@ namespace CollectApp.Services
             return await _context.Filials.ToListAsync();
         }
 
+        public async Task<List<Filial>> GetFilteredFilialsAsync(string input)
+        {
+            return await _context.Filials.Where(f => f.Name.Contains(input)).ToListAsync();
+        }
+
         public async Task<int> SaveChangesFilialsAsync()
         {
             return await _context.SaveChangesAsync();

@@ -6,6 +6,7 @@ namespace CollectApp.Services
     public interface ISupplierService
     {
         public Task<List<Supplier>> GetAllSuppliersListAsycn();
+        public Task<List<Supplier>> GetFilteredSuppliersAsync(string input);
         public Task<Supplier?> FindSupplierAsync(int? id);
         public Task<OperationResult> AddSupplier(Supplier supplier);
         public Task<OperationResult> EditSupplier(EditSupplierViewModel supplierEdit);

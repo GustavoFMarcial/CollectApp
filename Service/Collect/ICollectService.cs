@@ -1,24 +1,19 @@
 using CollectApp.Models;
 using CollectApp.ViewModels;
+using Microsoft.CodeAnalysis.Differencing;
 
 namespace CollectApp.Services
 {
     public interface ICollectService
     {
         public Task<List<Collect>> GetAllCollectsListAsycn();
+        public Task<List<CollectListItemViewModel>> SetCollectListItemViewModel();
         public Task<Collect?> FindCollectAsync(int? id);
-        public Task<Supplier?> FindSupplierAsync(int? id);
-        public Task<Product?> FindProductAsync(int? id);
-        public Task<Filial?> FindFilialAsync(int? id);
-        public void AddCollect(Collect collect);
+        public Task CreateCollect(CreateCollectViewModel collectCreate);
+        public Task<EditCollectViewModel> SetEditCollectViewModel(int? id);
+        public Task EditCollect(EditCollectViewModel collectEdit);
         public Task<int> SaveChangesCollectsAsync();
-        public void UpdateCollectStatus(Collect collect);
-        public void DeleteCollect(Collect collect);
-        public Task<List<Product>> GetFilteredProductsAsync(string input);
-        public Task<List<Supplier>> GetFilteredSuppliersAsync(string input);
-        public Task<List<Filial>> GetFilteredFilialsAsync(string input);
-        public Task<List<Supplier>> GetRegisteredSuppliersAsync();
-        public Task<List<Product>> GetRegisteredProductsAsync();
-        public Task<List<Filial>> GetRegisteredFilialsAsync();
+        public Task UpdateCollectStatus(ChangeStatusCollectViewModel changeStatus);
+        public Task DeleteCollect(int? id);
     }
 }

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!inputProduct || !inputProductId || !productsList) return;
 
     searchProductsButton.addEventListener("click", () => {
-        fetch("/Collect/GetProducts")
+        fetch("/Product/GetProducts")
         .then((response) => {
             return response.json();
         })
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     searchProductInput.addEventListener("input", () => {
         if (searchProductInput.value.trim().length == 0) return;
 
-        fetch("/Collect/FilterProductsList", {
+        fetch("/Product/FilterProductsList", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -93,7 +93,7 @@ namespace CollectApp.Controllers
                 return View(filialEdit);
             }
 
-            Filial? filial = await _filialService.FindFilialAsync(filialEdit.Id);;
+            Filial? filial = await _filialService.FindFilialAsync(filialEdit.Id); ;
 
             if (filial == null)
             {
@@ -134,6 +134,19 @@ namespace CollectApp.Controllers
             await _filialService.SaveChangesFilialsAsync();
 
             return RedirectToAction(nameof(ListFilials));
+        }
+
+        public async Task<IActionResult> GetFilials()
+        {
+            List<Filial> FilialsList = await _filialService.GetAllFilialsListAsycn();
+            return Json(FilialsList);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> FilterFilialsList([FromBody] FilterRequestInputProduct request)
+        {
+            List<Filial> FilialsList = await _filialService.GetFilteredFilialsAsync(request.Input);
+            return Json(FilialsList);
         }
     }
 }

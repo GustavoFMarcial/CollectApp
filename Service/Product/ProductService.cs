@@ -50,6 +50,11 @@ namespace CollectApp.Services
             return await _context.Products.ToListAsync();
         }
 
+        public async Task<List<Product>> GetFilteredProductsAsync(string input)
+        {
+            return await _context.Products.Where(p => p.Description.Contains(input)).ToListAsync();
+        }
+
         public async Task<int> SaveChangesProductsAsync()
         {
             return await _context.SaveChangesAsync();
