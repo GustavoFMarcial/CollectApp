@@ -1,3 +1,4 @@
+using AspNetCoreGeneratedDocument;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
@@ -19,13 +20,7 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> ListProducts()
         {
-            List<Product> products = await _productService.GetAllProductsListAsycn();
-
-            List<ProductListViewModel> plvm = products.Select(p => new ProductListViewModel
-            {
-                Id = p.Id,
-                Description = p.Description
-            }).ToList();
+            List<ProductListViewModel> plvm = await _productService.SetProductListViewModel();
 
             return View(plvm);
         }
@@ -43,12 +38,7 @@ namespace CollectApp.Controllers
                 return View(productCreate);
             }
 
-            Product product = new Product
-            {
-                Description = productCreate.Description,
-            };
-
-            OperationResult result = await _productService.AddProduct(product);
+            OperationResult result = await _productService.CreateProduct(productCreate);
 
             if (!result.Success)
             {
@@ -57,30 +47,12 @@ namespace CollectApp.Controllers
                 return View(productCreate);
             }
 
-            await _productService.SaveChangesProductsAsync();
-
             return RedirectToAction(nameof(ListProducts));
         }
 
         public async Task<IActionResult> EditProduct(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Product? product = await _productService.FindProductAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            EditProductViewModel epvm = new EditProductViewModel
-            {
-                Id = product.Id,
-                Description = product.Description,
-            };
+            EditProductViewModel epvm = await _productService.SetEditProductViewModel(id);
 
             return View(epvm);
         }
@@ -93,13 +65,6 @@ namespace CollectApp.Controllers
                 return View(productEdit);
             }
 
-            Product? product = await _productService.FindProductAsync(productEdit.Id); ;
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
             OperationResult result = await _productService.EditProduct(productEdit);
 
             if (!result.Success)
@@ -109,29 +74,13 @@ namespace CollectApp.Controllers
                 return View(productEdit);
             }
 
-            product.Description = productEdit.Description;
-            await _productService.SaveChangesProductsAsync();
-
             return RedirectToAction(nameof(ListProducts));
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Product? product = await _productService.FindProductAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _productService.DeleteProduct(product);
-            await _productService.SaveChangesProductsAsync();
+            await _productService.DeleteProduct(id);
 
             return RedirectToAction(nameof(ListProducts));
         }
