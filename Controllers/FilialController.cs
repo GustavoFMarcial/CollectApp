@@ -19,13 +19,7 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> ListFilials()
         {
-            List<Filial> filials = await _filialService.GetAllFilialsListAsycn();
-
-            List<FilialListViewModel> flvm = filials.Select(f => new FilialListViewModel
-            {
-                Id = f.Id,
-                Name = f.Name
-            }).ToList();
+            List<FilialListViewModel> flvm = await _filialService.SetFilialListViewModel();
 
             return View(flvm);
         }
@@ -43,12 +37,7 @@ namespace CollectApp.Controllers
                 return View(filialCreate);
             }
 
-            Filial filial = new Filial
-            {
-                Name = filialCreate.Name,
-            };
-
-            OperationResult result = await _filialService.AddFilial(filial);
+            OperationResult result = await _filialService.CreateFilial(filialCreate);
 
             if (!result.Success)
             {
@@ -56,8 +45,6 @@ namespace CollectApp.Controllers
                 ViewBag.ShowModal = true;
                 return View(filialCreate);
             }
-
-            await _filialService.SaveChangesFilialsAsync();
 
             return RedirectToAction(nameof(ListFilials));
         }
@@ -69,18 +56,7 @@ namespace CollectApp.Controllers
                 return NotFound();
             }
 
-            Filial? filial = await _filialService.FindFilialAsync(id);
-
-            if (filial == null)
-            {
-                return NotFound();
-            }
-
-            EditFilialViewModel epvm = new EditFilialViewModel
-            {
-                Id = filial.Id,
-                Name = filial.Name,
-            };
+            EditFilialViewModel epvm = await _filialService.SetEditFilialViewModel(id);
 
             return View(epvm);
         }
@@ -93,13 +69,6 @@ namespace CollectApp.Controllers
                 return View(filialEdit);
             }
 
-            Filial? filial = await _filialService.FindFilialAsync(filialEdit.Id); ;
-
-            if (filial == null)
-            {
-                return NotFound();
-            }
-
             OperationResult result = await _filialService.EditFilial(filialEdit);
 
             if (!result.Success)
@@ -109,29 +78,13 @@ namespace CollectApp.Controllers
                 return View(filialEdit);
             }
 
-            filial.Name = filialEdit.Name;
-            await _filialService.SaveChangesFilialsAsync();
-
             return RedirectToAction(nameof(ListFilials));
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteFilial(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Filial? filial = await _filialService.FindFilialAsync(id);
-
-            if (filial == null)
-            {
-                return NotFound();
-            }
-
-            _filialService.DeleteFilial(filial);
-            await _filialService.SaveChangesFilialsAsync();
+            await _filialService.DeleteFilial(id);
 
             return RedirectToAction(nameof(ListFilials));
         }
