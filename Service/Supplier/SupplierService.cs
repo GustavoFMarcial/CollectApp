@@ -22,7 +22,7 @@ namespace CollectApp.Services
 
         public async Task<List<Supplier>> GetFilteredSuppliersAsync(string input)
         {
-            return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
+            return await _context.Suppliers.Where(s => (s.Name ?? "").Contains(input)).ToListAsync();
         }
 
         public async Task<List<SupplierListViewModel>> SetSupplierListViewModel()

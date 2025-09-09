@@ -108,7 +108,7 @@ namespace CollectApp.Services
 
         public async Task<List<Product>> GetFilteredProductsAsync(string input)
         {
-            return await _context.Products.Where(p => p.Description.Contains(input)).ToListAsync();
+            return await _context.Products.Where(p => (p.Description ?? "").Contains(input)).ToListAsync();
         }
 
         public async Task<int> SaveChangesProductsAsync()
