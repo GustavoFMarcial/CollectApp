@@ -92,6 +92,7 @@ namespace CollectApp.Controllers
         public async Task<IActionResult> GetFilials()
         {
             List<Filial> FilialsList = await _filialService.GetAllFilialsListAsycn();
+            
             return Json(FilialsList);
         }
         
@@ -99,6 +100,7 @@ namespace CollectApp.Controllers
         public async Task<IActionResult> FilterFilialsList([FromBody] FilterRequestInputProduct request)
         {
             List<Filial> FilialsList = await _filialService.GetFilteredFilialsAsync(request.Input);
+
             return Json(FilialsList);
         }
     }

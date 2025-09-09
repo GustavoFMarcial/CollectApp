@@ -88,6 +88,7 @@ namespace CollectApp.Controllers
         public async Task<IActionResult> GetProducts()
         {
             List<Product> ProductsList = await _productService.GetAllProductsListAsycn();
+
             return Json(ProductsList);
         }
         
@@ -95,6 +96,7 @@ namespace CollectApp.Controllers
         public async Task<IActionResult> FilterProductsList([FromBody] FilterRequestInputProduct request)
         {
             List<Product> ProductsList = await _productService.GetFilteredProductsAsync(request.Input);
+            
             return Json(ProductsList);
         }
     }

@@ -1,10 +1,7 @@
-using System.Linq.Expressions;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Differencing;
 
 namespace CollectApp.Controllers
 {
@@ -21,15 +18,7 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> ListSuppliers()
         {
-            List<Supplier> suppliers = await _supplierService.GetAllSuppliersListAsycn();
-
-            List<SupplierListViewModel> slvm = suppliers.Select(s => new SupplierListViewModel
-            {
-                Id = s.Id,
-                Name = s.Name,
-                CNPJ = s.CNPJ,
-                Address = $"Rua {s.Street}, Bairro {s.Neighborhood}, nº {s.Number}, {s.City}/{s.State} - CEP {s.ZipCode}",
-            }).ToList();
+            List<SupplierListViewModel> slvm = await _supplierService.SetSupplierListViewModel();
 
             return View(slvm);
         }
@@ -47,24 +36,7 @@ namespace CollectApp.Controllers
                 return View(supplierCreate);
             }
 
-            if (supplierCreate == null)
-            {
-                return NotFound();
-            }
-
-            Supplier supplier = new Supplier
-            {
-                Name = supplierCreate.Name,
-                CNPJ = supplierCreate.CNPJ,
-                Street = supplierCreate.Street,
-                Neighborhood = supplierCreate.Neighborhood,
-                Number = supplierCreate.Number,
-                City = supplierCreate.City,
-                State = supplierCreate.State,
-                ZipCode = supplierCreate.ZipCode,
-            };
-
-            OperationResult result = await _supplierService.AddSupplier(supplier);
+            OperationResult result = await _supplierService.CreateSupplier(supplierCreate);
 
             if (!result.Success)
             {
@@ -73,37 +45,13 @@ namespace CollectApp.Controllers
                 return View(supplierCreate);
             }
 
-            await _supplierService.SaveChangesSuppliersAsync();
-
             return RedirectToAction(nameof(ListSuppliers));
         }
 
         public async Task<IActionResult> EditSupplier(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            Supplier? supplier = await _supplierService.FindSupplierAsync(id);
-
-            if (supplier == null)
-            {
-                return NotFound();
-            }
-
-            EditSupplierViewModel esvm = new EditSupplierViewModel
-            {
-                Id = supplier.Id,
-                Name = supplier.Name,
-                CNPJ = supplier.CNPJ,
-                Street = supplier.Street,
-                Neighborhood = supplier.Neighborhood,
-                Number = supplier.Number,
-                City = supplier.City,
-                State = supplier.State,
-                ZipCode = supplier.ZipCode,
-            };
+            EditSupplierViewModel esvm = await _supplierService.SetEditSupplierViewModel(id);
 
             return View(esvm);
         }
@@ -116,13 +64,6 @@ namespace CollectApp.Controllers
                 return View(supplierEdit);
             }
 
-            Supplier? supplier = await _supplierService.FindSupplierAsync(supplierEdit.Id);
-
-            if (supplier == null)
-            {
-                return NotFound();
-            }
-
             OperationResult result = await _supplierService.EditSupplier(supplierEdit);
 
             if (!result.Success)
@@ -132,37 +73,13 @@ namespace CollectApp.Controllers
                 return View(supplierEdit);
             }
 
-            supplier.Name = supplierEdit.Name;
-            supplier.CNPJ = supplierEdit.CNPJ;
-            supplier.Street = supplierEdit.Street;
-            supplier.Neighborhood = supplierEdit.Neighborhood;
-            supplier.Number = supplierEdit.Number;
-            supplier.City = supplierEdit.City;
-            supplier.State = supplierEdit.State;
-            supplier.ZipCode = supplierEdit.ZipCode;
-
-            await _supplierService.SaveChangesSuppliersAsync();
-
             return RedirectToAction(nameof(ListSuppliers));
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteSupplier(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Supplier? supplier = await _supplierService.FindSupplierAsync(id);
-
-            if (supplier == null)
-            {
-                return NotFound();
-            }
-
-            _supplierService.DeleteSupplier(supplier);
-            await _supplierService.SaveChangesSuppliersAsync();
+            await _supplierService.DeleteSupplier(id);
 
             return RedirectToAction(nameof(ListSuppliers));
         }
@@ -170,6 +87,7 @@ namespace CollectApp.Controllers
         public async Task<IActionResult> GetSuppliers()
         {
             List<Supplier> SuppliersList = await _supplierService.GetAllSuppliersListAsycn();
+
             return Json(SuppliersList);
         }
 
@@ -177,6 +95,7 @@ namespace CollectApp.Controllers
         public async Task<IActionResult> FilterSuppliersList([FromBody] FilterRequestInputProduct request)
         {
             List<Supplier> SuppliersList = await _supplierService.GetFilteredSuppliersAsync(request.Input);
+
             return Json(SuppliersList);
         }
     }
