@@ -29,7 +29,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var showModal = '@ViewBag.ShowModal' === 'True';
             if (showModal) {
-                var modalElement = document.getElementById('errorCreateProductModal');
+                var modalElement = document.getElementById('ProductModalError');
                 if (modalElement) {
                     var modal = new bootstrap.Modal(modalElement);
                     modal.show();
