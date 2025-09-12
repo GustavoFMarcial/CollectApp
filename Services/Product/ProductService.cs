@@ -1,18 +1,16 @@
-using CollectApp.Data;
 using CollectApp.Models;
+using CollectApp.Repositories;
 using CollectApp.ViewModels;
-using Microsoft.CodeAnalysis.Differencing;
-using Microsoft.EntityFrameworkCore;
 
 namespace CollectApp.Services
 {
     public class ProductService : IProductService
     {
-        private readonly CollectAppContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(CollectAppContext context)
+        public ProductService(IProductRepository productRepository)
         {
-            _context = context;
+            _productRepository = productRepository;
         }
 
         public async Task<OperationResult> CreateProduct(CreateProductViewModel productCreate)
@@ -22,15 +20,14 @@ namespace CollectApp.Services
                 Description = productCreate.Description,
             };
 
-            bool productExist = await _context.Products.AnyAsync(p => p.Description == product.Description && p.Id != product.Id);
+            bool productExist = await _productRepository.AnyProductAsync(productCreate.Description, product.Id);
 
             if (productExist)
             {
                 return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
             }
 
-            _context.Products.Add(product);
-            await SaveChangesProductsAsync();
+            await _productRepository.AddProduct(product);
 
             return OperationResult.Ok();
         }
@@ -43,7 +40,7 @@ namespace CollectApp.Services
                 return NotFound;
             }
 
-            Product? product = await FindProductAsync(id);
+            Product? product = await _productRepository.GetProductByIdAsync(id);
 
             if (product == null)
             {
@@ -62,7 +59,7 @@ namespace CollectApp.Services
 
         public async Task<OperationResult> EditProduct(EditProductViewModel productEdit)
         {
-            Product? product = await FindProductAsync(productEdit.Id); ;
+            Product? product = await _productRepository.GetProductByIdAsync(productEdit.Id); ;
 
             if (product == null)
             {
@@ -70,7 +67,7 @@ namespace CollectApp.Services
                 return NotFound;
             }
 
-            bool productExist = await _context.Products.AnyAsync(p => p.Description == productEdit.Description && p.Id != productEdit.Id);
+            bool productExist = await _productRepository.AnyProductAsync(productEdit.Description, productEdit.Id);
 
             if (productExist)
             {
@@ -78,19 +75,14 @@ namespace CollectApp.Services
             }
 
             product.Description = productEdit.Description;
-            await SaveChangesProductsAsync();
+            await _productRepository.SaveChangesProductAsync();
 
             return OperationResult.Ok();
         }
 
-        public async Task<Product?> FindProductAsync(int? id)
-        {
-            return await _context.Products.FindAsync(id);
-        }
-
         public async Task<List<Product>> GetAllProductsListAsycn()
         {
-            return await _context.Products.ToListAsync();
+            return await _productRepository.ToProductListAsync();
         }
 
         public async Task<List<ProductListViewModel>> SetProductListViewModel()
@@ -108,12 +100,7 @@ namespace CollectApp.Services
 
         public async Task<List<Product>> GetFilteredProductsAsync(string input)
         {
-            return await _context.Products.Where(p => (p.Description ?? "").Contains(input)).ToListAsync();
-        }
-
-        public async Task<int> SaveChangesProductsAsync()
-        {
-            return await _context.SaveChangesAsync();
+            return await _productRepository.WhereProductAsync(input);
         }
 
         public async Task DeleteProduct(int? id)
@@ -123,15 +110,14 @@ namespace CollectApp.Services
                 return;
             }
 
-            Product? product = await FindProductAsync(id);
+            Product? product = await _productRepository.GetProductByIdAsync(id);
 
             if (product == null)
             {
                 return;
             }
 
-            _context.Products.Remove(product);
-            await SaveChangesProductsAsync();
+            await _productRepository.RemoveProduct(product);
         }
     }
 }
