@@ -1,0 +1,53 @@
+using CollectApp.Data;
+using CollectApp.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace CollectApp.Repositories
+{
+    public class SupplierRepository : ISupplierRepository
+    {
+        CollectAppContext _context;
+
+        public SupplierRepository(CollectAppContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<Supplier?> GetSupplierByIdAsync(int? id)
+        {
+            return await _context.Suppliers.FindAsync(id);
+        }
+
+        public async Task<List<Supplier>> ToSupplierListAsync()
+        {
+            return await _context.Suppliers.ToListAsync();
+        }
+
+        public async Task<bool> AnySupplierAsync(string supplierCNPJ, int? supplierId)
+        {
+            return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplierCNPJ && s.Id != supplierId);
+        }
+
+        public async Task<List<Supplier>> WhereSupplierAsync(string input)
+        {
+            return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
+        }
+
+        public async Task AddSupplier(Supplier supplier)
+        {
+            _context.Suppliers.Add(supplier);
+            await SaveChangesSupplierAsync();
+        }
+
+        public async Task RemoveSupplier(Supplier supplier)
+        {
+            _context.Suppliers.Remove(supplier);
+            await SaveChangesSupplierAsync();
+        }
+
+        public async Task SaveChangesSupplierAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+    }
+}

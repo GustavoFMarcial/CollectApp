@@ -5,7 +5,7 @@ namespace CollectApp.Models
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string? CNPJ { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string? Street { get; set; }
         public string? Neighborhood { get; set; }
         public string? Number { get; set; }

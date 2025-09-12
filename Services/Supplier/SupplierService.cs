@@ -1,28 +1,26 @@
-using System.Threading.Tasks;
-using CollectApp.Data;
 using CollectApp.Models;
+using CollectApp.Repositories;
 using CollectApp.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace CollectApp.Services
 {
     public class SupplierService : ISupplierService
     {
-        private readonly CollectAppContext _context;
+        private readonly ISupplierRepository _supplierRepository;
 
-        public SupplierService(CollectAppContext context)
+        public SupplierService(ISupplierRepository supplierRepository)
         {
-            _context = context;
+            _supplierRepository = supplierRepository;
         }
 
         public async Task<List<Supplier>> GetAllSuppliersListAsycn()
         {
-            return await _context.Suppliers.ToListAsync();
+            return await _supplierRepository.ToSupplierListAsync();
         }
 
         public async Task<List<Supplier>> GetFilteredSuppliersAsync(string input)
         {
-            return await _context.Suppliers.Where(s => (s.Name ?? "").Contains(input)).ToListAsync();
+            return await _supplierRepository.WhereSupplierAsync(input);
         }
 
         public async Task<List<SupplierListViewModel>> SetSupplierListViewModel()
@@ -60,15 +58,14 @@ namespace CollectApp.Services
                 ZipCode = supplierCreate.ZipCode,
             };
 
-            bool supplierExist = await _context.Suppliers.AnyAsync(s => s.CNPJ == supplier.CNPJ && s.Id != supplier.Id);
+            bool supplierExist = await _supplierRepository.AnySupplierAsync(supplierCreate.CNPJ, null);
 
             if (supplierExist)
             {
                 return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
             }
 
-            _context.Suppliers.Add(supplier);
-            await SaveChangesSuppliersAsync();
+            await _supplierRepository.AddSupplier(supplier);
 
             return OperationResult.Ok();
         }
@@ -81,7 +78,7 @@ namespace CollectApp.Services
                 return NotFound;
             }
 
-            Supplier? supplier = await FindSupplierAsync(id);
+            Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(id);
 
             if (supplier == null)
             {
@@ -107,7 +104,7 @@ namespace CollectApp.Services
 
         public async Task<OperationResult> EditSupplier(EditSupplierViewModel supplierEdit)
         {
-            Supplier? supplier = await FindSupplierAsync(supplierEdit.Id);
+            Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(supplierEdit.Id);
 
             if (supplier == null)
             {
@@ -115,14 +112,14 @@ namespace CollectApp.Services
                 return NotFound;
             }
 
-            bool supplierExist = await _context.Suppliers.AnyAsync(s => s.CNPJ == supplierEdit.CNPJ && s.Id != supplierEdit.Id);
+            bool supplierExist = await _supplierRepository.AnySupplierAsync(supplierEdit.CNPJ, supplier.Id);
 
             if (supplierExist)
             {
                 return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
             }
 
-             supplier.Name = supplierEdit.Name;
+            supplier.Name = supplierEdit.Name;
             supplier.CNPJ = supplierEdit.CNPJ;
             supplier.Street = supplierEdit.Street;
             supplier.Neighborhood = supplierEdit.Neighborhood;
@@ -130,19 +127,10 @@ namespace CollectApp.Services
             supplier.City = supplierEdit.City;
             supplier.State = supplierEdit.State;
             supplier.ZipCode = supplierEdit.ZipCode;
-            await SaveChangesSuppliersAsync();
+
+            await _supplierRepository.SaveChangesSupplierAsync();
 
             return OperationResult.Ok();
-        }
-
-        public async Task<int> SaveChangesSuppliersAsync()
-        {
-            return await _context.SaveChangesAsync();
-        }
-
-        public async Task<Supplier?> FindSupplierAsync(int? id)
-        {
-            return await _context.Suppliers.FindAsync(id);
         }
 
         public async Task DeleteSupplier(int? id)
@@ -152,15 +140,14 @@ namespace CollectApp.Services
                 return;
             }
 
-            Supplier? supplier = await FindSupplierAsync(id);
+            Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(id);
 
             if (supplier == null)
             {
                 return;
             }
 
-            _context.Suppliers.Remove(supplier);
-            await SaveChangesSuppliersAsync();
+            await _supplierRepository.RemoveSupplier(supplier);
         }
     }
 }
