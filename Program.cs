@@ -11,7 +11,7 @@ builder.Services.AddScoped<ICollectService, CollectService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFilialService, FilialService>();
-builder.Services.AddScoped<ICollectRepository, CollectRepository>();
+builder.Services.AddScoped<IFilialRepository, FilialRepository>();
 builder.Services.AddDbContext<CollectAppContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("CollectAppContext"));

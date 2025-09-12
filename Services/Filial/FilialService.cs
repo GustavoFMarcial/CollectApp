@@ -1,19 +1,16 @@
-using System.Threading.Tasks;
-using CollectApp.Data;
 using CollectApp.Models;
+using CollectApp.Repositories;
 using CollectApp.ViewModels;
-using Microsoft.CodeAnalysis.Differencing;
-using Microsoft.EntityFrameworkCore;
 
 namespace CollectApp.Services
 {
     public class FilialService : IFilialService
     {
-        private readonly CollectAppContext _context;
+        private readonly IFilialRepository _filialRepository;
 
-        public FilialService(CollectAppContext context)
+        public FilialService(IFilialRepository filialRepository)
         {
-            _context = context;
+            _filialRepository = filialRepository;
         }
 
         public async Task<OperationResult> CreateFilial(CreateFilialViewModel filialCreate)
@@ -23,22 +20,21 @@ namespace CollectApp.Services
                 Name = filialCreate.Name,
             };
 
-            bool productExist = await _context.Filials.AnyAsync(f => f.Name == filial.Name && f.Id != filial.Id);
+            bool productExist = await _filialRepository.AnyFilialAsync(filialCreate.Name, filial.Id);
 
             if (productExist)
             {
                 return OperationResult.Fail($"Já existe uma filial cadastrada com o nome fornecido");
             }
 
-            _context.Filials.Add(filial);
-            await SaveChangesFilialsAsync();
+            await _filialRepository.AddFilial(filial);
 
             return OperationResult.Ok();
         }
 
         public async Task<EditFilialViewModel> SetEditFilialViewModel(int? id)
         {
-            Filial? filial = await FindFilialAsync(id);
+            Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
 
             if (filial == null)
             {
@@ -57,7 +53,7 @@ namespace CollectApp.Services
 
         public async Task<OperationResult> EditFilial(EditFilialViewModel filialEdit)
         {
-            Filial? filial = await FindFilialAsync(filialEdit.Id);
+            Filial? filial = await _filialRepository.GetFilialByIdAsync(filialEdit.Id);
 
             if (filial == null)
             {
@@ -65,7 +61,7 @@ namespace CollectApp.Services
                 return NotFound;
             }
 
-            bool filialExist = await _context.Filials.AnyAsync(f => f.Name == filialEdit.Name && f.Id != filialEdit.Id);
+            bool filialExist = await _filialRepository.AnyFilialAsync(filialEdit.Name, filialEdit.Id);
 
             if (filialExist)
             {
@@ -73,29 +69,24 @@ namespace CollectApp.Services
             }
 
             filial.Name = filialEdit.Name;
-            await SaveChangesFilialsAsync();
+            await _filialRepository.SaveChangesFilialAsync();
 
             return OperationResult.Ok();
         }
 
-        public async Task<Filial?> FindFilialAsync(int? id)
-        {
-            return await _context.Filials.FindAsync(id);
-        }
-
         public async Task<List<Filial>> GetAllFilialsListAsycn()
         {
-            return await _context.Filials.ToListAsync();
+            return await _filialRepository.ToFilialListAsync();
         }
 
         public async Task<List<Filial>> GetFilteredFilialsAsync(string input)
         {
-            return await _context.Filials.Where(f => f.Name.Contains(input)).ToListAsync();
+            return await _filialRepository.WhereFilialAsync(input);
         }
 
         public async Task<List<FilialListViewModel>> SetFilialListViewModel()
         {
-            List<Filial> filials = await GetAllFilialsListAsycn();
+            List<Filial> filials = await _filialRepository.ToFilialListAsync();
 
             List<FilialListViewModel> flvm = filials.Select(f => new FilialListViewModel
             {
@@ -106,11 +97,6 @@ namespace CollectApp.Services
             return flvm;
         }
 
-        public async Task<int> SaveChangesFilialsAsync()
-        {
-            return await _context.SaveChangesAsync();
-        }
-
         public async Task DeleteFilial(int? id)
         {
             if (id == null)
@@ -118,15 +104,14 @@ namespace CollectApp.Services
                 return;
             }
 
-            Filial? filial = await FindFilialAsync(id);
+            Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
 
             if (filial == null)
             {
                 return;
             }
 
-            _context.Filials.Remove(filial);
-            await SaveChangesFilialsAsync();
+            await _filialRepository.RemoveFilial(filial);
         }
     }
 }

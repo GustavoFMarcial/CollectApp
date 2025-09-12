@@ -4,6 +4,7 @@ using CollectApp.Models;
 using CollectApp.ViewModels;
 using SQLitePCL;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using CollectApp.Repositories;
 
 namespace CollectApp.Services
 {
@@ -12,15 +13,15 @@ namespace CollectApp.Services
         private readonly CollectAppContext _context;
         private readonly ISupplierService _supplierService;
         private readonly IProductService _productService;
-        private readonly IFilialService _filialService;
+        private readonly IFilialRepository _filialRepository;
         private readonly ILogger<CollectService> _logger;
 
-        public CollectService(CollectAppContext context, ISupplierService supplierService, IProductService productService, IFilialService filialService, ILogger<CollectService> logger)
+        public CollectService(CollectAppContext context, ISupplierService supplierService, IProductService productService, IFilialRepository filialRepository, ILogger<CollectService> logger)
         {
             _context = context;
             _supplierService = supplierService;
             _productService = productService;
-            _filialService = filialService;
+            _filialRepository = filialRepository;
             _logger = logger;
         }
 
@@ -59,7 +60,7 @@ namespace CollectApp.Services
 
             Supplier? supplier = await _supplierService.FindSupplierAsync(collectCreate.SupplierId);
             Product? product = await _productService.FindProductAsync(collectCreate.ProductId);
-            Filial? filial = await _filialService.FindFilialAsync(collectCreate.FilialId);
+            Filial? filial = await _filialRepository.GetFilialByIdAsync(collectCreate.FilialId);
 
             if (supplier == null || product == null || filial == null)
             {
@@ -121,7 +122,7 @@ namespace CollectApp.Services
 
             Supplier? supplier = await _supplierService.FindSupplierAsync(collectEdit.SupplierId);
             Product? product = await _productService.FindProductAsync(collectEdit.ProductId);
-            Filial? filial = await _filialService.FindFilialAsync(collectEdit.FilialId);
+            Filial? filial = await _filialRepository.GetFilialByIdAsync(collectEdit.FilialId);
 
             if (supplier == null || product == null || filial == null)
             {
