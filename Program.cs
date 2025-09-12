@@ -1,4 +1,5 @@
 using CollectApp.Data;
+using CollectApp.Repositories;
 using CollectApp.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ builder.Services.AddScoped<ICollectService, CollectService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFilialService, FilialService>();
+builder.Services.AddScoped<ICollectRepository, CollectRepository>();
 builder.Services.AddDbContext<CollectAppContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("CollectAppContext"));
