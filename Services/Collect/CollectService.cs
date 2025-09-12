@@ -10,15 +10,15 @@ namespace CollectApp.Services
 {
     public class CollectService : ICollectService
     {
-        private readonly CollectAppContext _context;
+        private readonly ICollectRepository _collectRepository;
         private readonly ISupplierRepository _supplierRepository;
         private readonly IProductRepository _productRepository;
         private readonly IFilialRepository _filialRepository;
         private readonly ILogger<CollectService> _logger;
 
-        public CollectService(CollectAppContext context, ISupplierRepository supplierRepository, IProductRepository productRepository, IFilialRepository filialRepository, ILogger<CollectService> logger)
+        public CollectService(ICollectRepository collectRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IFilialRepository filialRepository, ILogger<CollectService> logger)
         {
-            _context = context;
+            _collectRepository = collectRepository;
             _supplierRepository = supplierRepository;
             _productRepository = productRepository;
             _filialRepository = filialRepository;
@@ -27,7 +27,7 @@ namespace CollectApp.Services
 
         public async Task<List<Collect>> GetAllCollectsListAsycn()
         {
-            return await _context.Collects.Include(c => c.Supplier).Include(c => c.Product).Include(c => c.Filial).ToListAsync();
+            return await _collectRepository.ToCollectListAsync();
         }
 
         public async Task<List<CollectListItemViewModel>> SetCollectListItemViewModel()
@@ -79,13 +79,12 @@ namespace CollectApp.Services
                 Filial = filial,
             };
 
-            _context.Collects.Add(collect);
-            await SaveChangesCollectsAsync();
+            await _collectRepository.AddCollect(collect);
         }
 
         public async Task<EditCollectViewModel> SetEditCollectViewModel(int? id)
         {
-            Collect? collect = await FindCollectAsync(id);
+            Collect? collect = await _collectRepository.GetCollectByIdAsync(id);
 
             if (collect == null || collect.Supplier == null || collect.Product == null || collect.Filial == null)
             {
@@ -112,7 +111,7 @@ namespace CollectApp.Services
 
         public async Task EditCollect(EditCollectViewModel collectEdit)
         {
-            Collect? collect = await FindCollectAsync(collectEdit.Id);
+            Collect? collect = await _collectRepository.GetCollectByIdAsync(collectEdit.Id);
 
             if (collect == null)
             {
@@ -138,26 +137,17 @@ namespace CollectApp.Services
             collect.FilialId = filial.Id;
             collect.Filial = filial;
 
-            await SaveChangesCollectsAsync();
-        }
-
-        public async Task<int> SaveChangesCollectsAsync()
-        {
-            return await _context.SaveChangesAsync();
+            await _collectRepository.SaveChangesCollectAsync();
         }
 
         public async Task<Collect?> FindCollectAsync(int? id)
         {
-            return await _context.Collects
-                .Include(c => c.Supplier)
-                .Include(c => c.Product)
-                .Include(c => c.Filial)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            return await _collectRepository.GetCollectByIdAsync(id);
         }
 
         public async Task UpdateCollectStatus(ChangeStatusCollectViewModel changeStatus)
         {
-            Collect? collect = await FindCollectAsync(changeStatus.Id);
+            Collect? collect = await _collectRepository.GetCollectByIdAsync(changeStatus.Id);
 
             if (collect == null)
             {
@@ -170,20 +160,19 @@ namespace CollectApp.Services
             }
 
             collect.Status = changeStatus.Status;
-            await SaveChangesCollectsAsync();
+            await _collectRepository.SaveChangesCollectAsync();
         }
 
         public async Task DeleteCollect(int? id)
         {
-            Collect? collect = await FindCollectAsync(id);
+            Collect? collect = await _collectRepository.GetCollectByIdAsync(id);
 
             if (collect == null)
             {
                 return;
             }
 
-            _context.Collects.Remove(collect);
-            await SaveChangesCollectsAsync();
+            await _collectRepository.RemoveCollect(collect);
         }
     }
 }

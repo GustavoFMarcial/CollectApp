@@ -11,9 +11,10 @@ builder.Services.AddScoped<ICollectService, CollectService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFilialService, FilialService>();
-builder.Services.AddScoped<IFilialRepository, FilialRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICollectRepository, CollectRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IFilialRepository, FilialRepository>();
 builder.Services.AddDbContext<CollectAppContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("CollectAppContext"));

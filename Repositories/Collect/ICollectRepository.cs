@@ -1,16 +1,15 @@
-// using CollectApp.Models;
-// using CollectApp.ViewModels;
+using CollectApp.Models;
 
-// namespace CollectApp.Repositories
-// {
-//     public interface ICollectRepository
-//     {
-//         public Task<List<Collect>> GetAllCollectsListAsycn();
-//         public Task<Collect?> FindCollectAsync(int? id);
-//         public Task AddCollect(CreateCollectViewModel collectCreate);
-//         public Task EditCollect(EditCollectViewModel collectEdit);
-//         public Task<int> SaveChangesCollectsAsync();
-//         public Task UpdateCollectStatus(ChangeStatusCollectViewModel changeStatus);
-//         public Task DeleteCollect(int? id);
-//     }
-// }
+namespace CollectApp.Repositories
+{
+    public interface ICollectRepository
+    {
+        public Task<Collect?> GetCollectByIdAsync(int? id);
+        public Task<List<Collect>> ToCollectListAsync();
+        // public Task<bool> AnyCollectAsync(string productDescription, int? productId);
+        // public Task<List<Collect>> WhereCollectAsync(string input);
+        public Task AddCollect(Collect collect);
+        public Task RemoveCollect(Collect collect);
+        public Task SaveChangesCollectAsync();
+    }
+}

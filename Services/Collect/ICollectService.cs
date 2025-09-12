@@ -12,7 +12,6 @@ namespace CollectApp.Services
         public Task CreateCollect(CreateCollectViewModel collectCreate);
         public Task<EditCollectViewModel> SetEditCollectViewModel(int? id);
         public Task EditCollect(EditCollectViewModel collectEdit);
-        public Task<int> SaveChangesCollectsAsync();
         public Task UpdateCollectStatus(ChangeStatusCollectViewModel changeStatus);
         public Task DeleteCollect(int? id);
     }
