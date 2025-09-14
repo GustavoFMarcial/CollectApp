@@ -7,10 +7,12 @@ namespace CollectApp.Services
     public class SupplierService : ISupplierService
     {
         private readonly ISupplierRepository _supplierRepository;
+        private readonly ICollectRepository _collectRepository;
 
-        public SupplierService(ISupplierRepository supplierRepository)
+        public SupplierService(ISupplierRepository supplierRepository, ICollectRepository collectRepository)
         {
             _supplierRepository = supplierRepository;
+            _collectRepository = collectRepository;
         }
 
         public async Task<List<Supplier>> GetAllSuppliersListAsycn()
@@ -134,22 +136,33 @@ namespace CollectApp.Services
             return OperationResult.Ok();
         }
 
-        public async Task DeleteSupplier(int? id)
+        public async Task<OperationResult> DeleteSupplier(int? id)
         {
             if (id == null)
             {
-                return;
+                OperationResult NotFound = new OperationResult();
+                return NotFound;
             }
 
             Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(id);
 
             if (supplier == null)
             {
-                return;
+                OperationResult NotFound = new OperationResult();
+                return NotFound;
+            }
+
+           bool existSupplierWithCollect = await _collectRepository.AnyCollectAsync("supplier", supplier.Id);
+
+            if (existSupplierWithCollect)
+            {
+                return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a este fornecedor");
             }
 
             _supplierRepository.RemoveSupplier(supplier);
             await _supplierRepository.SaveChangesSupplierAsync();
+
+            return OperationResult.Ok();
         }
     }
 }

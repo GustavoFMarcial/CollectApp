@@ -122,9 +122,9 @@ namespace CollectApp.Services
                 return NotFound;
             }
 
-            bool existFilialWithCollect = await _collectRepository.AnyCollectAsync("product", product.Id);
+            bool existProductWithCollect = await _collectRepository.AnyCollectAsync("product", product.Id);
 
-            if (existFilialWithCollect)
+            if (existProductWithCollect)
             {
                 return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a este produto");
             }

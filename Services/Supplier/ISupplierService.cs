@@ -11,6 +11,6 @@ namespace CollectApp.Services
         public Task<OperationResult> CreateSupplier(CreateSupplierViewModel supplierCreate);
         public Task<EditSupplierViewModel> SetEditSupplierViewModel(int? id);
         public Task<OperationResult> EditSupplier(EditSupplierViewModel supplierEdit);
-        public Task DeleteSupplier(int? id);
+        public Task<OperationResult> DeleteSupplier(int? id);
     }
 }

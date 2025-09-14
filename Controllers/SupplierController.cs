@@ -79,7 +79,14 @@ namespace CollectApp.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteSupplier(int? id)
         {
-            await _supplierService.DeleteSupplier(id);
+            OperationResult result = await _supplierService.DeleteSupplier(id);
+
+            if (!result.Success)
+            {
+                TempData["Message"] = result.Message;
+                TempData["ShowModal"] = true;
+                return RedirectToAction(nameof(ListSuppliers));
+            }
 
             return RedirectToAction(nameof(ListSuppliers));
         }

@@ -2,6 +2,8 @@
 @model IEnumerable<CollectApp.ViewModels.SupplierListViewModel>
 @{
     ViewData["Title"] = "Lista de fornecedores";
+    ViewBag.Message = TempData["Message"];
+    ViewBag.ShowModal = TempData["ShowModal"];
 }
 
 <div class="container">
@@ -40,3 +42,22 @@
         </tbody>  
     </table>
 </div>
+
+@await Html.PartialAsync("_SupplierModalError", ViewBag.Message as string)
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var showModal = '@ViewBag.ShowModal' === 'True';
+            if (showModal) {
+                var modalElement = document.getElementById('SupplierModalError');
+                if (modalElement) {
+                    var modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+        });
+    </script>
+}
