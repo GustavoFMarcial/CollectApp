@@ -23,6 +23,24 @@ namespace CollectApp.Repositories
             return await _context.Collects.Include(c => c.Supplier).Include(c => c.Product).Include(c => c.Filial).ToListAsync();
         }
 
+        public async Task<bool> AnyCollectAsync(string type, int? id)
+        {
+            switch (type)
+            {
+                case "supplier":
+                    return await _context.Collects.AnyAsync(c => c.SupplierId == id);
+
+                case "product":
+                    return await _context.Collects.AnyAsync(c => c.ProductId == id);
+
+                case "filial":
+                    return await _context.Collects.AnyAsync(c => c.FilialId == id);
+
+                default:
+                    return true;
+            }
+        }
+
         public void AddCollect(Collect collect)
         {
             _context.Collects.Add(collect);

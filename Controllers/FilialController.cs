@@ -84,7 +84,14 @@ namespace CollectApp.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteFilial(int? id)
         {
-            await _filialService.DeleteFilial(id);
+            OperationResult result = await _filialService.DeleteFilial(id);
+
+            if (!result.Success)
+            {
+                TempData["Message"] = result.Message;
+                TempData["ShowModal"] = true;
+                return RedirectToAction(nameof(ListFilials));
+            }
 
             return RedirectToAction(nameof(ListFilials));
         }

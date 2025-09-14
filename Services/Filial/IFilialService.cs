@@ -9,7 +9,7 @@ namespace CollectApp.Services
         public Task<List<Filial>> GetFilteredFilialsAsync(string input);
         public Task<List<FilialListViewModel>> SetFilialListViewModel();
         public Task<OperationResult> CreateFilial(CreateFilialViewModel filialCreate);
-        public Task DeleteFilial(int? id);
+        public Task<OperationResult> DeleteFilial(int? id);
         public Task<OperationResult> EditFilial(EditFilialViewModel filialEdit);
         public Task<EditFilialViewModel> SetEditFilialViewModel(int? id);
     }

@@ -7,10 +7,12 @@ namespace CollectApp.Services
     public class FilialService : IFilialService
     {
         private readonly IFilialRepository _filialRepository;
+        private readonly ICollectRepository _collectRepository;
 
-        public FilialService(IFilialRepository filialRepository)
+        public FilialService(IFilialRepository filialRepository, ICollectRepository collectRepository)
         {
             _filialRepository = filialRepository;
+            _collectRepository = collectRepository;
         }
 
         public async Task<OperationResult> CreateFilial(CreateFilialViewModel filialCreate)
@@ -98,22 +100,33 @@ namespace CollectApp.Services
             return flvm;
         }
 
-        public async Task DeleteFilial(int? id)
+        public async Task<OperationResult> DeleteFilial(int? id)
         {
             if (id == null)
             {
-                return;
+                OperationResult NotFound = new OperationResult();
+                return NotFound;
             }
 
             Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
 
             if (filial == null)
             {
-                return;
+                OperationResult NotFound = new OperationResult();
+                return NotFound;
+            }
+
+            bool existFilialWithCollect = await _collectRepository.AnyCollectAsync("filial", filial.Id);
+
+            if (existFilialWithCollect)
+            {
+                return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a esta loja");
             }
 
             _filialRepository.RemoveFilial(filial);
             await _filialRepository.SaveChangesFilialAsync();
+
+            return OperationResult.Ok();
         }
     }
 }
