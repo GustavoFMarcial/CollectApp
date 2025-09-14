@@ -33,16 +33,14 @@ namespace CollectApp.Repositories
             return await _context.Products.Where(p => p.Description.Contains(input)).ToListAsync();
         }
 
-        public async Task AddProduct(Product product)
+        public void AddProduct(Product product)
         {
             _context.Products.Add(product);
-            await SaveChangesProductAsync();
         }
 
-        public async Task RemoveProduct(Product product)
+        public void RemoveProduct(Product product)
         {
             _context.Products.Remove(product);
-            await SaveChangesProductAsync();
         }
 
         public async Task SaveChangesProductAsync()

@@ -27,7 +27,8 @@ namespace CollectApp.Services
                 return OperationResult.Fail($"Já existe uma filial cadastrada com o nome fornecido");
             }
 
-            await _filialRepository.AddFilial(filial);
+            _filialRepository.AddFilial(filial);
+            await _filialRepository.SaveChangesFilialAsync();
 
             return OperationResult.Ok();
         }
@@ -111,7 +112,8 @@ namespace CollectApp.Services
                 return;
             }
 
-            await _filialRepository.RemoveFilial(filial);
+            _filialRepository.RemoveFilial(filial);
+            await _filialRepository.SaveChangesFilialAsync();
         }
     }
 }

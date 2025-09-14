@@ -20,30 +20,17 @@ namespace CollectApp.Repositories
 
         public async Task<List<Collect>> ToCollectListAsync()
         {
-            // return await _context.Collects.ToListAsync();
             return await _context.Collects.Include(c => c.Supplier).Include(c => c.Product).Include(c => c.Filial).ToListAsync();
         }
 
-        // public async Task<bool> AnyProductAsync(string productDescription, int? productId)
-        // {
-        //     return await _context.Products.AnyAsync(p => p.Description == productDescription && p.Id != productId);
-        // }
-
-        // public async Task<List<Product>> WhereProductAsync(string input)
-        // {
-        //     return await _context.Products.Where(p => p.Description.Contains(input)).ToListAsync();
-        // }
-
-        public async Task AddCollect(Collect collect)
+        public void AddCollect(Collect collect)
         {
             _context.Collects.Add(collect);
-            await SaveChangesCollectAsync();
         }
 
-        public async Task RemoveCollect(Collect collect)
+        public void RemoveCollect(Collect collect)
         {
             _context.Collects.Remove(collect);
-            await SaveChangesCollectAsync();
         }
 
         public async Task SaveChangesCollectAsync()

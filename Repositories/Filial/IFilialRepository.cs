@@ -8,8 +8,8 @@ namespace CollectApp.Repositories
         public Task<List<Filial>> ToFilialListAsync();
         public Task<bool> AnyFilialAsync(string filialName, int? filialId);
         public Task<List<Filial>> WhereFilialAsync(string input);
-        public Task AddFilial(Filial filial);
-        public Task RemoveFilial(Filial filial);
+        public void AddFilial(Filial filial);
+        public void RemoveFilial(Filial filial);
         public Task SaveChangesFilialAsync();
     }
 }

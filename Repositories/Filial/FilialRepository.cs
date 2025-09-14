@@ -33,16 +33,14 @@ namespace CollectApp.Repositories
             return await _context.Filials.Where(f => f.Name.Contains(input)).ToListAsync();
         }
 
-        public async Task AddFilial(Filial filial)
+        public void AddFilial(Filial filial)
         {
             _context.Filials.Add(filial);
-            await SaveChangesFilialAsync();
         }
 
-        public async Task RemoveFilial(Filial filial)
+        public void RemoveFilial(Filial filial)
         {
             _context.Filials.Remove(filial);
-            await SaveChangesFilialAsync();
         }
 
         public async Task SaveChangesFilialAsync()

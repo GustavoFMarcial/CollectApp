@@ -33,16 +33,14 @@ namespace CollectApp.Repositories
             return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
         }
 
-        public async Task AddSupplier(Supplier supplier)
+        public void AddSupplier(Supplier supplier)
         {
             _context.Suppliers.Add(supplier);
-            await SaveChangesSupplierAsync();
         }
 
-        public async Task RemoveSupplier(Supplier supplier)
+        public void RemoveSupplier(Supplier supplier)
         {
             _context.Suppliers.Remove(supplier);
-            await SaveChangesSupplierAsync();
         }
 
         public async Task SaveChangesSupplierAsync()

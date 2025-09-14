@@ -8,8 +8,8 @@ namespace CollectApp.Repositories
         public Task<List<Product>> ToProductListAsync();
         public Task<bool> AnyProductAsync(string productDescription, int? productId);
         public Task<List<Product>> WhereProductAsync(string input);
-        public Task AddProduct(Product product);
-        public Task RemoveProduct(Product product);
+        public void AddProduct(Product product);
+        public void RemoveProduct(Product product);
         public Task SaveChangesProductAsync();
     }
 }

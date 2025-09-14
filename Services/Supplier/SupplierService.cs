@@ -65,7 +65,8 @@ namespace CollectApp.Services
                 return OperationResult.Fail("Já existe um fornecedor cadastrado com o CNPJ fornecido");
             }
 
-            await _supplierRepository.AddSupplier(supplier);
+            _supplierRepository.AddSupplier(supplier);
+            await _supplierRepository.SaveChangesSupplierAsync();
 
             return OperationResult.Ok();
         }
@@ -147,7 +148,8 @@ namespace CollectApp.Services
                 return;
             }
 
-            await _supplierRepository.RemoveSupplier(supplier);
+            _supplierRepository.RemoveSupplier(supplier);
+            await _supplierRepository.SaveChangesSupplierAsync();
         }
     }
 }

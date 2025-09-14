@@ -8,8 +8,8 @@ namespace CollectApp.Repositories
         public Task<List<Supplier>> ToSupplierListAsync();
         public Task<bool> AnySupplierAsync(string supplierCNPJ, int? supplierId);
         public Task<List<Supplier>> WhereSupplierAsync(string input);
-        public Task AddSupplier(Supplier product);
-        public Task RemoveSupplier(Supplier product);
+        public void AddSupplier(Supplier product);
+        public void RemoveSupplier(Supplier product);
         public Task SaveChangesSupplierAsync();
     }
 }

@@ -1,9 +1,5 @@
-using CollectApp.Data;
-using Microsoft.EntityFrameworkCore;
 using CollectApp.Models;
 using CollectApp.ViewModels;
-using SQLitePCL;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using CollectApp.Repositories;
 
 namespace CollectApp.Services
@@ -79,7 +75,8 @@ namespace CollectApp.Services
                 Filial = filial,
             };
 
-            await _collectRepository.AddCollect(collect);
+            _collectRepository.AddCollect(collect);
+            await _collectRepository.SaveChangesCollectAsync();
         }
 
         public async Task<EditCollectViewModel> SetEditCollectViewModel(int? id)
@@ -172,7 +169,8 @@ namespace CollectApp.Services
                 return;
             }
 
-            await _collectRepository.RemoveCollect(collect);
+            _collectRepository.RemoveCollect(collect);
+            await _collectRepository.SaveChangesCollectAsync();
         }
     }
 }

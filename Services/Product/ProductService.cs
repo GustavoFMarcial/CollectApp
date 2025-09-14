@@ -27,7 +27,8 @@ namespace CollectApp.Services
                 return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
             }
 
-            await _productRepository.AddProduct(product);
+            _productRepository.AddProduct(product);
+            await _productRepository.SaveChangesProductAsync();
 
             return OperationResult.Ok();
         }
@@ -117,7 +118,8 @@ namespace CollectApp.Services
                 return;
             }
 
-            await _productRepository.RemoveProduct(product);
+            _productRepository.RemoveProduct(product);
+            await _productRepository.SaveChangesProductAsync();
         }
     }
 }
