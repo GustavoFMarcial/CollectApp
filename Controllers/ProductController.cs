@@ -80,7 +80,14 @@ namespace CollectApp.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(int? id)
         {
-            await _productService.DeleteProduct(id);
+            OperationResult result = await _productService.DeleteProduct(id);
+
+            if (!result.Success)
+            {
+                TempData["Message"] = result.Message;
+                TempData["ShowModal"] = true;
+                return RedirectToAction(nameof(ListProducts));
+            }
 
             return RedirectToAction(nameof(ListProducts));
         }

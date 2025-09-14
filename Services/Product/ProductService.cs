@@ -7,10 +7,12 @@ namespace CollectApp.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICollectRepository _collectRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, ICollectRepository collectRepository)
         {
             _productRepository = productRepository;
+            _collectRepository = collectRepository;
         }
 
         public async Task<OperationResult> CreateProduct(CreateProductViewModel productCreate)
@@ -104,22 +106,33 @@ namespace CollectApp.Services
             return await _productRepository.WhereProductAsync(input);
         }
 
-        public async Task DeleteProduct(int? id)
+        public async Task<OperationResult> DeleteProduct(int? id)
         {
             if (id == null)
             {
-                return;
+                OperationResult NotFound = new OperationResult();
+                return NotFound;
             }
 
             Product? product = await _productRepository.GetProductByIdAsync(id);
 
             if (product == null)
             {
-                return;
+                OperationResult NotFound = new OperationResult();
+                return NotFound;
+            }
+
+            bool existFilialWithCollect = await _collectRepository.AnyCollectAsync("product", product.Id);
+
+            if (existFilialWithCollect)
+            {
+                return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a este produto");
             }
 
             _productRepository.RemoveProduct(product);
             await _productRepository.SaveChangesProductAsync();
+
+            return OperationResult.Ok();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace CollectApp.Services
         public Task<List<Product>> GetFilteredProductsAsync(string input);
         public Task<List<ProductListViewModel>> SetProductListViewModel();
         public Task<OperationResult> CreateProduct(CreateProductViewModel productCreate);
-        public Task DeleteProduct(int? id);
+        public Task<OperationResult> DeleteProduct(int? id);
         public Task<EditProductViewModel> SetEditProductViewModel(int? id);
         public Task<OperationResult> EditProduct(EditProductViewModel productEdit);
     }
