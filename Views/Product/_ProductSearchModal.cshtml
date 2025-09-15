@@ -10,15 +10,23 @@
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
-                        <th colspan="3">
-                            <div class="d-flex justify-content-center mt-1 mb-2">
-                                <input type="text" id="searchProductInput" 
-                                       class="form-control" 
-                                       placeholder="Digite para buscar produto..." 
-                                       style="max-width: 300px;">
-                            </div>
-                        </th>
-                    </tr>
+                      <th colspan="3">
+                          <div class="d-flex justify-content-center mt-1 mb-2">
+                              <div class="position-relative" style="max-width: 300px; width: 100%;">
+                                  <input type="text" id="searchProductInput"
+                                        class="form-control pe-5"
+                                        placeholder="Digite para buscar um produto">
+                                        
+                                  <button id="searchProduct"
+                                          type="button" 
+                                          class="p-0 border-0 bg-transparent position-absolute"
+                                          style="top: 50%; right: 10px; transform: translateY(-50%);">
+                                      <img src="~/assets/img/search-icon.svg" alt="Buscar" width="24" height="24">
+                                  </button>
+                              </div>
+                          </div>
+                      </th>
+                  </tr>
                     <tr>
                         <th>Id</th>
                         <th>Produto</th>

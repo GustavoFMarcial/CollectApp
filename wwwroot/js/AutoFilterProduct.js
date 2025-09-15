@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const productsList = document.getElementById("productsList")
     const searchProductsButton = document.getElementById("searchProductsButton");
     const searchProductInput = document.getElementById("searchProductInput");
+    const searchProduct = document.getElementById("searchProduct");
     const modalEl = document.getElementById("searchProductModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
 
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     });
 
-    searchProductInput.addEventListener("input", () => {
+    searchProduct.addEventListener("click", () => {
         if (searchProductInput.value.trim().length == 0) return;
 
         fetch("/Product/FilterProductsList", {

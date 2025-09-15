@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const suppliersList = document.getElementById("suppliersList")
     const searchSuppliersButton = document.getElementById("searchSuppliersButton");
     const searchSupplierInput = document.getElementById("searchSupplierInput");
+    const searchSupplier = document.getElementById("searchSupplier");
     const modalEl = document.getElementById("searchSupplierModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
 
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     });
 
-    searchSupplierInput.addEventListener("input", () => {
+    searchSupplier.addEventListener("click", () => {
         if (searchSupplierInput.value.trim().length == 0) return;
 
         fetch("/Supplier/FilterSuppliersList", {

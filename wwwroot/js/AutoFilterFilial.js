@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const filialsList = document.getElementById("filialsList")
     const searchFilialsButton = document.getElementById("searchFilialsButton");
     const searchFilialInput = document.getElementById("searchFilialInput");
+    const searchFilial = document.getElementById("searchFilial");
     const modalEl = document.getElementById("searchFilialModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
 
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     });
 
-    searchFilialInput.addEventListener("input", () => {
+    searchFilial.addEventListener("click", () => {
         if (searchFilialInput.value.trim().length == 0) return;
 
         fetch("/Filial/FilterFilialsList", {
