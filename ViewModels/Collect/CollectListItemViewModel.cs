@@ -14,7 +14,7 @@ namespace CollectApp.ViewModels
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [DisplayName("Fornecedor")]
-        public string? SupplierName { get; set; } = string.Empty;
+        public string? SupplierName { get; set; }
 
         [DisplayName("Data coleta")]
         [DataType(DataType.Date)]
@@ -22,7 +22,7 @@ namespace CollectApp.ViewModels
         public DateTime CollectAt { get; set; }
 
         [DisplayName("Produto")]
-        public string? ProductDescription { get; set; } = string.Empty;
+        public string? ProductDescription { get; set; }
 
         public int? Volume { get; set; }
 

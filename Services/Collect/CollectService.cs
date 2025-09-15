@@ -34,13 +34,13 @@ namespace CollectApp.Services
             {
                 Id = c.Id,
                 CreatedAt = c.CreatedAt,
-                SupplierName = c.Supplier != null ? c.Supplier.Name : "-",
+                SupplierName = c.Supplier.Name,
                 CollectAt = c.CollectAt,
-                ProductDescription = c.Product != null ? c.Product.Description : "-",
+                ProductDescription = c.Product.Description,
                 Status = c.Status,
                 Volume = c.Volume,
                 Weigth = c.Weigth,
-                Filial = c.Filial != null ? c.Filial.Name : "-",
+                Filial = c.Filial.Name,
                 ChangeStatus = new ChangeStatusCollectViewModel
                 {
                     Id = c.Id,

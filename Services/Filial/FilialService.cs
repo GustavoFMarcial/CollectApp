@@ -48,7 +48,7 @@ namespace CollectApp.Services
             EditFilialViewModel epvm = new EditFilialViewModel
             {
                 Id = filial.Id,
-                Name = filial.Name,
+                Name = filial.Name
             };
 
             return epvm;
@@ -94,7 +94,7 @@ namespace CollectApp.Services
             List<FilialListViewModel> flvm = filials.Select(f => new FilialListViewModel
             {
                 Id = f.Id,
-                Name = f.Name
+                Name = f.Name ?? "",
             }).ToList();
 
             return flvm;

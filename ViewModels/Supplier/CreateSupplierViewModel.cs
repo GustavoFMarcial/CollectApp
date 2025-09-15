@@ -10,11 +10,11 @@ namespace CollectApp.ViewModels
         [DisplayName("Fornecedor")]
         [Required(ErrorMessage = "Campo fornecedor é obrigatório")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Campo fornecedor deve ter no mínimo 3 caracteres")]
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Campo CNPJ é obrigatório")]
         [RegularExpression(@"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$", ErrorMessage = "CNPJ inválido. Formato esperado: 00.000.000/0000-00")]
-        public string? CNPJ { get; set; }
+        public string CNPJ { get; set; } = string.Empty;
 
         [DisplayName("Rua")]
         [Required(ErrorMessage = "Campo rua é obrigatório")]
