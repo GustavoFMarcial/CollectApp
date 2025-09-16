@@ -6,7 +6,7 @@ namespace CollectApp.Repositories
 {
     public class SupplierRepository : ISupplierRepository
     {
-        CollectAppContext _context;
+        private readonly CollectAppContext _context;
 
         public SupplierRepository(CollectAppContext context)
         {

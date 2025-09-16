@@ -6,7 +6,7 @@ namespace CollectApp.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        CollectAppContext _context;
+        private readonly CollectAppContext _context;
 
         public ProductRepository(CollectAppContext context)
         {

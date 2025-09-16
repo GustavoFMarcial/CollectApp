@@ -6,7 +6,7 @@ namespace CollectApp.Repositories
 {
     public class FilialRepository : IFilialRepository
     {
-        CollectAppContext _context;
+        private readonly CollectAppContext _context;
 
         public FilialRepository(CollectAppContext context)
         {
