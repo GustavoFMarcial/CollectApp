@@ -1,5 +1,6 @@
 @using CollectApp.ViewModels
-@model IEnumerable<CollectApp.ViewModels.ProductListViewModel>
+@using Microsoft.AspNetCore.Http.Features
+@model PagedResultViewModel<ProductListViewModel>
 @{
     ViewData["Title"] = "Lista de produtos";
     ViewBag.Message = TempData["Message"];
@@ -13,13 +14,13 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Id)</th>
-                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Description)</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-    @foreach (ProductListViewModel product in Model)
+    @foreach (ProductListViewModel product in Model.Items)
     {
             <tr>
                 <td>@Html.DisplayFor(item => product.Id)</td>
@@ -37,12 +38,25 @@
     }  
         </tbody>      
     </table>
+
+    @await Html.PartialAsync("_ProductPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
 @await Html.PartialAsync("_ProductModalError", ViewBag.Message as string)
 
 @section Scripts 
 {
+    <script>
+        document.addEventListener("click", function(e) {
+            if (e.target.classList.contains("page-button")) {
+                const page = e.target.value;
+                if (parseInt(page) !== @Model.PageNum) {
+                    window.location.href = `/Product/ListProducts?pageNum=${page}`;
+                }
+            }
+        });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         document.addEventListener('DOMContentLoaded', function () {

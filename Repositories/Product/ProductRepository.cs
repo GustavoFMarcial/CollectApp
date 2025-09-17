@@ -18,9 +18,17 @@ namespace CollectApp.Repositories
             return await _context.Products.FindAsync(id);
         }
 
-        public async Task<List<Product>> ToProductListAsync()
+        public async Task<(List<Product> items, int totalCount)> ToProductListAsync(int pageNum = 1, int pageSize = 10)
         {
-            return await _context.Products.ToListAsync();
+            int totalCount = await _context.Products.CountAsync();
+
+            List<Product> items = await _context.Products
+                .OrderBy(p => p.Id)
+                .Skip((pageNum - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<bool> AnyProductAsync(string productDescription, int? productId)

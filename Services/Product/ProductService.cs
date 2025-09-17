@@ -1,3 +1,4 @@
+using Azure;
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
@@ -83,22 +84,29 @@ namespace CollectApp.Services
             return OperationResult.Ok();
         }
 
-        public async Task<List<Product>> GetAllProductsListAsycn()
+        public async Task<(List<Product> items, int totalCount)> GetAllProductsListAsycn(int pageNum = 1, int pageSize = 10)
         {
-            return await _productRepository.ToProductListAsync();
+            return await _productRepository.ToProductListAsync(pageNum);
         }
 
-        public async Task<List<ProductListViewModel>> SetProductListViewModel()
+        public async Task<PagedResultViewModel<ProductListViewModel>> SetPagedResultProductListViewModel(int pageNum = 1, int pageSize = 10)
         {
-            List<Product> products = await GetAllProductsListAsycn();
+            (List<Product> items, int totalCount) products = await GetAllProductsListAsycn(pageNum);
 
-            List<ProductListViewModel> plvm = products.Select(p => new ProductListViewModel
+            List<ProductListViewModel> productListViewModel = products.items.Select(p => new ProductListViewModel
             {
                 Id = p.Id,
                 Description = p.Description
             }).ToList();
 
-            return plvm;
+            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = new PagedResultViewModel<ProductListViewModel>
+            {
+                Items = productListViewModel,
+                TotalPages = (int)Math.Ceiling(products.totalCount / (double)pageSize),
+                PageNum = pageNum,
+            };
+
+            return pagedResultProductListViewModel;
         }
 
         public async Task<List<Product>> GetFilteredProductsAsync(string input)

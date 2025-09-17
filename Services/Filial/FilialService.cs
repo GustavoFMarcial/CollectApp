@@ -91,20 +91,20 @@ namespace CollectApp.Services
         {
             (List<Filial> Items, int TotalCount) filials = await _filialRepository.ToFilialListAsync(pageNum, pageSize);
 
-            List<FilialListViewModel> flvm = filials.Items.Select(f => new FilialListViewModel
+            List<FilialListViewModel> filialListViewModel = filials.Items.Select(f => new FilialListViewModel
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList();
 
-            PagedResultViewModel<FilialListViewModel> prflvm = new PagedResultViewModel<FilialListViewModel>
+            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = new PagedResultViewModel<FilialListViewModel>
             {
-                Items = flvm,
+                Items = filialListViewModel,
                 TotalPages = (int)Math.Ceiling(filials.TotalCount / (double)pageSize),
                 PageNum = pageNum,
             };
 
-            return prflvm;
+            return pagedResultFilialListViewModel;
         }
 
         public async Task<OperationResult> DeleteFilial(int? id)

@@ -1,9 +1,7 @@
-using AspNetCoreGeneratedDocument;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Differencing;
 
 namespace CollectApp.Controllers
 {
@@ -18,11 +16,11 @@ namespace CollectApp.Controllers
             _productService = productService;
         }
 
-        public async Task<IActionResult> ListProducts()
+        public async Task<IActionResult> ListProducts(int pageNum = 1, int pageSize = 10)
         {
-            List<ProductListViewModel> plvm = await _productService.SetProductListViewModel();
+            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel(pageNum, pageSize);
 
-            return View(plvm);
+            return View(pagedResultProductListViewModel);
         }
 
         public IActionResult CreateProduct()
@@ -94,17 +92,17 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> GetProducts()
         {
-            List<Product> ProductsList = await _productService.GetAllProductsListAsycn();
+            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel();
 
-            return Json(ProductsList);
+            return Json(pagedResultProductListViewModel);
         }
         
         [HttpPost]
         public async Task<IActionResult> FilterProductsList([FromBody] FilterRequestInputProduct request)
         {
-            List<Product> ProductsList = await _productService.GetFilteredProductsAsync(request.Input);
+            List<Product> productsList = await _productService.GetFilteredProductsAsync(request.Input);
             
-            return Json(ProductsList);
+            return Json(productsList);
         }
     }
 }

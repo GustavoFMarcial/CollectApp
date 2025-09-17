@@ -19,9 +19,9 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> ListFilials(int pageNum = 1, int pageSize = 10)
         {
-            PagedResultViewModel<FilialListViewModel> flvm = await _filialService.SetPagedResultFilialListViewModel(pageNum, pageSize);
+            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(pageNum, pageSize);
 
-            return View(flvm);
+            return View(pagedResultFilialListViewModel);
         }
 
         public IActionResult CreateFilial()
@@ -98,9 +98,9 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> GetFilials()
         {
-            PagedResultViewModel<FilialListViewModel> FilialsList = await _filialService.SetPagedResultFilialListViewModel();
+            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel();
             
-            return Json(FilialsList);
+            return Json(pagedResultFilialListViewModel);
         }
         
         [HttpPost]

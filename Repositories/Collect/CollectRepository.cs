@@ -15,12 +15,20 @@ namespace CollectApp.Repositories
 
         public async Task<Collect?> GetCollectByIdAsync(int? id)
         {
-            return await _context.Collects.Include(c => c.Supplier).Include(c => c.Product).Include(c => c.Filial).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Collects
+                .Include(c => c.Supplier)
+                .Include(c => c.Product)
+                .Include(c => c.Filial)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<List<Collect>> ToCollectListAsync()
         {
-            return await _context.Collects.Include(c => c.Supplier).Include(c => c.Product).Include(c => c.Filial).ToListAsync();
+            return await _context.Collects
+                .Include(c => c.Supplier)
+                .Include(c => c.Product)
+                .Include(c => c.Filial)
+                .ToListAsync();
         }
 
         public async Task<bool> AnyCollectAsync(string type, int? id)
