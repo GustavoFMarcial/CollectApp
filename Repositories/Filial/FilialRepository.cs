@@ -18,9 +18,17 @@ namespace CollectApp.Repositories
             return await _context.Filials.FindAsync(id);
         }
 
-        public async Task<List<Filial>> ToFilialListAsync()
+        public async Task<(List<Filial> Items, int TotalCount)> ToFilialListAsync(int pageNum = 1, int pageSize = 10)
         {
-            return await _context.Filials.ToListAsync();
+            int totalCount = await _context.Filials.CountAsync();
+
+            List<Filial> items = await _context.Filials
+                .OrderBy(f => f.Id)
+                .Skip((pageNum - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<bool> AnyFilialAsync(string filialName, int? filialId)

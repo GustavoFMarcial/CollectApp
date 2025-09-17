@@ -16,9 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then((filials) => {
-            console.log(filials);
             filialsList.textContent = "";
-            filials.forEach((filial) => {
+            filials.items.forEach((filial) => {
                 var newTableRow = document.createElement("tr");
 
                 var newTableData1 = document.createElement("td");
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((filials) => {
             console.log(filials);
             filialsList.textContent = "";
-            filials.forEach((filial) => {
+            filials.items.forEach((filial) => {
                 var newTableRow = document.createElement("tr");
 
                 var newTableData1 = document.createElement("td");

@@ -77,7 +77,7 @@ namespace CollectApp.Services
             return OperationResult.Ok();
         }
 
-        public async Task<List<Filial>> GetAllFilialsListAsycn()
+        public async Task<(List<Filial>, int)> GetAllFilialsListAsycn()
         {
             return await _filialRepository.ToFilialListAsync();
         }
@@ -87,17 +87,35 @@ namespace CollectApp.Services
             return await _filialRepository.WhereFilialAsync(input);
         }
 
-        public async Task<List<FilialListViewModel>> SetFilialListViewModel()
+        public async Task<PagedResult<FilialListViewModel>> SetFilialListViewModel(int pageNum = 1, int pageSize = 10)
         {
-            List<Filial> filials = await _filialRepository.ToFilialListAsync();
+            // List<Filial> filials = await _filialRepository.ToFilialListAsync();
 
-            List<FilialListViewModel> flvm = filials.Select(f => new FilialListViewModel
+            // List<FilialListViewModel> flvm = filials.Select(f => new FilialListViewModel
+            // {
+            //     Id = f.Id,
+            //     Name = f.Name,
+            // }).ToList();
+
+            // return flvm;
+
+            (List<Filial> Items, int TotalCount) filials = await _filialRepository.ToFilialListAsync(pageNum, pageSize);
+
+            List<FilialListViewModel> flvm = filials.Items.Select(f => new FilialListViewModel
             {
                 Id = f.Id,
-                Name = f.Name ?? "",
+                Name = f.Name,
             }).ToList();
 
-            return flvm;
+            PagedResult<FilialListViewModel> prflvm = new PagedResult<FilialListViewModel>
+            {
+                Items = flvm,
+                TotalCount = filials.TotalCount,
+                PageNum = pageNum,
+                PageSize = pageSize,
+            };
+
+            return prflvm;
         }
 
         public async Task<OperationResult> DeleteFilial(int? id)
