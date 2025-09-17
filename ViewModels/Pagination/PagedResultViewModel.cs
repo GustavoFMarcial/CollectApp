@@ -1,6 +1,6 @@
 namespace CollectApp.ViewModels
 {
-    public class PagedResult<T>
+    public class PagedResultViewModel<T>
     {
         public List<T> Items { get; set; } = new();
         public int TotalCount { get; set; }
