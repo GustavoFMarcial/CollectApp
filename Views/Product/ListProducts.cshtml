@@ -47,15 +47,16 @@
 @section Scripts 
 {
     <script>
-        document.addEventListener("click", function(e) {
+        document.addEventListener("click", function (e) {
             if (e.target.classList.contains("page-button")) {
-                const page = e.target.value;
+                const page = e.target.getAttribute("data-page");
                 if (parseInt(page) !== @Model.PageNum) {
                     window.location.href = `/Product/ListProducts?pageNum=${page}`;
                 }
             }
         });
     </script>
+
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>

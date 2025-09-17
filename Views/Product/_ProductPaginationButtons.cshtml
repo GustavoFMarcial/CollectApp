@@ -5,9 +5,9 @@
     <ul class="pagination justify-content-center">
         @for (int i = 1; i <= Model.TotalPages; i++)
         {
-            var activeClass = i == Model.CurrentPage ? "active" : "";
-            <li class="page-item @activeClass">
-                <button class="page-link page-button" value="@i">@i</button>
+            var isActive = i == Model.CurrentPage ? "active" : "";
+            <li class="page-item @isActive">
+                <a href="javascript:void(0);" class="page-link page-button" data-page="@i">@i</a>
             </li>
         }
     </ul>
