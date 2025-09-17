@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Lista de filiais";
-    int totalPages = (int)Math.Ceiling(Model.TotalCount / (double)Model.PageSize);
 }
 
 <div class="container">
@@ -38,7 +37,7 @@
         </tbody>
     </table>
 
-    @await Html.PartialAsync("_FilialPaginationButtons", new PaginationViewModel { TotalPages = totalPages, CurrentPage = Model.PageNum })
+    @await Html.PartialAsync("_FilialPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
 @section Scripts {
@@ -46,9 +45,8 @@
         document.addEventListener("click", function(e) {
             if (e.target.classList.contains("page-button")) {
                 const page = e.target.value;
-                const pageSize = @Model.PageSize;
                 if (parseInt(page) !== @Model.PageNum) {
-                    window.location.href = `/Filial/ListFilials?pageNum=${page}&pageSize=${pageSize}`;
+                    window.location.href = `/Filial/ListFilials?pageNum=${page}`;
                 }
             }
         });
