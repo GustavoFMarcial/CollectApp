@@ -77,11 +77,6 @@ namespace CollectApp.Services
             return OperationResult.Ok();
         }
 
-        public async Task<(List<Filial>, int)> GetAllFilialsListAsycn()
-        {
-            return await _filialRepository.ToFilialListAsync();
-        }
-
         public async Task<List<Filial>> GetFilteredFilialsAsync(string input)
         {
             return await _filialRepository.WhereFilialAsync(input);
@@ -89,7 +84,7 @@ namespace CollectApp.Services
 
         public async Task<PagedResultViewModel<FilialListViewModel>> SetPagedResultFilialListViewModel(int pageNum = 1, int pageSize = 10)
         {
-            (List<Filial> Items, int TotalCount) filials = await _filialRepository.ToFilialListAsync(pageNum, pageSize);
+            (List<Filial> Items, int TotalCount) filials = await _filialRepository.ToFilialListAsync(pageNum);
 
             List<FilialListViewModel> filialListViewModel = filials.Items.Select(f => new FilialListViewModel
             {

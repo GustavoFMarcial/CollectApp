@@ -66,9 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then((filials) => {
-            console.log(filials);
             filialsList.textContent = "";
-            filials.items.forEach((filial) => {
+            filials.forEach((filial) => {
                 var newTableRow = document.createElement("tr");
 
                 var newTableData1 = document.createElement("td");

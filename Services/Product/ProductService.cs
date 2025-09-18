@@ -84,14 +84,9 @@ namespace CollectApp.Services
             return OperationResult.Ok();
         }
 
-        public async Task<(List<Product> items, int totalCount)> GetAllProductsListAsycn(int pageNum = 1, int pageSize = 10)
-        {
-            return await _productRepository.ToProductListAsync(pageNum);
-        }
-
         public async Task<PagedResultViewModel<ProductListViewModel>> SetPagedResultProductListViewModel(int pageNum = 1, int pageSize = 10)
         {
-            (List<Product> items, int totalCount) products = await GetAllProductsListAsycn(pageNum);
+            (List<Product> items, int totalCount) products = await _productRepository.ToProductListAsync(pageNum);
 
             List<ProductListViewModel> productListViewModel = products.items.Select(p => new ProductListViewModel
             {

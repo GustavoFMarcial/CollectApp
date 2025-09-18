@@ -1,5 +1,5 @@
 @using CollectApp.ViewModels
-@model IEnumerable<CollectApp.ViewModels.SupplierListViewModel>
+@model PagedResultViewModel<SupplierListViewModel>
 @{
     ViewData["Title"] = "Lista de fornecedores";
     ViewBag.Message = TempData["Message"];
@@ -13,15 +13,15 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Id)</th>
-                <th>@Html.DisplayNameFor(model => model.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.CNPJ)</th>
-                <th>@Html.DisplayNameFor(model => model.Address)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].CNPJ)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Address)</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-    @foreach (SupplierListViewModel supplier in Model)
+    @foreach (SupplierListViewModel supplier in Model.Items)
     {
             <tr>
                 <td>@Html.DisplayFor(item => supplier.Id)</td>
@@ -41,12 +41,25 @@
     }      
         </tbody>  
     </table>
+
+    @await Html.PartialAsync("_ProductPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
 @await Html.PartialAsync("_SupplierModalError", ViewBag.Message as string)
 
 @section Scripts 
 {
+    <script>
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("page-button")) {
+                const page = e.target.getAttribute("data-page");
+                if (parseInt(page) !== @Model.PageNum) {
+                    window.location.href = `/Supplier/ListSuppliers?pageNum=${page}`;
+                }
+            }
+        });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         document.addEventListener('DOMContentLoaded', function () {

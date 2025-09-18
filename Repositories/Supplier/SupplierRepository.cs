@@ -1,3 +1,4 @@
+using Azure;
 using CollectApp.Data;
 using CollectApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +19,17 @@ namespace CollectApp.Repositories
             return await _context.Suppliers.FindAsync(id);
         }
 
-        public async Task<List<Supplier>> ToSupplierListAsync()
+        public async Task<(List<Supplier> items, int totalCount)> ToSupplierListAsync(int pageNum = 1, int pageSize = 10)
         {
-            return await _context.Suppliers.ToListAsync();
+            int totalCount = await _context.Suppliers.CountAsync();
+
+            List<Supplier> items = await _context.Suppliers
+                .OrderBy(s => s.Id)
+                .Skip((pageNum - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<bool> AnySupplierAsync(string supplierCNPJ, int? supplierId)

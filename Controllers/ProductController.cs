@@ -16,9 +16,9 @@ namespace CollectApp.Controllers
             _productService = productService;
         }
 
-        public async Task<IActionResult> ListProducts(int pageNum = 1, int pageSize = 10)
+        public async Task<IActionResult> ListProducts(int pageNum = 1)
         {
-            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel(pageNum, pageSize);
+            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel(pageNum);
 
             return View(pagedResultProductListViewModel);
         }

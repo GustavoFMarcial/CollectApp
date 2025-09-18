@@ -17,9 +17,9 @@ namespace CollectApp.Controllers
             _filialService = filialService;
         }
 
-        public async Task<IActionResult> ListFilials(int pageNum = 1, int pageSize = 10)
+        public async Task<IActionResult> ListFilials(int pageNum = 1)
         {
-            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(pageNum, pageSize);
+            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(pageNum);
 
             return View(pagedResultFilialListViewModel);
         }
