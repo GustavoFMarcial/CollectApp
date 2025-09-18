@@ -52,7 +52,7 @@
     <script>
         document.addEventListener("click", function (e) {
             if (e.target.classList.contains("page-button")) {
-                const page = e.target.getAttribute("data-page");
+                const page = e.target.value;
                 if (parseInt(page) !== @Model.PageNum) {
                     window.location.href = `/Supplier/ListSuppliers?pageNum=${page}`;
                 }

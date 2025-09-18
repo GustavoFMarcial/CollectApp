@@ -3,6 +3,8 @@
 
 @{
     ViewData["Title"] = "Lista de filiais";
+    ViewBag.Message = TempData["Message"];
+    ViewBag.ShowModal = TempData["ShowModal"];
 }
 
 <div class="container">
@@ -40,7 +42,8 @@
     @await Html.PartialAsync("_FilialPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
-@section Scripts {
+@section Scripts 
+{
     <script>
         document.addEventListener("click", function(e) {
             if (e.target.classList.contains("page-button")) {
