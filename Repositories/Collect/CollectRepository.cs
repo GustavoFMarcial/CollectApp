@@ -22,13 +22,20 @@ namespace CollectApp.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<Collect>> ToCollectListAsync()
+        public async Task<(List<Collect> items, int totalCount)> ToCollectListAsync(int pageNum = 1, int pageSize = 10)
         {
-            return await _context.Collects
+            int totalCount = await _context.Collects.CountAsync();
+
+            List<Collect> items = await _context.Collects
                 .Include(c => c.Supplier)
                 .Include(c => c.Product)
                 .Include(c => c.Filial)
+                .OrderBy(c => c.Id)
+                .Skip((pageNum - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<bool> AnyCollectAsync(string type, int? id)

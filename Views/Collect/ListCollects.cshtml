@@ -1,5 +1,5 @@
 @using CollectApp.ViewModels
-@model IEnumerable<CollectApp.ViewModels.CollectListItemViewModel>
+@model PagedResultViewModel<CollectListViewModel>
 @{
     ViewData["Title"] = "Lista de coletas";
 }
@@ -11,20 +11,20 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Id)</th>
-                <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
-                <th>@Html.DisplayNameFor(model => model.SupplierName)</th>
-                <th>@Html.DisplayNameFor(model => model.CollectAt)</th>
-                <th>@Html.DisplayNameFor(model => model.ProductDescription)</th>
-                <th>@Html.DisplayNameFor(model => model.Status)</th>
-                <th>@Html.DisplayNameFor(model => model.Volume)</th>
-                <th>@Html.DisplayNameFor(model => model.Weigth)</th>
-                <th>@Html.DisplayNameFor(model => model.Filial)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].CreatedAt)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].SupplierName)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].CollectAt)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].ProductDescription)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Status)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Volume)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Weigth)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].Filial)</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-    @foreach (CollectListItemViewModel collect in Model)
+    @foreach (CollectListViewModel collect in Model.Items)
     {
             <tr>
                 <td>@Html.DisplayFor(item => collect.Id)</td>
@@ -43,4 +43,17 @@
     }   
         </tbody>     
     </table>
+
+    @await Html.PartialAsync("_CollectPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
+
+<script>
+        document.addEventListener("click", function(e) {
+            if (e.target.classList.contains("page-button")) {
+                const page = e.target.value;
+                if (parseInt(page) !== @Model.PageNum) {
+                    window.location.href = `/Collect/ListCollects?pageNum=${page}`;
+                }
+            }
+        });
+</script>

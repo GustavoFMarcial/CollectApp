@@ -11,13 +11,13 @@
         Deseja realmente deletar a filial de id: @Model ?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         <form asp-controller="Filial" asp-action="DeleteFilial" method="post">
             <input name="id" asp-for="@Model" type="hidden" value="@Model">
             <button class="btn btn-danger">
                 Deletar
             </button>
         </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>

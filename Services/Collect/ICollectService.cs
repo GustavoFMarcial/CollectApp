@@ -6,8 +6,8 @@ namespace CollectApp.Services
 {
     public interface ICollectService
     {
-        public Task<List<Collect>> GetAllCollectsListAsycn();
-        public Task<List<CollectListItemViewModel>> SetCollectListItemViewModel();
+        // public Task<List<Collect>> GetAllCollectsListAsycn();
+        public Task<PagedResultViewModel<CollectListViewModel>> SetPagedResultCollectListViewModel(int pageNum = 1, int pageSize = 10);
         public Task<Collect?> FindCollectAsync(int? id);
         public Task CreateCollect(CreateCollectViewModel collectCreate);
         public Task<EditCollectViewModel> SetEditCollectViewModel(int? id);

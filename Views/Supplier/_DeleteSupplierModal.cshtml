@@ -11,13 +11,13 @@
         Deseja realmente deletar o fornecedor de id: @Model ?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         <form asp-controller="Supplier" asp-action="DeleteSupplier" method="post">
             <input name="id" asp-for="@Model" type="hidden" value="@Model">
             <button class="btn btn-danger">
                 Deletar
             </button>
         </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>

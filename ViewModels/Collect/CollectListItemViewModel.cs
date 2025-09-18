@@ -4,7 +4,7 @@ using CollectApp.Models;
 
 namespace CollectApp.ViewModels
 {
-    public class CollectListItemViewModel
+    public class CollectListViewModel
     {
         public int Id { get; set; }
         

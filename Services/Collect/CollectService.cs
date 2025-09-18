@@ -21,16 +21,16 @@ namespace CollectApp.Services
             _logger = logger;
         }
 
-        public async Task<List<Collect>> GetAllCollectsListAsycn()
-        {
-            return await _collectRepository.ToCollectListAsync();
-        }
+        // public async Task<List<Collect>> GetAllCollectsListAsycn()
+        // {
+        //     return await _collectRepository.ToCollectListAsync();
+        // }
 
-        public async Task<List<CollectListItemViewModel>> SetCollectListItemViewModel()
+        public async Task<PagedResultViewModel<CollectListViewModel>> SetPagedResultCollectListViewModel(int pageNum = 1, int pageSize = 10)
         {
-            List<Collect> collects = await GetAllCollectsListAsycn();
+            (List<Collect> items, int totalCount) collects = await _collectRepository.ToCollectListAsync(pageNum);
 
-            List<CollectListItemViewModel> clivm = collects.Select(c => new CollectListItemViewModel
+            List<CollectListViewModel> collectListViewModels = collects.items.Select(c => new CollectListViewModel
             {
                 Id = c.Id,
                 CreatedAt = c.CreatedAt,
@@ -48,7 +48,14 @@ namespace CollectApp.Services
                 }
             }).ToList();
 
-            return clivm;
+            PagedResultViewModel<CollectListViewModel> pagedResultCollectListViewModel = new PagedResultViewModel<CollectListViewModel>
+            {
+                Items = collectListViewModels,
+                TotalPages = (int)Math.Ceiling(collects.totalCount / (double)pageSize),
+                PageNum = pageNum,
+            };
+
+            return pagedResultCollectListViewModel;
         }
 
         public async Task CreateCollect(CreateCollectViewModel collectCreate)
