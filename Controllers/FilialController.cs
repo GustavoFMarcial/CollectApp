@@ -95,9 +95,9 @@ namespace CollectApp.Controllers
             return RedirectToAction(nameof(ListFilials));
         }
 
-        public async Task<IActionResult> GetFilials()
+        public async Task<IActionResult> GetFilials(int pageNum = 1)
         {
-            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel();
+            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(pageNum);
             
             return Json(pagedResultFilialListViewModel);
         }

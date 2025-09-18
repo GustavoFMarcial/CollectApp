@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!inputFilial || !inputFilialId || !filialsList) return;
 
     searchFilialsButton.addEventListener("click", () => {
-        fetch("/Filial/GetFilials")
+        fetch("/Filial/GetFilials?json=true")
         .then((response) => {
             return response.json();
         })

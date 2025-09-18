@@ -90,9 +90,9 @@ namespace CollectApp.Controllers
             return RedirectToAction(nameof(ListProducts));
         }
 
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts(int pageNum = 1)
         {
-            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel();
+            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel(pageNum);
 
             return Json(pagedResultProductListViewModel);
         }

@@ -91,9 +91,9 @@ namespace CollectApp.Controllers
             return RedirectToAction(nameof(ListSuppliers));
         }
 
-        public async Task<IActionResult> GetSuppliers()
+        public async Task<IActionResult> GetSuppliers(int pageNum = 1)
         {
-            PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel();
+            PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(pageNum);
 
             return Json(pagedResultSupplierListViewModel);
         }
