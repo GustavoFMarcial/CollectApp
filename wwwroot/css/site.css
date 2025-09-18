@@ -118,35 +118,3 @@ input.form-control:focus {
   outline: 0;
   box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
 }
-
-.table-container {
-    position: relative;
-}
-
-.pagination-wrapper {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    padding: 10px;
-    z-index: 5;
-}
-
-.pagination .page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
-}
-
-.pagination .page-link {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-    color: #495057;
-}
-
-.pagination .page-item:not(.active):hover .page-link {
-    background-color: #e9ecef;
-}
-
-.pagination .page-link:focus {
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
-}
