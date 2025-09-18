@@ -42,7 +42,7 @@
         </tbody>  
     </table>
 
-    @await Html.PartialAsync("_ProductPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
+    @await Html.PartialAsync("_SupplierPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
 @await Html.PartialAsync("_SupplierModalError", ViewBag.Message as string)
