@@ -1,8 +1,5 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using CollectApp.Attributes;
-using CollectApp.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CollectApp.ViewModels
 {

@@ -1,7 +1,5 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using CollectApp.Attributes;
-using CollectApp.Models;
 
 namespace CollectApp.ViewModels
 {

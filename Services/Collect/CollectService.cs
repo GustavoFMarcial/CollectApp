@@ -21,11 +21,6 @@ namespace CollectApp.Services
             _logger = logger;
         }
 
-        // public async Task<List<Collect>> GetAllCollectsListAsycn()
-        // {
-        //     return await _collectRepository.ToCollectListAsync();
-        // }
-
         public async Task<PagedResultViewModel<CollectListViewModel>> SetPagedResultCollectListViewModel(int pageNum = 1, int pageSize = 10)
         {
             (List<Collect> items, int totalCount) collects = await _collectRepository.ToCollectListAsync(pageNum);

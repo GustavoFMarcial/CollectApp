@@ -1,4 +1,3 @@
-using Azure;
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;

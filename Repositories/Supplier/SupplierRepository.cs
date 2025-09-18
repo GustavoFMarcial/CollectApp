@@ -1,4 +1,3 @@
-using Azure;
 using CollectApp.Data;
 using CollectApp.Models;
 using Microsoft.EntityFrameworkCore;
