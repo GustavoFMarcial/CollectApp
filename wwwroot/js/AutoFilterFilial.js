@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!inputFilial || !inputFilialId || !filialsList) return;
 
-    // 🔹 Função para criar linha da tabela
     function createFilialRow(filial) {
         const row = document.createElement("tr");
 
@@ -61,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return li;
     }
 
-    // 🔹 Função para renderizar lista
     function renderFilials(filials) {
         filialsList.textContent = "";
         filials.items.forEach(f => filialsList.appendChild(createFilialRow(f)));
@@ -74,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 🔹 Função de fetch reutilizável
     async function fetchFilials(url, options = {}) {
         const response = await fetch(url, options);
         if (!response.ok) {
@@ -84,17 +81,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
     }
 
-    // 🔹 Buscar todos
     searchFilialsButton.addEventListener("click", async () => {
         const filials = await fetchFilials("/Filial/ListFilialsJson");
         renderFilials(filials);
         renderPaginationButtons(filials);
     });
 
-    // 🔹 Buscar filtrados
     searchFilial.addEventListener("click", async () => {
         const input = searchFilialInput.value.trim();
-        // if (!input) return;
 
         const filials = await fetchFilials("/Filial/FilterFilialsListJson", {
             method: "POST",
@@ -104,11 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderFilials(filials);
         renderPaginationButtons(filials);
     });
-
-    // buttonsPagination.forEach(b => b.addEventListener("click", async (e) => {
-    //     console.log(e.target.value);
-    //     console.log(e.target.textContent);
-    // }))
 
     ulButtonsPagination.addEventListener("click", async (e) => {
         const input = searchFilialInput.value.trim();
@@ -128,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
-    // 🔹 Selecionar filial
     filialsList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectFilial");
         if (button) {
