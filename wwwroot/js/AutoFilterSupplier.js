@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!inputSupplier || !inputSupplierId || !suppliersList) return;
 
     searchSuppliersButton.addEventListener("click", () => {
-        fetch("/Supplier/GetSuppliers")
+        fetch("/Supplier/ListSuppliersJson")
         .then((response) => {
             return response.json();
         })
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     searchSupplier.addEventListener("click", () => {
         if (searchSupplierInput.value.trim().length == 0) return;
 
-        fetch("/Supplier/FilterSuppliersList", {
+        fetch("/Supplier/FilterSuppliersListJson", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -23,6 +23,21 @@ namespace CollectApp.Controllers
             return View(pagedResultFilialListViewModel);
         }
 
+        public async Task<IActionResult> ListFilialsJson(int pageNum = 1)
+        {
+            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(pageNum);
+            
+            return Json(pagedResultFilialListViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FilterFilialsListJson([FromBody] FilterRequestInput request)
+        {
+            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(request.PageNum, request.PageSize, request.Input);
+
+            return Json(pagedResultFilialListViewModel);
+        }
+
         public IActionResult CreateFilial()
         {
             return View();
@@ -93,21 +108,6 @@ namespace CollectApp.Controllers
             }
 
             return RedirectToAction(nameof(ListFilials));
-        }
-
-        public async Task<IActionResult> GetFilials(int pageNum = 1)
-        {
-            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(pageNum);
-            
-            return Json(pagedResultFilialListViewModel);
-        }
-        
-        [HttpPost]
-        public async Task<IActionResult> FilterFilialsList([FromBody] FilterRequestInputProduct request)
-        {
-            List<Filial> FilialsList = await _filialService.GetFilteredFilialsAsync(request.Input);
-
-            return Json(FilialsList);
         }
     }
 }

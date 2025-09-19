@@ -23,6 +23,13 @@ namespace CollectApp.Controllers
             return View(pagedResultProductListViewModel);
         }
 
+        public async Task<IActionResult> ListProductsJson(int pageNum = 1)
+        {
+            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel(pageNum);
+
+            return Json(pagedResultProductListViewModel);
+        }
+
         public IActionResult CreateProduct()
         {
             return View();
@@ -89,16 +96,9 @@ namespace CollectApp.Controllers
 
             return RedirectToAction(nameof(ListProducts));
         }
-
-        public async Task<IActionResult> GetProducts(int pageNum = 1)
-        {
-            PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel(pageNum);
-
-            return Json(pagedResultProductListViewModel);
-        }
         
         [HttpPost]
-        public async Task<IActionResult> FilterProductsList([FromBody] FilterRequestInputProduct request)
+        public async Task<IActionResult> FilterProductsListJson([FromBody] FilterRequestInput request)
         {
             List<Product> productsList = await _productService.GetFilteredProductsAsync(request.Input);
             

@@ -1,113 +1,140 @@
 document.addEventListener("DOMContentLoaded", () => {
     const inputFilial = document.getElementById("Filial");
     const inputFilialId = document.getElementById("FilialId");
-    const filialsList = document.getElementById("filialsList")
+    const filialsList = document.getElementById("filialsList");
     const searchFilialsButton = document.getElementById("searchFilialsButton");
     const searchFilialInput = document.getElementById("searchFilialInput");
     const searchFilial = document.getElementById("searchFilial");
     const modalEl = document.getElementById("searchFilialModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    const ulButtonsPagination = document.getElementById("filialButtonsPagination");
+    const buttonsPagination = document.querySelectorAll(".page-button");
 
     if (!inputFilial || !inputFilialId || !filialsList) return;
 
-    searchFilialsButton.addEventListener("click", () => {
-        fetch("/Filial/GetFilials?json=true")
-        .then((response) => {
-            return response.json();
-        })
-        .then((filials) => {
-            filialsList.textContent = "";
-            filials.items.forEach((filial) => {
-                var newTableRow = document.createElement("tr");
+    // 🔹 Função para criar linha da tabela
+    function createFilialRow(filial) {
+        const row = document.createElement("tr");
 
-                var newTableData1 = document.createElement("td");
-                var newTableData2 = document.createElement("td");
-                var newTableData3 = document.createElement("td");
+        const tdId = document.createElement("td");
+        tdId.textContent = filial.id;
 
-                var newButton = document.createElement("button");
+        const tdName = document.createElement("td");
+        tdName.textContent = filial.name;
 
-                var newCheckImg = document.createElement("img");
+        const tdAction = document.createElement("td");
+        tdAction.classList.add("text-end");
 
-                newCheckImg.src = "/assets/img/check-icon.svg";
-                newCheckImg.alt = "Check icon";
-                newCheckImg.width = 24;
-                newCheckImg.height = 24;
+        const button = document.createElement("button");
+        button.className = "buttonSelectFilial p-0 border-0 bg-transparent";
+        button.dataset.id = filial.id;
+        button.dataset.name = filial.name;
 
-                newButton.appendChild(newCheckImg);
-                newButton.className = "buttonSelectFilial p-0 border-0 bg-transparent";
-                newButton.dataset.id = filial.id;
-                newButton.dataset.name = filial.name;
+        const img = document.createElement("img");
+        img.src = "/assets/img/check-icon.svg";
+        img.alt = "Check icon";
+        img.width = 24;
+        img.height = 24;
 
-                newTableData1.textContent = filial.id;
-                newTableData2.textContent = filial.name;
-                newTableData3.appendChild(newButton);
-                newTableData3.classList.add("text-end");
+        button.appendChild(img);
+        tdAction.appendChild(button);
 
-                newTableRow.appendChild(newTableData1);
-                newTableRow.appendChild(newTableData2);
-                newTableRow.appendChild(newTableData3);
+        row.appendChild(tdId);
+        row.appendChild(tdName);
+        row.appendChild(tdAction);
 
-                filialsList.appendChild(newTableRow);
-            })
-        })
+        return row;
+    }
+
+    function createPaginationButton(i, pageNum) {
+        const button = document.createElement("button");
+        button.className = "page-link page-button";
+        button.value = i;
+        button.textContent = i;
+        // var activeClass = i == pageNum ? "custom-active" : "";
+        // button.classList.add(activeClass);
+
+        const li = document.createElement("li");
+        li.classList.add("page-item")
+        li.appendChild(button);
+
+        return li;
+    }
+
+    // 🔹 Função para renderizar lista
+    function renderFilials(filials) {
+        filialsList.textContent = "";
+        filials.items.forEach(f => filialsList.appendChild(createFilialRow(f)));
+    }
+
+    function renderPaginationButtons(totalPages) {
+        ulButtonsPagination.textContent = "";
+        for (var i = 1; i <= totalPages.totalPages; i++){
+            ulButtonsPagination.appendChild(createPaginationButton(i, totalPages.pageNum));
+        }
+    }
+
+    // 🔹 Função de fetch reutilizável
+    async function fetchFilials(url, options = {}) {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            console.error("Erro ao buscar filiais:", response.statusText);
+            return { items: [] };
+        }
+        return response.json();
+    }
+
+    // 🔹 Buscar todos
+    searchFilialsButton.addEventListener("click", async () => {
+        const filials = await fetchFilials("/Filial/ListFilialsJson");
+        renderFilials(filials);
+        renderPaginationButtons(filials);
     });
 
-    searchFilial.addEventListener("click", () => {
-        if (searchFilialInput.value.trim().length == 0) return;
+    // 🔹 Buscar filtrados
+    searchFilial.addEventListener("click", async () => {
+        const input = searchFilialInput.value.trim();
+        // if (!input) return;
 
-        fetch("/Filial/FilterFilialsList", {
+        const filials = await fetchFilials("/Filial/FilterFilialsListJson", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ input: searchFilialInput.value })
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((filials) => {
-            filialsList.textContent = "";
-            filials.forEach((filial) => {
-                var newTableRow = document.createElement("tr");
-
-                var newTableData1 = document.createElement("td");
-                var newTableData2 = document.createElement("td");
-                var newTableData3 = document.createElement("td");
-
-                var newButton = document.createElement("button");
-
-                var newCheckImg = document.createElement("img");
-
-                newCheckImg.src = "/assets/img/check-icon.svg";
-                newCheckImg.alt = "Check icon";
-                newCheckImg.width = 24;
-                newCheckImg.height = 24;
-
-                newButton.appendChild(newCheckImg);
-                newButton.className = "buttonSelectFilial p-0 border-0 bg-transparent";
-                newButton.dataset.id = filial.id;
-                newButton.dataset.name = filial.name;
-
-                newTableData1.textContent = filial.id;
-                newTableData2.textContent = filial.name;
-                newTableData3.appendChild(newButton);
-                newTableData3.classList.add("text-end");
-
-                newTableRow.appendChild(newTableData1);
-                newTableRow.appendChild(newTableData2);
-                newTableRow.appendChild(newTableData3);
-
-                filialsList.appendChild(newTableRow);
-            })
-        })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ input })
+        });
+        renderFilials(filials);
+        renderPaginationButtons(filials);
     });
 
+    // buttonsPagination.forEach(b => b.addEventListener("click", async (e) => {
+    //     console.log(e.target.value);
+    //     console.log(e.target.textContent);
+    // }))
+
+    ulButtonsPagination.addEventListener("click", async (e) => {
+        const input = searchFilialInput.value.trim();
+        const pageNum = e.target.value;
+
+        if (e.target.classList == "page-link page-button"){
+            console.log(e.target.value);
+            console.log(e.target.textContent);
+
+            const filials = await fetchFilials("/Filial/FilterFilialsListJson", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ input, pageNum })
+            });
+            renderFilials(filials);
+            renderPaginationButtons(filials)
+        }
+    })
+
+    // 🔹 Selecionar filial
     filialsList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectFilial");
-        if (button){
+        if (button) {
             inputFilial.value = button.dataset.name;
             inputFilialId.value = button.dataset.id;
             modal.hide();
         }
     });
-})
+});
