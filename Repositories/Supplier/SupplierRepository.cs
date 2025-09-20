@@ -23,7 +23,7 @@ namespace CollectApp.Repositories
         {
             IQueryable<Supplier> query = _context.Suppliers.AsQueryable();
 
-            if (!string.IsNullOrEmpty(input))
+            if (!string.IsNullOrWhiteSpace(input))
             {
                 query = query
                     .Where(s => s.Name.Contains(input));
@@ -44,11 +44,6 @@ namespace CollectApp.Repositories
         {
             return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplierCNPJ && s.Id != supplierId);
         }
-
-        // public async Task<List<Supplier>> WhereSupplierAsync(string input)
-        // {
-        //     return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
-        // }
 
         public void AddSupplier(Supplier supplier)
         {

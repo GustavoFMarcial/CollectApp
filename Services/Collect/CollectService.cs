@@ -118,7 +118,7 @@ namespace CollectApp.Services
             }
 
             Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(collectEdit.SupplierId);
-            Product? product = await _productRepository.GetProductByIdAsync(collect.ProductId);
+            Product? product = await _productRepository.GetProductByIdAsync(collectEdit.ProductId);
             Filial? filial = await _filialRepository.GetFilialByIdAsync(collectEdit.FilialId);
 
             if (supplier == null || product == null || filial == null)

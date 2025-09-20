@@ -22,7 +22,7 @@ namespace CollectApp.Repositories
         {
             IQueryable<Product> query = _context.Products.AsQueryable();
 
-            if (!string.IsNullOrEmpty(input))
+            if (!string.IsNullOrWhiteSpace(input))
             {
                 query = query
                     .Where(p => p.Description.Contains(input));
