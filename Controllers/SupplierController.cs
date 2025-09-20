@@ -23,6 +23,14 @@ namespace CollectApp.Controllers
             return View(pagedResultSupplierListViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ListSuppliersJson([FromBody] FilterRequestInput request)
+        {
+            PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(request.PageNum, request.PageSize, request.Input);
+
+            return Json(pagedResultSupplierListViewModel);
+        }
+
         public IActionResult CreateSupplier()
         {
             return View();
@@ -96,14 +104,6 @@ namespace CollectApp.Controllers
             PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(pageNum);
 
             return Json(pagedResultSupplierListViewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> FilterSuppliersListJson([FromBody] FilterRequestInput request)
-        {
-            List<Supplier> SuppliersList = await _supplierService.GetFilteredSuppliersAsync(request.Input);
-
-            return Json(SuppliersList);
         }
     }
 }

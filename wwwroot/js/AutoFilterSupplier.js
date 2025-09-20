@@ -1,113 +1,135 @@
 document.addEventListener("DOMContentLoaded", () => {
     const inputSupplier = document.getElementById("Supplier");
     const inputSupplierId = document.getElementById("SupplierId");
-    const suppliersList = document.getElementById("suppliersList")
+    const suppliersList = document.getElementById("suppliersList");
     const searchSuppliersButton = document.getElementById("searchSuppliersButton");
     const searchSupplierInput = document.getElementById("searchSupplierInput");
     const searchSupplier = document.getElementById("searchSupplier");
     const modalEl = document.getElementById("searchSupplierModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    const ulButtonsPagination = document.getElementById("supplierButtonsPagination");
 
     if (!inputSupplier || !inputSupplierId || !suppliersList) return;
 
-    searchSuppliersButton.addEventListener("click", () => {
-        fetch("/Supplier/ListSuppliersJson")
-        .then((response) => {
-            return response.json();
-        })
-        .then((suppliers) => {
-            suppliersList.textContent = "";
-            suppliers.items.forEach((supplier) => {
-                var newTableRow = document.createElement("tr");
+    function createSupplierRow(supplier) {
+        const row = document.createElement("tr");
 
-                var newTableData1 = document.createElement("td");
-                var newTableData2 = document.createElement("td");
-                var newTableData3 = document.createElement("td");
+        const tdId = document.createElement("td");
+        tdId.textContent = supplier.id;
 
-                var newButton = document.createElement("button");
+        const tdName = document.createElement("td");
+        tdName.textContent = supplier.name;
 
-                var newCheckImg = document.createElement("img");
+        const tdAction = document.createElement("td");
+        tdAction.classList.add("text-end");
 
-                newCheckImg.src = "/assets/img/check-icon.svg";
-                newCheckImg.alt = "Check icon";
-                newCheckImg.width = 24;
-                newCheckImg.height = 24;
+        const button = document.createElement("button");
+        button.className = "buttonSelectSupplier p-0 border-0 bg-transparent";
+        button.dataset.id = supplier.id;
+        button.dataset.name = supplier.name;
 
-                newButton.appendChild(newCheckImg);
-                newButton.className = "buttonSelectSupplier p-0 border-0 bg-transparent";
-                newButton.dataset.id = supplier.id;
-                newButton.dataset.name = supplier.name;
+        const img = document.createElement("img");
+        img.src = "/assets/img/check-icon.svg";
+        img.alt = "Check icon";
+        img.width = 24;
+        img.height = 24;
 
-                newTableData1.textContent = supplier.id;
-                newTableData2.textContent = supplier.name;
-                newTableData3.appendChild(newButton);
-                newTableData3.classList.add("text-end");
+        button.appendChild(img);
+        tdAction.appendChild(button);
 
-                newTableRow.appendChild(newTableData1);
-                newTableRow.appendChild(newTableData2);
-                newTableRow.appendChild(newTableData3);
+        row.appendChild(tdId);
+        row.appendChild(tdName);
+        row.appendChild(tdAction);
 
-                suppliersList.appendChild(newTableRow);
-            })
-        })
+        return row;
+    }
+
+    function createPaginationButton(i, pageNum) {
+        const button = document.createElement("button");
+        button.classList.add("page-link", "page-button");
+
+        if (i === pageNum) {
+        button.classList.add("custom-active");
+        }
+        
+        button.value = i;
+        button.textContent = i;
+
+        const li = document.createElement("li");
+        li.classList.add("page-item")
+        li.appendChild(button);
+
+        return li;
+    }
+
+    function renderSuppliers(suppliers) {
+        suppliersList.textContent = "";
+        (suppliers.items ?? suppliers).forEach(s => {
+            suppliersList.appendChild(createSupplierRow(s));
+        });
+    }
+
+    function renderPaginationButtons(totalPages) {
+        ulButtonsPagination.textContent = "";
+        for (var i = 1; i <= totalPages.totalPages; i++){
+            ulButtonsPagination.appendChild(createPaginationButton(i, totalPages.pageNum));
+        }
+    }
+
+    async function fetchSuppliers(url, options = {}) {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            console.error("Erro ao buscar fornecedores:", response.statusText);
+            return { items: [] };
+        }
+        return response.json();
+    }
+
+    searchSuppliersButton.addEventListener("click", async () => {
+        const input = searchSupplierInput.value.trim();
+
+        const suppliers = await fetchSuppliers("/Supplier/ListSuppliersJson", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ input })
+        });
+        renderSuppliers(suppliers);
+        renderPaginationButtons(suppliers);
     });
 
-    searchSupplier.addEventListener("click", () => {
-        if (searchSupplierInput.value.trim().length == 0) return;
+    searchSupplier.addEventListener("click", async () => {
+        const input = searchSupplierInput.value.trim();
 
-        fetch("/Supplier/FilterSuppliersListJson", {
+        const suppliers = await fetchSuppliers("/Supplier/ListSuppliersJson", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ input: searchSupplierInput.value })
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((suppliers) => {
-            suppliersList.textContent = "";
-            suppliers.forEach((supplier) => {
-                var newTableRow = document.createElement("tr");
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ input })
+        });
+        renderSuppliers(suppliers);
+        renderPaginationButtons(suppliers);
+    });
 
-                var newTableData1 = document.createElement("td");
-                var newTableData2 = document.createElement("td");
-                var newTableData3 = document.createElement("td");
+    ulButtonsPagination.addEventListener("click", async (e) => {
+        const input = searchSupplierInput.value.trim();
+        const pageNum = e.target.value;
 
-                var newButton = document.createElement("button");
-
-                var newCheckImg = document.createElement("img");
-
-                newCheckImg.src = "/assets/img/check-icon.svg";
-                newCheckImg.alt = "Check icon";
-                newCheckImg.width = 24;
-                newCheckImg.height = 24;
-
-                newButton.appendChild(newCheckImg);
-                newButton.className = "buttonSelectSupplier p-0 border-0 bg-transparent";
-                newButton.dataset.id = supplier.id;
-                newButton.dataset.name = supplier.name;
-
-                newTableData1.textContent = supplier.id;
-                newTableData2.textContent = supplier.name;
-                newTableData3.appendChild(newButton);
-                newTableData3.classList.add("text-end");
-
-                newTableRow.appendChild(newTableData1);
-                newTableRow.appendChild(newTableData2);
-                newTableRow.appendChild(newTableData3);
-
-                suppliersList.appendChild(newTableRow);
-            })
-        })
+        if (e.target.classList == "page-link page-button"){
+            const suppliers = await fetchSuppliers("/Supplier/ListSuppliersJson", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ input, pageNum })
+            });
+            renderSuppliers(suppliers);
+            renderPaginationButtons(suppliers)
+        }
     });
 
     suppliersList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectSupplier");
-        if (button){
+        if (button) {
             inputSupplier.value = button.dataset.name;
             inputSupplierId.value = button.dataset.id;
             modal.hide();
         }
     });
-})
+});

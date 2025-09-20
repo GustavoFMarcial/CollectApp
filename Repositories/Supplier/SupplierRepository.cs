@@ -1,6 +1,7 @@
 using CollectApp.Data;
 using CollectApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 namespace CollectApp.Repositories
 {
@@ -18,11 +19,19 @@ namespace CollectApp.Repositories
             return await _context.Suppliers.FindAsync(id);
         }
 
-        public async Task<(List<Supplier> items, int totalCount)> ToSupplierListAsync(int pageNum = 1, int pageSize = 10)
+        public async Task<(List<Supplier> items, int totalCount)> ToSupplierListAsync(int pageNum = 1, int pageSize = 10, string? input = null)
         {
-            int totalCount = await _context.Suppliers.CountAsync();
+            IQueryable<Supplier> query = _context.Suppliers.AsQueryable();
 
-            List<Supplier> items = await _context.Suppliers
+            if (!string.IsNullOrEmpty(input))
+            {
+                query = query
+                    .Where(s => s.Name.Contains(input));
+            }
+
+            int totalCount = await query.CountAsync();
+
+            List<Supplier> items = await query
                 .OrderBy(s => s.Id)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
@@ -36,10 +45,10 @@ namespace CollectApp.Repositories
             return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplierCNPJ && s.Id != supplierId);
         }
 
-        public async Task<List<Supplier>> WhereSupplierAsync(string input)
-        {
-            return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
-        }
+        // public async Task<List<Supplier>> WhereSupplierAsync(string input)
+        // {
+        //     return await _context.Suppliers.Where(s => s.Name.Contains(input)).ToListAsync();
+        // }
 
         public void AddSupplier(Supplier supplier)
         {

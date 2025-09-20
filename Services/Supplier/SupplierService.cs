@@ -15,14 +15,14 @@ namespace CollectApp.Services
             _collectRepository = collectRepository;
         }
 
-        public async Task<List<Supplier>> GetFilteredSuppliersAsync(string input)
-        {
-            return await _supplierRepository.WhereSupplierAsync(input);
-        }
+        // public async Task<List<Supplier>> GetFilteredSuppliersAsync(string input)
+        // {
+        //     return await _supplierRepository.WhereSupplierAsync(input);
+        // }
 
-        public async Task<PagedResultViewModel<SupplierListViewModel>> SetPagedResultSupplierListViewModel(int pageNum = 1, int pageSize = 10)
+        public async Task<PagedResultViewModel<SupplierListViewModel>> SetPagedResultSupplierListViewModel(int pageNum = 1, int pageSize = 10, string? input = null)
         {
-            (List<Supplier> items, int totalCount) suppliers = await _supplierRepository.ToSupplierListAsync(pageNum);
+            (List<Supplier> items, int totalCount) suppliers = await _supplierRepository.ToSupplierListAsync(pageNum, pageSize, input);
 
             List<SupplierListViewModel> supplierListViewModel = suppliers.items.Select(s => new SupplierListViewModel
             {
