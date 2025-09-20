@@ -83,9 +83,9 @@ namespace CollectApp.Services
             return OperationResult.Ok();
         }
 
-        public async Task<PagedResultViewModel<ProductListViewModel>> SetPagedResultProductListViewModel(int pageNum = 1, int pageSize = 10)
+        public async Task<PagedResultViewModel<ProductListViewModel>> SetPagedResultProductListViewModel(int pageNum = 1, int pageSize = 10, string? input = null)
         {
-            (List<Product> items, int totalCount) products = await _productRepository.ToProductListAsync(pageNum);
+            (List<Product> items, int totalCount) products = await _productRepository.ToProductListAsync(pageNum, pageSize, input);
 
             List<ProductListViewModel> productListViewModel = products.items.Select(p => new ProductListViewModel
             {
@@ -101,11 +101,6 @@ namespace CollectApp.Services
             };
 
             return pagedResultProductListViewModel;
-        }
-
-        public async Task<List<Product>> GetFilteredProductsAsync(string input)
-        {
-            return await _productRepository.WhereProductAsync(input);
         }
 
         public async Task<OperationResult> DeleteProduct(int? id)

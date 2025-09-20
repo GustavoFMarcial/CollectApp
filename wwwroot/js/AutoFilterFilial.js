@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalEl = document.getElementById("searchFilialModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
     const ulButtonsPagination = document.getElementById("filialButtonsPagination");
-    const buttonsPagination = document.querySelectorAll(".page-button");
 
     if (!inputFilial || !inputFilialId || !filialsList) return;
 
@@ -65,7 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderFilials(filials) {
         filialsList.textContent = "";
-        filials.items.forEach(f => filialsList.appendChild(createFilialRow(f)));
+        (filials.items ?? filials).forEach(f => {
+            filialsList.appendChild(createFilialRow(f));
+        });
     }
 
     function renderPaginationButtons(totalPages) {
@@ -121,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
             renderFilials(filials);
             renderPaginationButtons(filials)
         }
-    })
+    });
 
     filialsList.addEventListener("click", (e) => {
         const button = e.target.closest(".buttonSelectFilial");
