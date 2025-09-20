@@ -47,11 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function createPaginationButton(i, pageNum) {
         const button = document.createElement("button");
-        button.className = "page-link page-button";
+        button.classList.add("page-link", "page-button");
+
+        if (i === pageNum) {
+        button.classList.add("custom-active");
+        }
+        
         button.value = i;
         button.textContent = i;
-        // var activeClass = i == pageNum ? "custom-active" : "";
-        // button.classList.add(activeClass);
 
         const li = document.createElement("li");
         li.classList.add("page-item")
@@ -82,7 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     searchFilialsButton.addEventListener("click", async () => {
-        const filials = await fetchFilials("/Filial/ListFilialsJson");
+        const input = searchFilialInput.value.trim();
+
+        const filials = await fetchFilials("/Filial/ListFilialsJson", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ input })
+        });
         renderFilials(filials);
         renderPaginationButtons(filials);
     });
@@ -90,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     searchFilial.addEventListener("click", async () => {
         const input = searchFilialInput.value.trim();
 
-        const filials = await fetchFilials("/Filial/FilterFilialsListJson", {
+        const filials = await fetchFilials("/Filial/ListFilialsJson", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ input })
@@ -104,13 +113,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const pageNum = e.target.value;
 
         if (e.target.classList == "page-link page-button"){
-            console.log(e.target.value);
-            console.log(e.target.textContent);
-
-            const filials = await fetchFilials("/Filial/FilterFilialsListJson", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ input, pageNum })
+            const filials = await fetchFilials("/Filial/ListFilialsJson", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ input, pageNum })
             });
             renderFilials(filials);
             renderPaginationButtons(filials)

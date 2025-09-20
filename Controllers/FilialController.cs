@@ -23,15 +23,8 @@ namespace CollectApp.Controllers
             return View(pagedResultFilialListViewModel);
         }
 
-        public async Task<IActionResult> ListFilialsJson(int pageNum = 1)
-        {
-            PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(pageNum);
-            
-            return Json(pagedResultFilialListViewModel);
-        }
-
         [HttpPost]
-        public async Task<IActionResult> FilterFilialsListJson([FromBody] FilterRequestInput request)
+        public async Task<IActionResult> ListFilialsJson([FromBody] FilterRequestInput request)
         {
             PagedResultViewModel<FilialListViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(request.PageNum, request.PageSize, request.Input);
 
