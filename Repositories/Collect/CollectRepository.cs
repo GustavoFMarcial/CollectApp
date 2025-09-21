@@ -40,20 +40,13 @@ namespace CollectApp.Repositories
 
         public async Task<bool> AnyCollectAsync(string type, int? id)
         {
-            switch (type)
+            return type switch
             {
-                case "supplier":
-                    return await _context.Collects.AnyAsync(c => c.SupplierId == id);
-
-                case "product":
-                    return await _context.Collects.AnyAsync(c => c.ProductId == id);
-
-                case "filial":
-                    return await _context.Collects.AnyAsync(c => c.FilialId == id);
-
-                default:
-                    return true;
-            }
+                "supplier" => await _context.Collects.AnyAsync(c => c.SupplierId == id),
+                "product" => await _context.Collects.AnyAsync(c => c.ProductId == id),
+                "filial" => await _context.Collects.AnyAsync(c => c.FilialId == id),
+                _ => true,
+            };
         }
 
         public void AddCollect(Collect collect)

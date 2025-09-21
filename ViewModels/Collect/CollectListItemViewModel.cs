@@ -31,8 +31,8 @@ namespace CollectApp.ViewModels
         [DisplayName("Loja")]
         public string? Filial { get; set; }
 
-        public string? Status { get; set; } = "A coletar";
+        public string Status { get; set; } = string.Empty;
 
-         public ChangeStatusCollectViewModel ChangeStatus { get; set; } = new();
+        public ChangeStatusCollectViewModel ChangeStatus { get; set; } = new();
     }
 }
