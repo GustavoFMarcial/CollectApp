@@ -10,7 +10,6 @@ namespace CollectApp.Models
         [Display(Name = "Pendente coletar")]
         PendenteColetar,
 
-        [Display(Name = "Coletado")]
         Coletado,
     }
 }
