@@ -39,7 +39,7 @@ namespace CollectApp.Services
                 ChangeStatus = new ChangeStatusCollectViewModel
                 {
                     Id = c.Id,
-                    Status = c.Status
+                    // Status = c.Status
                 }
             }).ToList();
 
@@ -153,12 +153,17 @@ namespace CollectApp.Services
                 return;
             }
 
-            if (changeStatus.Status == null)
+            switch (collect.Status)
             {
-                return;
+                case "Pendente aprovação":
+                    collect.Status = "Pendente coleta";
+                    break;
+
+                case "Pendente coleta":
+                    collect.Status = "Coletado";
+                    break;
             }
 
-            collect.Status = changeStatus.Status;
             await _collectRepository.SaveChangesCollectAsync();
         }
 

@@ -93,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ input })
         });
-        console.log(products);
         renderProducts(products);
         renderPaginationButtons(products);
     });
@@ -106,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ input })
         });
-        console.log(products);
         renderProducts(products);
         renderPaginationButtons(products);
     });
@@ -121,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ input, pageNum })
             });
-            console.log(products);
             renderProducts(products);
             renderPaginationButtons(products)
         }
