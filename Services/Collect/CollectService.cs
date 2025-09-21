@@ -155,8 +155,8 @@ namespace CollectApp.Services
 
             collect.Status = collect.Status switch
             {
-                "Pendente aprovação" => "Pendente coleta",
-                "Pendente coleta" => "Coletado",
+                CollectStatus.PendenteAprovar => CollectStatus.PendenteColetar,
+                CollectStatus.PendenteColetar => CollectStatus.Coletado,
                 _ => collect.Status,
             };
 

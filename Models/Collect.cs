@@ -13,6 +13,6 @@ namespace CollectApp.Models
         public int? Weigth { get; set; }
         public int FilialId { get; set; }
         public Filial Filial { get; set; } = null!;
-        public string Status { get; set; } = "Pendente aprovação";
+        public CollectStatus Status { get; set; } = CollectStatus.PendenteAprovar;
     }
 }

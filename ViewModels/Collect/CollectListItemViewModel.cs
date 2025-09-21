@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using CollectApp.Models;
 
 namespace CollectApp.ViewModels
 {
@@ -31,7 +32,7 @@ namespace CollectApp.ViewModels
         [DisplayName("Loja")]
         public string? Filial { get; set; }
 
-        public string Status { get; set; } = string.Empty;
+        public CollectStatus Status { get; set; }
 
         public ChangeStatusCollectViewModel ChangeStatus { get; set; } = new();
     }
