@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CollectApp.Controllers;
 

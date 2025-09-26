@@ -1,12 +1,13 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using CollectApp.Models;
 
 namespace CollectApp.Data
 {
-    public class CollectAppContext : DbContext
+    public class CollectAppContext : IdentityDbContext
     {
         public CollectAppContext(DbContextOptions<CollectAppContext> options) : base(options)
-        { }
+        {}
 
         public DbSet<Collect> Collects { get; set; } = default!;
         public DbSet<Supplier> Suppliers { get; set; } = default!;
