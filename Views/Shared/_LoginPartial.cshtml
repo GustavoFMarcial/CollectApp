@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -20,10 +21,10 @@
     </ul>
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index"title="Manage">@User.FindFirst("FullName")?.Value</a>
+            <span class="nav-link text-dark">@User.FindFirst("FullName")?.Value</span>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index"title="Manage">(@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)</a>
+            <span class="nav-link text-dark">(@User.FindFirst(ClaimTypes.Role)?.Value)</span>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
