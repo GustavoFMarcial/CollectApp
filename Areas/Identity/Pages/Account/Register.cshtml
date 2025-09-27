@@ -12,6 +12,11 @@
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
             <div class="form-floating mb-3">
+                <input asp-for="Input.FullName" class="form-control" placeholder="Nome completo" autocomplete="fullname" aria-required="true" />
+                <label asp-for="Input.FullName">Usuário</label>
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
                 <input asp-for="Input.Username" class="form-control" placeholder="Usuário" autocomplete="username" aria-required="true" />
                 <label asp-for="Input.Username">Usuário</label>
                 <span asp-validation-for="Input.Username" class="text-danger"></span>

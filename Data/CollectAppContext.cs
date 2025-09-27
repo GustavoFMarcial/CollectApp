@@ -4,7 +4,7 @@ using CollectApp.Models;
 
 namespace CollectApp.Data
 {
-    public class CollectAppContext : IdentityDbContext
+    public class CollectAppContext : IdentityDbContext<ApplicationUser>
     {
         public CollectAppContext(DbContextOptions<CollectAppContext> options) : base(options)
         {}
