@@ -70,6 +70,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                await _userManager.AddToRoleAsync(user, "Admin");
 
                 if (result.Succeeded)
                 {
