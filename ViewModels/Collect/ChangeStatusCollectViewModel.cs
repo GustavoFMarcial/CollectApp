@@ -9,5 +9,7 @@ namespace CollectApp.ViewModels
         public int Id { get; set; }
 
         public CollectStatus Status { get; set; }
+
+        public bool ToOpen { get; set; } = false;
     }
 }

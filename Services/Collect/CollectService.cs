@@ -153,12 +153,19 @@ namespace CollectApp.Services
                 return;
             }
 
-            collect.Status = collect.Status switch
+            if (changeStatus.ToOpen)
             {
-                CollectStatus.PendenteAprovar => CollectStatus.PendenteColetar,
-                CollectStatus.PendenteColetar => CollectStatus.Coletado,
-                _ => collect.Status,
-            };
+                collect.Status = CollectStatus.PendenteAprovar;
+            }
+            else
+            {
+                collect.Status = collect.Status switch
+                {
+                    CollectStatus.PendenteAprovar => CollectStatus.PendenteColetar,
+                    CollectStatus.PendenteColetar => CollectStatus.Coletado,
+                    _ => collect.Status,
+                };   
+            }
 
             await _collectRepository.SaveChangesCollectAsync();
         }

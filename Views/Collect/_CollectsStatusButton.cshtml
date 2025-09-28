@@ -14,17 +14,19 @@
     @if (Model.Status.CanEdit())
     {
         <form asp-controller="Collect" method="post">
-            <a asp-action="EditCollect" asp-route-id="@Model.Id" class="">
+            <a asp-action="EditCollect" asp-route-id="@Model.Id">
                 <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
             </a>
         </form>
     }
     @if (Model.Status.CanOpen())
     {
-        <form asp-controller="Collect" method="post">
-            <a asp-action="EditCollect" asp-route-id="@Model.Id" class="">
-                <img src="~/assets/img/padlock-icon.svg" alt="Edit button" width="24" height="24" />
-            </a>
+        <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
+            <input asp-for="Id" type="hidden" value="@Model.Id">
+            <input asp-for="ToOpen" type="hidden" value="true">
+            <button class="p-0 border-0 bg-transparent">
+                <img src="~/assets/img/padlock-icon.svg" alt="Open button" width="24" height="24" />
+            </button>
         </form>
     }
     @if (Model.Status.CanDelete())

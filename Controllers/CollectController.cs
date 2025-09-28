@@ -73,7 +73,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,Status")] ChangeStatusCollectViewModel changeStatus)
+    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,ToOpen")] ChangeStatusCollectViewModel changeStatus)
     {
         if (!ModelState.IsValid)
         {
