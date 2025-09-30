@@ -212,6 +212,7 @@ namespace CollectApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: false),
                     CollectAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
@@ -223,6 +224,12 @@ namespace CollectApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Collects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Collects_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Collects_Filials_FilialId",
                         column: x => x.FilialId,
@@ -296,6 +303,11 @@ namespace CollectApp.Migrations
                 name: "IX_Collects_SupplierId",
                 table: "Collects",
                 column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Collects_UserId",
+                table: "Collects",
+                column: "UserId");
         }
 
         /// <inheritdoc />

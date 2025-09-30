@@ -1,6 +1,7 @@
 using CollectApp.Models;
 using CollectApp.ViewModels;
 using CollectApp.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace CollectApp.Services
 {
@@ -10,14 +11,16 @@ namespace CollectApp.Services
         private readonly ISupplierRepository _supplierRepository;
         private readonly IProductRepository _productRepository;
         private readonly IFilialRepository _filialRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<CollectService> _logger;
 
-        public CollectService(ICollectRepository collectRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IFilialRepository filialRepository, ILogger<CollectService> logger)
+        public CollectService(ICollectRepository collectRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IFilialRepository filialRepository, UserManager<ApplicationUser> userManager, ILogger<CollectService> logger)
         {
             _collectRepository = collectRepository;
             _supplierRepository = supplierRepository;
             _productRepository = productRepository;
             _filialRepository = filialRepository;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -29,6 +32,7 @@ namespace CollectApp.Services
             {
                 Id = c.Id,
                 CreatedAt = c.CreatedAt,
+                UserName = c.User.FullName,
                 SupplierName = c.Supplier.Name,
                 CollectAt = c.CollectAt,
                 ProductDescription = c.Product.Description,
@@ -53,19 +57,22 @@ namespace CollectApp.Services
             return pagedResultCollectListViewModel;
         }
 
-        public async Task CreateCollect(CreateCollectViewModel collectCreate)
+        public async Task CreateCollect(CreateCollectViewModel collectCreate, string userId)
         {
             Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(collectCreate.SupplierId);
             Product? product = await _productRepository.GetProductByIdAsync(collectCreate.ProductId);
             Filial? filial = await _filialRepository.GetFilialByIdAsync(collectCreate.FilialId);
+            ApplicationUser? user = await _userManager.FindByIdAsync(userId);
 
-            if (supplier == null || product == null || filial == null)
+            if (user == null || supplier == null || product == null || filial == null)
             {
                 return;
             }
 
             Collect collect = new Collect
             {
+                UserId = user.Id,
+                User = user,
                 SupplierId = supplier.Id,
                 Supplier = supplier,
                 CollectAt = collectCreate.CollectAt,

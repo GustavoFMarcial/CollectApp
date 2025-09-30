@@ -3,6 +3,8 @@ using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 namespace CollectApp.Controllers;
 
@@ -10,11 +12,13 @@ public class CollectController : Controller
 {
     private readonly ILogger<CollectController> _logger;
     private readonly ICollectService _collectService;
+    private readonly ICurrentUserService _userService;
 
-    public CollectController(ILogger<CollectController> logger, ICollectService collectService)
+    public CollectController(ILogger<CollectController> logger, ICollectService collectService, IHttpContextAccessor httpContextAccessor, ICurrentUserService userService)
     {
         _logger = logger;
         _collectService = collectService;
+        _userService = userService;
     }
 
     public async Task<IActionResult> ListCollects(int pageNum = 1)
@@ -42,7 +46,7 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        await _collectService.CreateCollect(collectCreate);
+        await _collectService.CreateCollect(collectCreate, _userService.UserId);
 
         return RedirectToAction(nameof(ListCollects));
     }

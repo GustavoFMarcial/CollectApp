@@ -13,6 +13,7 @@
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Items[0].Id)</th>
                 <th>@Html.DisplayNameFor(model => model.Items[0].CreatedAt)</th>
+                <th>@Html.DisplayNameFor(model => model.Items[0].UserName)</th>
                 <th>@Html.DisplayNameFor(model => model.Items[0].SupplierName)</th>
                 <th>@Html.DisplayNameFor(model => model.Items[0].CollectAt)</th>
                 <th>@Html.DisplayNameFor(model => model.Items[0].ProductDescription)</th>
@@ -29,6 +30,7 @@
             <tr>
                 <td>@Html.DisplayFor(item => collect.Id)</td>
                 <td>@Html.DisplayFor(item => collect.CreatedAt)</td>
+                <td>@Html.DisplayFor(item => collect.UserName)</td>
                 <td>@Html.DisplayFor(item => collect.SupplierName)</td>
                 <td>@Html.DisplayFor(item => collect.CollectAt)</td>
                 <td>@Html.DisplayFor(Item => collect.ProductDescription)</td>

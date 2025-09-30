@@ -4,6 +4,8 @@ namespace CollectApp.Models
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string UserId { get; set; } = string.Empty;
+        public ApplicationUser User { get; set; } = null!;
         public int SupplierId { get; set; }
         public Supplier Supplier { get; set; } = null!;
         public DateTime CollectAt { get; set; }

@@ -19,6 +19,7 @@ namespace CollectApp.Repositories
                 .Include(c => c.Supplier)
                 .Include(c => c.Product)
                 .Include(c => c.Filial)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -30,6 +31,7 @@ namespace CollectApp.Repositories
                 .Include(c => c.Supplier)
                 .Include(c => c.Product)
                 .Include(c => c.Filial)
+                .Include(c => c.User)
                 .OrderBy(c => c.Id)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)

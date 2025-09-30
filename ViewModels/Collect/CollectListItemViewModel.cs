@@ -13,6 +13,9 @@ namespace CollectApp.ViewModels
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        [DisplayName("Usuário")]
+        public string? UserName { get; set; }
+
         [DisplayName("Fornecedor")]
         public string? SupplierName { get; set; }
 
