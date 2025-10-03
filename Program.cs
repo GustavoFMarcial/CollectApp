@@ -23,7 +23,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IFilialRepository, FilialRepository>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
-builder.Services.AddScoped<IAuthorizationHandler, MustBeCollectOwnerHanlder>();
+builder.Services.AddScoped<IAuthorizationHandler, MustBeCollectOwnerHandler>();
 
 var connectionString = builder.Configuration.GetConnectionString("CollectAppContext") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<CollectAppContext>(options =>

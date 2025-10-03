@@ -5,26 +5,21 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CollectApp.Authorization.Handlers
 {
-    public class MustBeCollectOwnerHanlder : AuthorizationHandler<MustBeCollectOwnerRequirement>
+    public class MustBeCollectOwnerHandler : AuthorizationHandler<MustBeCollectOwnerRequirement>
     {
-        private readonly ICollectRepository _collectRepository;
-
-        public MustBeCollectOwnerHanlder(ICollectRepository collectRepository)
-        {
-            _collectRepository = collectRepository;
-        }
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MustBeCollectOwnerRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MustBeCollectOwnerRequirement requirement)
         {
             string? currentUserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(currentUserId))
             {
-                return;
+                return Task.CompletedTask;;
             }
 
             if (context.User.IsInRole("Admin"))
             {
                 context.Succeed(requirement);
+                return Task.CompletedTask;
             }
 
             string? collectUserId = GetCollectUserIdFromResource(context.Resource);
@@ -34,6 +29,7 @@ namespace CollectApp.Authorization.Handlers
                 context.Succeed(requirement);
             }
 
+            return Task.CompletedTask;
         }
 
         private static string? GetCollectUserIdFromResource(object? resource)
