@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using CollectApp.Models;
 
+
 namespace CollectApp.ViewModels
 {
-    public class ChangeStatusCollectViewModel
+    public class ChangeCollectViewModel
     {
         [Required]
         public int Id { get; set; }
@@ -11,5 +12,7 @@ namespace CollectApp.ViewModels
         public CollectStatus Status { get; set; }
 
         public bool ToOpen { get; set; } = false;
+
+        public string UserId { get; set; } = string.Empty;
     }
 }

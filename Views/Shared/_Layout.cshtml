@@ -1,8 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="@tokens.RequestToken" />
     <title>@ViewData["Title"] - ColetasApp</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />

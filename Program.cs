@@ -1,7 +1,9 @@
+using CollectApp.Authorization.Requirements;
 using CollectApp.Data;
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.Services;
+using CollectApp.Authorization.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +23,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IFilialRepository, FilialRepository>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+builder.Services.AddScoped<IAuthorizationHandler, MustBeCollectOwnerHanlder>();
 
 var connectionString = builder.Configuration.GetConnectionString("CollectAppContext") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<CollectAppContext>(options =>
@@ -50,8 +53,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CanChangeCollectStatus", policy =>
         policy.RequireRole("Gestor", "Admin"));
 
-    options.AddPolicy("CanChangeCollect", policy =>
-        policy.RequireRole("Admin"));
+    options.AddPolicy("MustBeCollectOwner", policy =>
+        policy.Requirements.Add(new MustBeCollectOwnerRequirement()));
 });
 
 builder.Services.Configure<IdentityOptions>(options =>

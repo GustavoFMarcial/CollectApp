@@ -32,6 +32,7 @@ namespace CollectApp.Services
             {
                 Id = c.Id,
                 CreatedAt = c.CreatedAt,
+                UserId = c.User.Id,
                 UserName = c.User.FullName,
                 SupplierName = c.Supplier.Name,
                 CollectAt = c.CollectAt,
@@ -40,10 +41,16 @@ namespace CollectApp.Services
                 Volume = c.Volume,
                 Weigth = c.Weigth,
                 Filial = c.Filial.Name,
-                ChangeStatus = new ChangeStatusCollectViewModel
+                ChangeStatus = new ChangeCollectStatusViewModel
                 {
                     Id = c.Id,
                     Status = c.Status,
+                },
+                ChangeCollect = new ChangeCollectViewModel
+                {
+                    Id = c.Id,
+                    Status = c.Status,
+                    UserId = c.User.Id,
                 }
             }).ToList();
 
@@ -151,16 +158,16 @@ namespace CollectApp.Services
             return await _collectRepository.GetCollectByIdAsync(id);
         }
 
-        public async Task UpdateCollectStatus(ChangeStatusCollectViewModel changeStatus)
+        public async Task UpdateCollectStatus(ChangeCollectViewModel changeCollect)
         {
-            Collect? collect = await _collectRepository.GetCollectByIdAsync(changeStatus.Id);
+            Collect? collect = await _collectRepository.GetCollectByIdAsync(changeCollect.Id);
 
             if (collect == null)
             {
                 return;
             }
 
-            if (changeStatus.ToOpen)
+            if (changeCollect.ToOpen)
             {
                 collect.Status = CollectStatus.PendenteAprovar;
             }

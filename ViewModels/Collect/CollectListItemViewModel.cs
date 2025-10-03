@@ -7,11 +7,13 @@ namespace CollectApp.ViewModels
     public class CollectListViewModel
     {
         public int Id { get; set; }
-        
+
         [DisplayName("Criação coleta")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public string UserId { get; set; } = string.Empty;
 
         [DisplayName("Usuário")]
         public string? UserName { get; set; }
@@ -37,6 +39,8 @@ namespace CollectApp.ViewModels
 
         public CollectStatus Status { get; set; }
 
-        public ChangeStatusCollectViewModel ChangeStatus { get; set; } = new();
+        public ChangeCollectStatusViewModel ChangeStatus { get; set; } = new();
+
+        public ChangeCollectViewModel ChangeCollect { get; set; } = new();
     }
 }

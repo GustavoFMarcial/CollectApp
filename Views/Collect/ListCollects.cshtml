@@ -22,6 +22,7 @@
                 <th>@Html.DisplayNameFor(model => model.Items[0].Weigth)</th>
                 <th>@Html.DisplayNameFor(model => model.Items[0].Filial)</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -38,9 +39,8 @@
                 <td>@Html.DisplayFor(item => collect.Volume)</td>
                 <td>@Html.DisplayFor(item => collect.Weigth)</td>
                 <td>@Html.DisplayFor(item => collect.Filial)</td>
-                <td>
-                    @await Html.PartialAsync("_CollectsStatusButton", collect.ChangeStatus)
-                </td>
+                <td>@await Html.PartialAsync("_CollectsStatusButton", collect.ChangeStatus)</td>
+                <td>@await Html.PartialAsync("_CollectsButtons", collect.ChangeCollect)</td>
             </tr>
     }   
         </tbody>     

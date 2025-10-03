@@ -76,7 +76,7 @@ public class CollectController : Controller
 
     [HttpPost]
     [Authorize(Policy = "CanChangeCollectStatus")]
-    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,ToOpen")] ChangeStatusCollectViewModel changeStatus)
+    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,ToOpen")] ChangeCollectViewModel changeStatus)
     {
         if (!ModelState.IsValid)
         {

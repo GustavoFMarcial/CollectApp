@@ -49,9 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
         button.classList.add("page-link", "page-button");
 
         if (i === pageNum) {
-        button.classList.add("custom-active");
+            button.classList.add("custom-active");
         }
-        
+
         button.value = i;
         button.textContent = i;
 
@@ -71,17 +71,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderPaginationButtons(totalPages) {
         ulButtonsPagination.textContent = "";
-        for (var i = 1; i <= totalPages.totalPages; i++){
+        for (var i = 1; i <= totalPages.totalPages; i++) {
             ulButtonsPagination.appendChild(createPaginationButton(i, totalPages.pageNum));
         }
     }
 
     async function fetchProducts(url, options = {}) {
-        const response = await fetch(url, options);
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value
+            || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        const headers = {
+            ...options.headers,
+            'RequestVerificationToken': token
+        };
+
+        const response = await fetch(url, {
+            ...options,
+            headers
+        });
+
         if (!response.ok) {
             console.error("Erro ao buscar produtos:", response.statusText);
             return { items: [] };
         }
+        
         return response.json();
     }
 
@@ -113,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const input = searchProductInput.value.trim();
         const pageNum = e.target.value;
 
-        if (e.target.classList == "page-link page-button"){
+        if (e.target.classList == "page-link page-button") {
             const products = await fetchProducts("/Product/ListProductsJson", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
