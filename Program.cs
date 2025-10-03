@@ -4,6 +4,7 @@ using CollectApp.Repositories;
 using CollectApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +42,16 @@ builder.Services.AddControllersWithViews(options =>
         .RequireAuthenticatedUser()
         .Build();
     options.Filters.Add(new AuthorizeFilter(policy));
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanChangeCollectStatus", policy =>
+        policy.RequireRole("Gestor", "Admin"));
+
+    options.AddPolicy("CanChangeCollect", policy =>
+        policy.RequireRole("Admin"));
 });
 
 builder.Services.Configure<IdentityOptions>(options =>

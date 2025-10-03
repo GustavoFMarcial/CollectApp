@@ -3,8 +3,6 @@ using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 namespace CollectApp.Controllers;
 
@@ -77,6 +75,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CanChangeCollectStatus")]
     public async Task<IActionResult> ChangeCollectStatus([Bind("Id,ToOpen")] ChangeStatusCollectViewModel changeStatus)
     {
         if (!ModelState.IsValid)
