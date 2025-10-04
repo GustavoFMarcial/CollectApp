@@ -8,20 +8,20 @@
     <h1 class="mb-2">Lista de coletas</h1>
     <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Collect" asp-action="CreateCollect">Inserir coleta</a>
 
-    <table class="table table-hover">
+    <table class="table table-hover" style="table-layout: fixed;">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Items[0].Id)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].CreatedAt)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].UserName)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].SupplierName)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].CollectAt)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].ProductDescription)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].Status)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].Volume)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].Weigth)</th>
-                <th>@Html.DisplayNameFor(model => model.Items[0].Filial)</th>
-                <th></th>
+                <th style="width: 60px;">@Html.DisplayNameFor(model => model.Items[0].Id)</th>
+                <th style="width: 125px;">@Html.DisplayNameFor(model => model.Items[0].CreatedAt)</th>
+                <th style="width: 150px;">@Html.DisplayNameFor(model => model.Items[0].UserName)</th>
+                <th style="width: 200px;">@Html.DisplayNameFor(model => model.Items[0].SupplierName)</th>
+                <th style="width: 110px;">@Html.DisplayNameFor(model => model.Items[0].CollectAt)</th>
+                <th style="width: 120px;">@Html.DisplayNameFor(model => model.Items[0].ProductDescription)</th>
+                <th style="width: 150px;">@Html.DisplayNameFor(model => model.Items[0].Status)</th>
+                <th style="width: 60px;">@Html.DisplayNameFor(model => model.Items[0].Volume)</th>
+                <th style="width: 60px;">@Html.DisplayNameFor(model => model.Items[0].Weigth)</th>
+                <th style="width: 120px;">@Html.DisplayNameFor(model => model.Items[0].Filial)</th>
+                <th style="width: 100px;"></th>
             </tr>
         </thead>
         <tbody>

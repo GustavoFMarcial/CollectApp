@@ -142,3 +142,9 @@ input.form-control:focus {
   border-color: #c0c0c0;
   font-weight: bold;
 }
+
+.table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
