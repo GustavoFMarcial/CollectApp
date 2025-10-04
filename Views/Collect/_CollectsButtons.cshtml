@@ -5,12 +5,22 @@
 @model CollectApp.ViewModels.ChangeCollectViewModel
 
 @{
+    bool CanChangeCollectStatus = (await AuthorizationService.AuthorizeAsync(User, "CanChangeCollectStatus")).Succeeded;
     bool CanChangeCollect = (await AuthorizationService.AuthorizeAsync(User, Model.UserId, "MustBeCollectOwner")).Succeeded;
 }
 
-@if (CanChangeCollect)
-{
-    <div class="d-flex justify-content-end gap-2">
+<div class="d-flex justify-content-end gap-2">
+    @if (Model.Status.CanChangeStatus() && CanChangeCollectStatus)
+    {
+        <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
+            <input asp-for="Id" type="hidden" value="@Model.Id">
+            <button class="p-0 border-0 bg-transparent">
+                <img src="~/assets/img/check-icon.svg" alt="Check button" width="24" height="24" />
+            </button>
+        </form>
+    }
+    @if (CanChangeCollect)
+    {
         @if (Model.Status.CanEdit())
         {
             <form asp-controller="Collect" method="post">
@@ -38,8 +48,8 @@
                 </button>
             </div>
         }
-    </div>
-}
+    }
+</div>
 
 @await Html.PartialAsync("_DeleteCollectModal", Model.Id)
 

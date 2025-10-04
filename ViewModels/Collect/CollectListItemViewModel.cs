@@ -39,8 +39,6 @@ namespace CollectApp.ViewModels
 
         public CollectStatus Status { get; set; }
 
-        public ChangeCollectStatusViewModel ChangeStatus { get; set; } = new();
-
         public ChangeCollectViewModel ChangeCollect { get; set; } = new();
     }
 }

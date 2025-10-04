@@ -41,11 +41,6 @@ namespace CollectApp.Services
                 Volume = c.Volume,
                 Weigth = c.Weigth,
                 Filial = c.Filial.Name,
-                ChangeStatus = new ChangeCollectStatusViewModel
-                {
-                    Id = c.Id,
-                    Status = c.Status,
-                },
                 ChangeCollect = new ChangeCollectViewModel
                 {
                     Id = c.Id,
