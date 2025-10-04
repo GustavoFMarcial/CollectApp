@@ -22,7 +22,11 @@ namespace CollectApp.Authorization.Handlers
                 return Task.CompletedTask;
             }
 
-            string? collectUserId = GetCollectUserIdFromResource(context.Resource);
+            string collectUserId = "";
+            if (context.Resource is string id)
+            {
+                collectUserId = id;
+            } 
 
             if (currentUserId == collectUserId)
             {
@@ -30,16 +34,6 @@ namespace CollectApp.Authorization.Handlers
             }
 
             return Task.CompletedTask;
-        }
-
-        private static string? GetCollectUserIdFromResource(object? resource)
-        {
-            if (resource is string id)
-            {
-                return id;
-            }
-
-            return null;
         }
     }
 }
