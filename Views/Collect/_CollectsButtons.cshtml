@@ -26,7 +26,7 @@
         }
         @if (Model.Status.CanOpen())
         {
-            <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
+            <form asp-controller="Collect" asp-action="OpenCollect" method="post">
                 <input asp-for="Id" type="hidden" value="@Model.Id">
                 <input asp-for="ToOpen" type="hidden" value="true">
                 <button class="p-0 border-0 bg-transparent">

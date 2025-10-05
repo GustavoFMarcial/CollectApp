@@ -83,7 +83,21 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangeCollectStatus([Bind("Id,ToOpen")] ChangeCollectViewModel changeStatus)
+    [Authorize(Policy = "CanChangeCollectStatus")]
+    public async Task<IActionResult> ChangeCollectStatus([Bind("Id")] ChangeCollectViewModel changeStatus)
+    {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(ListCollects));
+        }
+
+        await _collectService.UpdateCollectStatus(changeStatus);
+
+        return RedirectToAction(nameof(ListCollects));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> OpenCollect([Bind("Id,ToOpen")] ChangeCollectViewModel changeStatus)
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();
 
