@@ -10,13 +10,15 @@ public class CollectController : Controller
 {
     private readonly ILogger<CollectController> _logger;
     private readonly ICollectService _collectService;
-    private readonly ICurrentUserService _userService;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IAuthorizationService _authorizationService;
 
-    public CollectController(ILogger<CollectController> logger, ICollectService collectService, IHttpContextAccessor httpContextAccessor, ICurrentUserService userService)
+    public CollectController(ILogger<CollectController> logger, ICollectService collectService, ICurrentUserService currentUserService, IAuthorizationService authorizationService)
     {
         _logger = logger;
         _collectService = collectService;
-        _userService = userService;
+        _currentUserService = currentUserService;
+        _authorizationService = authorizationService;
     }
 
     public async Task<IActionResult> ListCollects(int pageNum = 1)
@@ -44,7 +46,7 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        await _collectService.CreateCollect(collectCreate, _userService.UserId);
+        await _collectService.CreateCollect(collectCreate, _currentUserService.UserId);
 
         return RedirectToAction(nameof(ListCollects));
     }
@@ -64,6 +66,13 @@ public class CollectController : Controller
     [HttpPost]
     public async Task<IActionResult> EditCollect([Bind("Id,SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] EditCollectViewModel collectEdit)
     {
+        bool isCollectOwner = (await _authorizationService.AuthorizeAsync(_currentUserService.User, "MustBeCollectOwner")).Succeeded;
+
+        if (!isCollectOwner)
+        {
+            return Forbid();
+        }
+
         if (!ModelState.IsValid)
         {
             return View(collectEdit);

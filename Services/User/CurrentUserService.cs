@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using CollectApp.Models;
 
 namespace CollectApp.Services
 {
@@ -11,7 +12,10 @@ namespace CollectApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string UserId => 
+        public string UserId =>
             _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("Usuário não logado");
+            
+        public ClaimsPrincipal User => 
+            _httpContextAccessor?.HttpContext?.User ?? throw new Exception("Usuário não logado");
     }
 }

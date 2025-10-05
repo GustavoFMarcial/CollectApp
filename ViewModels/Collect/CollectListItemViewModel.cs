@@ -16,7 +16,7 @@ namespace CollectApp.ViewModels
         public string UserId { get; set; } = string.Empty;
 
         [DisplayName("Usuário")]
-        public string? UserName { get; set; }
+        public string? FullName { get; set; }
 
         [DisplayName("Fornecedor")]
         public string? SupplierName { get; set; }

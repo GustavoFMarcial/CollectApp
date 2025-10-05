@@ -33,7 +33,7 @@ namespace CollectApp.Services
                 Id = c.Id,
                 CreatedAt = c.CreatedAt,
                 UserId = c.User.Id,
-                UserName = c.User.FullName,
+                FullName = c.User.FullName,
                 SupplierName = c.Supplier.Name,
                 CollectAt = c.CollectAt,
                 ProductDescription = c.Product.Description,
