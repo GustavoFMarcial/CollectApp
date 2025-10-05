@@ -2,6 +2,7 @@ using CollectApp.Models;
 using CollectApp.ViewModels;
 using CollectApp.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CollectApp.Services
 {

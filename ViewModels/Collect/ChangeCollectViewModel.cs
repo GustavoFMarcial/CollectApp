@@ -8,11 +8,8 @@ namespace CollectApp.ViewModels
     {
         [Required]
         public int Id { get; set; }
-
         public CollectStatus Status { get; set; }
-
         public bool ToOpen { get; set; } = false;
-
         public string UserId { get; set; } = string.Empty;
     }
 }

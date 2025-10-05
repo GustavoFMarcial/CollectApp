@@ -34,6 +34,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CanCreateEditOrDelete")]
     public async Task<IActionResult> CreateCollect([Bind("SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] CreateCollectViewModel collectCreate)
     {
         if (!ModelState.IsValid)
@@ -64,6 +65,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CanCreateEditOrDelete")]
     public async Task<IActionResult> EditCollect([Bind("Id,SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] EditCollectViewModel collectEdit)
     {
         bool isCollectOwner = (await _authorizationService.AuthorizeAsync(_currentUserService.User, "MustBeCollectOwner")).Succeeded;
@@ -98,8 +100,16 @@ public class CollectController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CanCreateEditOrDelete")]
     public async Task<IActionResult> DeleteCollect(int? id)
     {
+        bool isCollectOwner = (await _authorizationService.AuthorizeAsync(_currentUserService.User, "MustBeCollectOwner")).Succeeded;
+
+        if (!isCollectOwner)
+        {
+            return Forbid();
+        }
+
         if (id == null)
         {
             return NotFound();

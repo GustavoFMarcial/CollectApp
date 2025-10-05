@@ -53,6 +53,9 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CanChangeCollectStatus", policy =>
         policy.RequireRole("Gestor", "Admin"));
 
+    options.AddPolicy("CanCreateEditOrDelete", policy =>
+        policy.RequireRole("Comprador", "Admin"));
+
     options.AddPolicy("MustBeCollectOwner", policy =>
         policy.Requirements.Add(new MustBeCollectOwnerRequirement()));
 });
