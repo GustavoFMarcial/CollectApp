@@ -4,13 +4,8 @@
 @inject IAuthorizationService AuthorizationService
 @model CollectApp.ViewModels.ChangeCollectViewModel
 
-@{
-    bool CanChangeCollectStatus = (await AuthorizationService.AuthorizeAsync(User, "CanChangeCollectStatus")).Succeeded;
-    bool CanChangeCollect = (await AuthorizationService.AuthorizeAsync(User, Model.UserId, "MustBeCollectOwner")).Succeeded;
-}
-
 <div class="d-flex justify-content-end gap-2">
-    @if (Model.Status.CanChangeStatus() && CanChangeCollectStatus)
+    @if (Model.Status.CanChangeStatus() && Model.CanChangeCollectStatus)
     {
         <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
             <input asp-for="Id" type="hidden" value="@Model.Id">
@@ -19,7 +14,7 @@
             </button>
         </form>
     }
-    @if (CanChangeCollect)
+    @if (Model.CanChangeCollect)
     {
         @if (Model.Status.CanEdit())
         {

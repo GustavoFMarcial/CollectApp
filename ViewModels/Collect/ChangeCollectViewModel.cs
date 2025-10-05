@@ -11,5 +11,7 @@ namespace CollectApp.ViewModels
         public CollectStatus Status { get; set; }
         public bool ToOpen { get; set; } = false;
         public string UserId { get; set; } = string.Empty;
+        public bool CanChangeCollectStatus { get; set; }
+        public bool CanChangeCollect { get; set; }
     }
 }

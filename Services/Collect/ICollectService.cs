@@ -13,5 +13,6 @@ namespace CollectApp.Services
         public Task EditCollect(EditCollectViewModel collectEdit);
         public Task UpdateCollectStatus(ChangeCollectViewModel changeStatus);
         public Task DeleteCollect(int? id);
+        public Task<bool> MustBeCollectOwner();
     }
 }

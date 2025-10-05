@@ -3,6 +3,7 @@ using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CollectApp.Controllers;
 
@@ -10,15 +11,11 @@ public class CollectController : Controller
 {
     private readonly ILogger<CollectController> _logger;
     private readonly ICollectService _collectService;
-    private readonly ICurrentUserService _currentUserService;
-    private readonly IAuthorizationService _authorizationService;
 
-    public CollectController(ILogger<CollectController> logger, ICollectService collectService, ICurrentUserService currentUserService, IAuthorizationService authorizationService)
+    public CollectController(ILogger<CollectController> logger, ICollectService collectService)
     {
         _logger = logger;
         _collectService = collectService;
-        _currentUserService = currentUserService;
-        _authorizationService = authorizationService;
     }
 
     public async Task<IActionResult> ListCollects(int pageNum = 1)
@@ -47,7 +44,7 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        await _collectService.CreateCollect(collectCreate, _currentUserService.UserId);
+        await _collectService.CreateCollect(collectCreate, HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         return RedirectToAction(nameof(ListCollects));
     }
@@ -68,7 +65,7 @@ public class CollectController : Controller
     [Authorize(Policy = "CanCreateEditOrDelete")]
     public async Task<IActionResult> EditCollect([Bind("Id,SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] EditCollectViewModel collectEdit)
     {
-        bool isCollectOwner = (await _authorizationService.AuthorizeAsync(_currentUserService.User, "MustBeCollectOwner")).Succeeded;
+        bool isCollectOwner = await _collectService.MustBeCollectOwner();
 
         if (!isCollectOwner)
         {
@@ -86,9 +83,15 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    [Authorize(Policy = "CanChangeCollectStatus")]
     public async Task<IActionResult> ChangeCollectStatus([Bind("Id,ToOpen")] ChangeCollectViewModel changeStatus)
     {
+        bool isCollectOwner = await _collectService.MustBeCollectOwner();
+
+        if (!isCollectOwner)
+        {
+            return Forbid();
+        }
+
         if (!ModelState.IsValid)
         {
             return RedirectToAction(nameof(ListCollects));
@@ -103,7 +106,7 @@ public class CollectController : Controller
     [Authorize(Policy = "CanCreateEditOrDelete")]
     public async Task<IActionResult> DeleteCollect(int? id)
     {
-        bool isCollectOwner = (await _authorizationService.AuthorizeAsync(_currentUserService.User, "MustBeCollectOwner")).Succeeded;
+        bool isCollectOwner = await _collectService.MustBeCollectOwner();
 
         if (!isCollectOwner)
         {

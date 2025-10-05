@@ -13,15 +13,19 @@ namespace CollectApp.Services
         private readonly IProductRepository _productRepository;
         private readonly IFilialRepository _filialRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IAuthorizationService _authorizationService;
         private readonly ILogger<CollectService> _logger;
 
-        public CollectService(ICollectRepository collectRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IFilialRepository filialRepository, UserManager<ApplicationUser> userManager, ILogger<CollectService> logger)
+        public CollectService(ICollectRepository collectRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IFilialRepository filialRepository, UserManager<ApplicationUser> userManager, ICurrentUserService currentUserService, IAuthorizationService authorizationService, ILogger<CollectService> logger)
         {
             _collectRepository = collectRepository;
             _supplierRepository = supplierRepository;
             _productRepository = productRepository;
             _filialRepository = filialRepository;
             _userManager = userManager;
+            _currentUserService = currentUserService;
+            _authorizationService = authorizationService;
             _logger = logger;
         }
 
@@ -29,7 +33,7 @@ namespace CollectApp.Services
         {
             (List<Collect> items, int totalCount) collects = await _collectRepository.ToCollectListAsync(pageNum);
 
-            List<CollectListViewModel> collectListViewModels = collects.items.Select(c => new CollectListViewModel
+            var collectTasks = collects.items.Select(async c => new CollectListViewModel
             {
                 Id = c.Id,
                 CreatedAt = c.CreatedAt,
@@ -47,17 +51,19 @@ namespace CollectApp.Services
                     Id = c.Id,
                     Status = c.Status,
                     UserId = c.User.Id,
+                    CanChangeCollectStatus = (await _authorizationService.AuthorizeAsync(_currentUserService.User, "CanChangeCollectStatus")).Succeeded,
+                    CanChangeCollect = (await _authorizationService.AuthorizeAsync(_currentUserService.User, c.User.Id, "MustBeCollectOwner")).Succeeded,
                 }
-            }).ToList();
+            });
 
-            PagedResultViewModel<CollectListViewModel> pagedResultCollectListViewModel = new PagedResultViewModel<CollectListViewModel>
+            List<CollectListViewModel> collectListViewModels = (await Task.WhenAll(collectTasks)).ToList();
+
+            return new PagedResultViewModel<CollectListViewModel>
             {
                 Items = collectListViewModels,
                 TotalPages = (int)Math.Ceiling(collects.totalCount / (double)pageSize),
                 PageNum = pageNum,
             };
-
-            return pagedResultCollectListViewModel;
         }
 
         public async Task CreateCollect(CreateCollectViewModel collectCreate, string userId)
@@ -127,6 +133,11 @@ namespace CollectApp.Services
                 return;
             }
 
+            if (collect.Status != CollectStatus.PendenteAprovar)
+            {
+                return;
+            }
+
             Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(collectEdit.SupplierId);
             Product? product = await _productRepository.GetProductByIdAsync(collectEdit.ProductId);
             Filial? filial = await _filialRepository.GetFilialByIdAsync(collectEdit.FilialId);
@@ -174,7 +185,7 @@ namespace CollectApp.Services
                     CollectStatus.PendenteAprovar => CollectStatus.PendenteColetar,
                     CollectStatus.PendenteColetar => CollectStatus.Coletado,
                     _ => collect.Status,
-                };   
+                };
             }
 
             await _collectRepository.SaveChangesCollectAsync();
@@ -189,8 +200,18 @@ namespace CollectApp.Services
                 return;
             }
 
+            if (collect.Status != CollectStatus.PendenteAprovar)
+            {
+                return;
+            }
+
             _collectRepository.RemoveCollect(collect);
             await _collectRepository.SaveChangesCollectAsync();
+        }
+
+        public async Task<bool> MustBeCollectOwner()
+        {
+            return (await _authorizationService.AuthorizeAsync(_currentUserService.User, "MustBeCollectOwner")).Succeeded;
         }
     }
 }
