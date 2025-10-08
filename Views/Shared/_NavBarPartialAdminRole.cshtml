@@ -1,11 +1,6 @@
-﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
-@if (SignInManager.IsSignedIn(User))
-{
-    <ul class="navbar-nav flex-grow-1">
+<ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="Collect" asp-action="ListCollects">Coletas</a>
         </li>
@@ -33,4 +28,3 @@
             </form>
         </li>
     </ul>
-}

@@ -52,7 +52,7 @@ namespace CollectApp.Services
                     Status = c.Status,
                     UserId = c.User.Id,
                     CanChangeCollectStatus = (await _authorizationService.AuthorizeAsync(_currentUserService.User, "CanChangeCollectStatus")).Succeeded,
-                    CanChangeCollect = (await _authorizationService.AuthorizeAsync(_currentUserService.User, c.User.Id, "MustBeCollectOwner")).Succeeded,
+                    CanEditOpenOrDeleteCollect = (await _authorizationService.AuthorizeAsync(_currentUserService.User, c.User.Id, "MustBeCollectOwner")).Succeeded,
                 }
             });
 

@@ -31,7 +31,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    [Authorize(Policy = "CanCreateEditOrDelete")]
+    [Authorize(Policy = "CanInsert")]
     public async Task<IActionResult> CreateCollect([Bind("SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] CreateCollectViewModel collectCreate)
     {
         if (!ModelState.IsValid)
@@ -62,7 +62,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    [Authorize(Policy = "CanCreateEditOrDelete")]
+    [Authorize(Policy = "CanEditOrDeleteCollect")]
     public async Task<IActionResult> EditCollect([Bind("Id,SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] EditCollectViewModel collectEdit)
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();
@@ -117,7 +117,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    [Authorize(Policy = "CanCreateEditOrDelete")]
+    [Authorize(Policy = "CanEditOrDeleteCollect")]
     public async Task<IActionResult> DeleteCollect(int? id)
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();

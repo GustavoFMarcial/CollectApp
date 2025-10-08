@@ -1,10 +1,11 @@
-using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollectApp.Controllers
 {
+    [Authorize(Policy = "CanInsert")]
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
@@ -27,7 +28,7 @@ namespace CollectApp.Controllers
         public async Task<IActionResult> ListProductsJson([FromBody] FilterRequestInput request)
         {
             PagedResultViewModel<ProductListViewModel> pagedResultProductListViewModel = await _productService.SetPagedResultProductListViewModel(request.PageNum, request.PageSize, request.Input);
-            
+
             return Json(pagedResultProductListViewModel);
         }
 

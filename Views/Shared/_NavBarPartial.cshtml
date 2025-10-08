@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (User.IsInRole("Comprador"))
+    {
+        <partial name="_NavBarPartialCompradorRole" />
+    }
+    else if (User.IsInRole("Gestor"))
+    {
+        <partial name="_NavBarPartialGestorRole" />
+    }
+    else
+    {
+        <partial name="_NavBarPartialAdminRole" />
+    }
+}

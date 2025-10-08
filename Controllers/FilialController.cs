@@ -1,10 +1,11 @@
-using CollectApp.Models;
 using CollectApp.Services;
 using CollectApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollectApp.Controllers
 {
+    [Authorize(Policy = "CanInsert")]
     public class FilialController : Controller
     {
         private readonly ILogger<FilialController> _logger;
