@@ -25,6 +25,7 @@ public class CollectController : Controller
         return View(clivm);
     }
 
+    [Authorize(Policy = "CanInsert")]
     public IActionResult CreateCollect()
     {
         return View();
