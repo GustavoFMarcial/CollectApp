@@ -24,6 +24,7 @@ builder.Services.AddScoped<IFilialRepository, FilialRepository>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 builder.Services.AddScoped<IAuthorizationHandler, MustBeCollectOwnerHandler>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var connectionString = builder.Configuration.GetConnectionString("CollectAppContext") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<CollectAppContext>(options =>
@@ -56,11 +57,14 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CanInsert", policy =>
         policy.RequireRole("Comprador", "Admin"));
 
-    options.AddPolicy("CanEditOrDeleteCollect", policy =>
+    options.AddPolicy("CanEditAndDeleteCollect", policy =>
         policy.RequireRole("Comprador", "Admin"));
-    
+
     options.AddPolicy("MustBeCollectOwner", policy =>
         policy.Requirements.Add(new MustBeCollectOwnerRequirement()));
+
+    options.AddPolicy("CanCreateAndEditUsers", policy =>
+        policy.RequireRole("Admin"));
 });
 
 builder.Services.Configure<IdentityOptions>(options =>

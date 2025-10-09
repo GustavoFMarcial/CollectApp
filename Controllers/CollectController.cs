@@ -63,7 +63,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    [Authorize(Policy = "CanEditOrDeleteCollect")]
+    [Authorize(Policy = "CanEditAndDeleteCollect")]
     public async Task<IActionResult> EditCollect([Bind("Id,SupplierId,Supplier,CollectAt,ProductId,Product,Volume,Weight,FilialId,Filial")] EditCollectViewModel collectEdit)
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();
@@ -118,7 +118,7 @@ public class CollectController : Controller
     }
 
     [HttpPost]
-    [Authorize(Policy = "CanEditOrDeleteCollect")]
+    [Authorize(Policy = "CanEditAndDeleteCollect")]
     public async Task<IActionResult> DeleteCollect(int? id)
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();

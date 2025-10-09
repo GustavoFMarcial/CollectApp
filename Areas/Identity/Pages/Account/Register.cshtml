@@ -1,4 +1,4 @@
-﻿@page
+﻿@* @page
 @model RegisterModel
 @{
     ViewData["Title"] = "Registrar";
@@ -30,6 +30,71 @@
                 <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="Senha" autocomplete="current-password" aria-required="true" />
                 <label asp-for="Input.ConfirmPassword">Confirmar Senha</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="login-submit" type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                Cadastrar
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} *@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registrar";
+}
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg p-4" style="min-width: 380px; max-width: 420px; border-radius: 12px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Cadastro do Sistema ColetasApp</h2>
+        </div>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FullName" class="form-control" placeholder="Nome completo" autocomplete="fullname" aria-required="true" />
+                <label asp-for="Input.FullName">Nome Completo</label>
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Username" class="form-control" placeholder="Usuário" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.Username">Usuário</label>
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-4">
+                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Senha" autocomplete="current-password" aria-required="true" />
+                <label asp-for="Input.Password">Senha</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-4">
+                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="Senha" autocomplete="current-password" aria-required="true" />
+                <label asp-for="Input.ConfirmPassword">Confirmar Senha</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-bold">Cargo</label>
+                <div class="d-flex justify-content-between">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" asp-for="Input.Role" value="Gestor" id="roleGestor" />
+                        <label class="form-check-label" for="roleGestor">Gestor</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" asp-for="Input.Role" value="Comprador" id="roleComprador" />
+                        <label class="form-check-label" for="roleComprador">Comprador</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" asp-for="Input.Role" value="Admin" id="roleAdmin" />
+                        <label class="form-check-label" for="roleAdmin">Admin</label>
+                    </div>
+                </div>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
             </div>
             <button id="login-submit" type="submit" class="btn btn-primary w-100 py-2 fw-bold">
                 Cadastrar

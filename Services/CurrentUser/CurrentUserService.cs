@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using CollectApp.Models;
 
 namespace CollectApp.Services
 {

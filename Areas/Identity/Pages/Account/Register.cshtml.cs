@@ -46,6 +46,9 @@ namespace CollectApp.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            public string Role { get; set; }
         }
 
 
@@ -62,12 +65,13 @@ namespace CollectApp.Areas.Identity.Pages.Account
                 var user = new ApplicationUser
                 {
                     FullName = Input.FullName,
+                    Role = Input.Role,
                     UserName = Input.Username,
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                await _userManager.AddToRoleAsync(user, "Comprador");   
+                await _userManager.AddToRoleAsync(user, Input.Role);   
 
                 if (result.Succeeded)
                 {
