@@ -20,7 +20,7 @@ namespace CollectApp.Repositories
             int totalCount = await query.CountAsync();
 
             List<ApplicationUser> items = await query
-                .OrderBy(u => u.Id)
+                .OrderBy(u => u.Role)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

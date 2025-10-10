@@ -21,6 +21,5 @@ namespace CollectApp.Controllers
 
             return View(clivm);
         }
-
     }
 }
