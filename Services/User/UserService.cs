@@ -1,28 +1,26 @@
 using CollectApp.Models;
+using CollectApp.Repositories;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectApp.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        // private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(UserManager<ApplicationUser> userManager)
+        public UserService(IUserRepository userRepository)
         {
-            _userManager = userManager;
+            _userRepository = userRepository;
         }
         public async Task<PagedResultViewModel<UserListViewModel>> SetPagedResultUserListViewModel(int pageNum = 1, int pageSize = 10)
-        {
-            int totalCount = await _userManager.Users.CountAsync();
-            List<ApplicationUser> userList = await _userManager.Users
-                .OrderBy(u => u.Id)
-                .Skip((pageNum - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+        {    
+            (List<ApplicationUser> items, int totalCount) users = await _userRepository.ToUserListAsync(pageNum);
 
-            var users = userList.Select(u => new UserListViewModel
+            var userListViewModel = users.items.Select(u => new UserListViewModel
             {
                 Id = u.Id,
                 FullName = u.FullName,
@@ -31,8 +29,8 @@ namespace CollectApp.Services
 
             return new PagedResultViewModel<UserListViewModel>
             {
-                Items = users,
-                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize),
+                Items = userListViewModel,
+                TotalPages = (int)Math.Ceiling(users.totalCount / (double)pageSize),
                 PageNum = pageNum,
             };
         }
