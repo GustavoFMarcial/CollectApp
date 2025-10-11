@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace CollectApp.Areas.Identity.Pages.Account
 {
     [Authorize(Policy = "CanCreateAndEditUsers")]
+    // [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

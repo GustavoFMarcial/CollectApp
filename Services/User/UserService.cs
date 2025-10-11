@@ -17,7 +17,7 @@ namespace CollectApp.Services
             _userRepository = userRepository;
         }
         public async Task<PagedResultViewModel<UserListViewModel>> SetPagedResultUserListViewModel(int pageNum = 1, int pageSize = 10)
-        {    
+        {
             (List<ApplicationUser> items, int totalCount) users = await _userRepository.ToUserListAsync(pageNum);
 
             var userListViewModel = users.items.Select(u => new UserListViewModel
@@ -25,6 +25,7 @@ namespace CollectApp.Services
                 Id = u.Id,
                 FullName = u.FullName,
                 Role = u.Role,
+                Status = u.Status,
             }).ToList();
 
             return new PagedResultViewModel<UserListViewModel>
@@ -33,6 +34,30 @@ namespace CollectApp.Services
                 TotalPages = (int)Math.Ceiling(users.totalCount / (double)pageSize),
                 PageNum = pageNum,
             };
+        }
+
+        public async Task ChangeUserStatus(string? id)
+        {
+            if (id == null)
+            {
+                return;
+            }
+
+            ApplicationUser user = await _userRepository.GetUserById(id);
+
+            if (user == null)
+            {
+                return;
+            }
+
+            user.Status = user.Status switch
+            {
+                UserStatus.Ativo => UserStatus.Inativo,
+                UserStatus.Inativo => UserStatus.Ativo,
+                _ => user.Status,
+            };
+
+            await _userRepository.SaveChangesUserAsync(user);
         }
     }
 }

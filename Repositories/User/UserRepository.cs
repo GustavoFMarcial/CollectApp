@@ -27,5 +27,22 @@ namespace CollectApp.Repositories
 
             return (items, totalCount);
         }
+
+        public async Task<ApplicationUser> GetUserById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException(nameof(id));
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                throw new KeyNotFoundException($"Usuário com Id {id} não foi encontrado.");
+
+            return user;
+        }
+
+        public async Task<IdentityResult> SaveChangesUserAsync(ApplicationUser user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
     }
 }

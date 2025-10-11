@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using CollectApp.Models;
 
 namespace CollectApp.ViewModels
 {
@@ -11,5 +12,7 @@ namespace CollectApp.ViewModels
 
         [DisplayName("Cargo")]
         public string Role { get; set; } = string.Empty;
+
+        public UserStatus Status { get; set; }
     }
 }

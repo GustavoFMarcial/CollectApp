@@ -14,10 +14,10 @@
     <table class="table table-hover" style="table-layout: fixed;">
         <thead>
             <tr>
-            @* style="width: 300px;" *@
                 <th style="width: 350px">@Html.DisplayNameFor(m => m.Items[0].Id)</th>
                 <th style="width: 150px">@Html.DisplayNameFor(m => m.Items[0].FullName)</th>
                 <th style="width: 100px">@Html.DisplayNameFor(m => m.Items[0].Role)</th>
+                <th style="width: 100px">@Html.DisplayNameFor(m => m.Items[0].Status)</th>
                 <th></th>
             </tr>
         </thead>
@@ -28,38 +28,39 @@
                     <td>@Html.DisplayFor(item => user.Id)</td>
                     <td>@Html.DisplayFor(item => user.FullName)</td>
                     <td>@Html.DisplayFor(item => user.Role)</td>
+                    <td>@Html.DisplayFor(item => user.Status)</td>
                     <td class="text-end">
-                        @* <a asp-action="EditFilial" asp-route-id="@user.Id">
+                        <a asp-action="EditUser" asp-route-id="@user.Id">
                             <img src="~/assets/img/pencil-icon.svg" width="24" height="24" />
                         </a>
                         <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@user.Id">
-                            <img src="~/assets/img/trash-icon.svg" width="24" height="24" />
-                        </button> *@
+                            <img src="~/assets/img/x-icon.svg" width="24" height="24" />
+                        </button>
                     </td>
                 </tr>
-                @* @await Html.PartialAsync("_DeleteFilialModal", user.Id) *@
+                @await Html.PartialAsync("_DeleteUserModal", user.Id)
             }
         </tbody>
     </table>
 
-    @* @await Html.PartialAsync("_FilialPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum }) *@
+    @await Html.PartialAsync("_UserPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
-@* @section Scripts 
+@section Scripts 
 {
     <script>
         document.addEventListener("click", function(e) {
             if (e.target.classList.contains("page-button")) {
                 const page = e.target.value;
                 if (parseInt(page) !== @Model.PageNum) {
-                    window.location.href = `/Filial/ListFilials?pageNum=${page}`;
+                    window.location.href = `/User/ListUsers?pageNum=${page}`;
                 }
             }
         });
     </script>
     
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+    @* <script>
         document.addEventListener('DOMContentLoaded', function () {
             var showModal = '@ViewBag.ShowModal' === 'True';
             if (showModal) {
@@ -70,5 +71,5 @@
                 }
             }
         });
-    </script>
-} *@
+    </script> *@
+}

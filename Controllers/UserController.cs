@@ -21,5 +21,13 @@ namespace CollectApp.Controllers
 
             return View(clivm);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserStatus(string id)
+        {
+            await _userService.ChangeUserStatus(id);
+
+            return RedirectToAction(nameof(ListUsers));
+        }
     }
 }

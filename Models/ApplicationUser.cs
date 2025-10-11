@@ -7,5 +7,6 @@ namespace CollectApp.Models
     {
         public string FullName { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
+        public UserStatus Status { get; set; } = UserStatus.Ativo;
     }
 }
