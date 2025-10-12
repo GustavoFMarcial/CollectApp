@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using YourAppNamespace.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,6 +98,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromMinutes(1);
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -129,6 +135,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();
+app.UseMiddleware<CheckLockoutMiddleware>();
 app.UseAuthorization();
 
 app.MapStaticAssets();

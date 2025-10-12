@@ -28,7 +28,7 @@ namespace CollectApp.Repositories
             return (items, totalCount);
         }
 
-        public async Task<ApplicationUser> GetUserById(string id)
+        public async Task<ApplicationUser> GetUserByIdAsync(string id)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
@@ -43,6 +43,17 @@ namespace CollectApp.Repositories
         public async Task<IdentityResult> SaveChangesUserAsync(ApplicationUser user)
         {
             return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task LockOutUserAsync(ApplicationUser user)
+        {
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+            await _userManager.UpdateSecurityStampAsync(user);
+        }
+
+        public async Task UnlockOutUserAsync(ApplicationUser user)
+        {
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
         }
     }
 }

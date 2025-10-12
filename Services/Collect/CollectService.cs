@@ -169,7 +169,7 @@ namespace CollectApp.Services
         {
             Collect? collect = await _collectRepository.GetCollectByIdAsync(changeCollect.Id);
 
-            if (collect == null)
+            if (collect == null || collect.Status == CollectStatus.Coletado || collect.Status == CollectStatus.Cancelado)
             {
                 return;
             }

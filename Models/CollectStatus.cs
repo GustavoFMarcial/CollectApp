@@ -11,5 +11,7 @@ namespace CollectApp.Models
         PendenteColetar,
 
         Coletado,
+
+        Cancelado,
     }
 }

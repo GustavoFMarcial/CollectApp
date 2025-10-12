@@ -72,6 +72,7 @@ namespace CollectApp.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                await _userManager.SetLockoutEnabledAsync(user, true);
                 await _userManager.AddToRoleAsync(user, Input.Role);   
 
                 if (result.Succeeded)

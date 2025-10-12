@@ -43,7 +43,7 @@ namespace CollectApp.Services
                 return;
             }
 
-            ApplicationUser user = await _userRepository.GetUserById(id);
+            ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
 
             if (user == null)
             {
@@ -56,6 +56,15 @@ namespace CollectApp.Services
                 UserStatus.Inativo => UserStatus.Ativo,
                 _ => user.Status,
             };
+
+            if (user.Status == UserStatus.Ativo)
+            {
+                await _userRepository.UnlockOutUserAsync(user);
+            }
+            else
+            {
+                await _userRepository.LockOutUserAsync(user);
+            }
 
             await _userRepository.SaveChangesUserAsync(user);
         }
