@@ -9,7 +9,6 @@ namespace CollectApp.Services
 {
     public class UserService : IUserService
     {
-        // private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
 
         public UserService(IUserRepository userRepository)
@@ -23,6 +22,7 @@ namespace CollectApp.Services
             var userListViewModel = users.items.Select(u => new UserListViewModel
             {
                 Id = u.Id,
+                CreatedAt = u.CreatedAt,
                 FullName = u.FullName,
                 Role = u.Role,
                 Status = u.Status,

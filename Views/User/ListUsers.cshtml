@@ -15,6 +15,7 @@
         <thead>
             <tr>
                 <th style="width: 350px">@Html.DisplayNameFor(m => m.Items[0].Id)</th>
+                <th style="width: 150px">@Html.DisplayNameFor(m => m.Items[0].CreatedAt)</th>
                 <th style="width: 150px">@Html.DisplayNameFor(m => m.Items[0].FullName)</th>
                 <th style="width: 100px">@Html.DisplayNameFor(m => m.Items[0].Role)</th>
                 <th style="width: 100px">@Html.DisplayNameFor(m => m.Items[0].Status)</th>
@@ -26,6 +27,7 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(item => user.Id)</td>
+                    <td>@Html.DisplayFor(item => user.CreatedAt)</td>
                     <td>@Html.DisplayFor(item => user.FullName)</td>
                     <td>@Html.DisplayFor(item => user.Role)</td>
                     <td>@Html.DisplayFor(item => user.Status)</td>
