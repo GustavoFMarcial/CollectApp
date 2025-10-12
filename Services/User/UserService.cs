@@ -2,6 +2,7 @@ using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,7 @@ namespace CollectApp.Services
             };
         }
 
-        public async Task ChangeUserStatus(string? id)
+        public async Task ChangeUserStatus(string id)
         {
             if (id == null)
             {
@@ -67,6 +68,31 @@ namespace CollectApp.Services
             }
 
             await _userRepository.SaveChangesUserAsync(user);
+        }
+
+        public async Task<EditUserViewModel> SetEditCollectViewModel(string id)
+        {
+            if (id == null)
+            {
+                EditUserViewModel NotFound = new EditUserViewModel();
+                return NotFound;
+            }
+
+            ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                EditUserViewModel NotFound = new EditUserViewModel();
+                return NotFound;
+            }
+
+            EditUserViewModel euvm = new EditUserViewModel
+            {
+                FullName = user.FullName,
+                Role = user.Role,
+            };
+
+            return euvm;
         }
     }
 }

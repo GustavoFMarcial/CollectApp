@@ -29,5 +29,18 @@ namespace CollectApp.Controllers
 
             return RedirectToAction(nameof(ListUsers));
         }
+
+        public async Task<IActionResult> EditUser(string id)
+        {
+            EditUserViewModel esvm = await _userService.SetEditCollectViewModel(id);
+
+            return View(esvm);
+        }
+
+        // [HttpPost]
+        // public async Task<IActionResult> EditUser([Bind("Id,FullName,Role")] EditUserViewModel editUser)
+        // {
+        //     return View();
+        // }
     }
 }
