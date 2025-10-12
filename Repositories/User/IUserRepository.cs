@@ -10,5 +10,9 @@ namespace CollectApp.Repositories
         public Task<IdentityResult> SaveChangesUserAsync(ApplicationUser user);
         public Task LockOutUserAsync(ApplicationUser user);
         public Task UnlockOutUserAsync(ApplicationUser user);
+        public Task<bool> AnyUserAsync(string userFullName, string userId);
+        public Task RemoveRolesFromUserAsync(ApplicationUser user, IList<string> roles);
+        public Task AddRoleToUserAsync(ApplicationUser user, string role);
+        public Task<IList<string>> GetRolesFromUserAsync(ApplicationUser user);
     }
 }

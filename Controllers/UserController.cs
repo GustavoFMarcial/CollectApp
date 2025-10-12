@@ -37,10 +37,24 @@ namespace CollectApp.Controllers
             return View(esvm);
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> EditUser([Bind("Id,FullName,Role")] EditUserViewModel editUser)
-        // {
-        //     return View();
-        // }
+        [HttpPost]
+        public async Task<IActionResult> EditUser([Bind("Id,FullName,Role")] EditUserViewModel editUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(editUser);
+            }
+
+            OperationResult result = await _userService.EditUser(editUser);
+
+            if (!result.Success)
+            {
+                ViewBag.Message = result.Message;
+                ViewBag.ShowModal = true;
+                return View(editUser);
+            }
+
+            return RedirectToAction(nameof(ListUsers));
+        }
     }
 }

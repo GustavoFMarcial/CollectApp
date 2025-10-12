@@ -55,5 +55,25 @@ namespace CollectApp.Repositories
         {
             await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
         }
+
+        public async Task<bool> AnyUserAsync(string userFullName, string userId)
+        {
+            return await _userManager.Users.AnyAsync(u => u.FullName == userFullName && u.Id != userId);
+        }
+
+        public async Task RemoveRolesFromUserAsync(ApplicationUser user, IList<string> roles)
+        {
+            await _userManager.RemoveFromRolesAsync(user, roles);
+        }
+
+        public async Task AddRoleToUserAsync(ApplicationUser user, string role)
+        {
+            await _userManager.AddToRoleAsync(user, role);
+        }
+
+        public async Task<IList<string>> GetRolesFromUserAsync(ApplicationUser user)
+        {
+           return await _userManager.GetRolesAsync(user); 
+        }
     }
 }

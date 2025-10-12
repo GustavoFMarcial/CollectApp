@@ -94,5 +94,37 @@ namespace CollectApp.Services
 
             return euvm;
         }
+
+        public async Task<OperationResult> EditUser(EditUserViewModel userEdit)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userEdit.Id);
+
+            if (user == null)
+            {
+                return OperationResult.Fail("Usuário não encontrado.");
+            }
+                
+            bool userExist = await _userRepository.AnyUserAsync(userEdit.FullName, userEdit.Id);
+
+            if (userExist)
+            {
+                return OperationResult.Fail("Já existe um usuário com o nome completo informado.");
+            }
+                
+            IList<string> currentRoles = await _userRepository.GetRolesFromUserAsync(user);
+            if (currentRoles.Any())
+            {
+                await _userRepository.RemoveRolesFromUserAsync(user, currentRoles);
+            }
+                
+            await _userRepository.AddRoleToUserAsync(user, userEdit.Role);
+
+            user.FullName = userEdit.FullName;
+            user.Role = userEdit.Role;
+
+            await _userRepository.SaveChangesUserAsync(user);
+
+            return OperationResult.Ok();
+        }
     }
 }
