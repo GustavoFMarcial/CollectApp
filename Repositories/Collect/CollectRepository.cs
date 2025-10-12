@@ -25,9 +25,11 @@ namespace CollectApp.Repositories
 
         public async Task<(List<Collect> items, int totalCount)> ToCollectListAsync(int pageNum = 1, int pageSize = 10)
         {
-            int totalCount = await _context.Collects.CountAsync();
+            IQueryable<Collect> query = _context.Collects.AsQueryable();
 
-            List<Collect> items = await _context.Collects
+            int totalCount = await query.CountAsync();
+
+            List<Collect> items = await query
                 .Include(c => c.Supplier)
                 .Include(c => c.Product)
                 .Include(c => c.Filial)
@@ -36,7 +38,7 @@ namespace CollectApp.Repositories
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-
+                
             return (items, totalCount);
         }
 
