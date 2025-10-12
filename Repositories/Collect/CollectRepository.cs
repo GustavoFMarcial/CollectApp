@@ -56,11 +56,6 @@ namespace CollectApp.Repositories
             _context.Collects.Add(collect);
         }
 
-        public void RemoveCollect(Collect collect)
-        {
-            _context.Collects.Remove(collect);
-        }
-
         public async Task SaveChangesCollectAsync()
         {
             await _context.SaveChangesAsync();

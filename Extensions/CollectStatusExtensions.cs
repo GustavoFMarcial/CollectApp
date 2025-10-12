@@ -6,7 +6,7 @@ namespace CollectApp.Extensions
     {
         public static bool CanChangeStatus(this CollectStatus status)
         {
-            return status != CollectStatus.Coletado;
+            return status != CollectStatus.Coletado && status != CollectStatus.Cancelado;
         }
 
         public static bool CanEdit(this CollectStatus status)

@@ -119,7 +119,7 @@ public class CollectController : Controller
 
     [HttpPost]
     [Authorize(Policy = "CanEditAndDeleteCollect")]
-    public async Task<IActionResult> DeleteCollect(int? id)
+    public async Task<IActionResult> CancelCollect(int? id)
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();
 
@@ -140,7 +140,7 @@ public class CollectController : Controller
             return NotFound();
         }
 
-        await _collectService.DeleteCollect(id);
+        await _collectService.CancelCollect(id);
 
         return RedirectToAction(nameof(ListCollects));
     }

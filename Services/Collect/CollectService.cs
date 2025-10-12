@@ -191,7 +191,7 @@ namespace CollectApp.Services
             await _collectRepository.SaveChangesCollectAsync();
         }
 
-        public async Task DeleteCollect(int? id)
+        public async Task CancelCollect(int? id)
         {
             Collect? collect = await _collectRepository.GetCollectByIdAsync(id);
 
@@ -205,7 +205,7 @@ namespace CollectApp.Services
                 return;
             }
 
-            _collectRepository.RemoveCollect(collect);
+            collect.Status = CollectStatus.Cancelado;
             await _collectRepository.SaveChangesCollectAsync();
         }
 
