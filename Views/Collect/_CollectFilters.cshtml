@@ -1,0 +1,83 @@
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">Filtros de Busca</h6>
+    </div>
+    <div class="card-body">
+        <form method="get" asp-action="ListCollects" asp-controller="Collect">
+            <div class="row g-2">
+                <div class="col-md-1">
+                    <label for="filterId" class="form-label small mb-1 ps-1">ID</label>
+                    <input type="number" class="form-control form-control-sm" id="filterId" name="filterId" placeholder="ID">
+                </div>
+
+                <div class="col-auto">
+                    <label for="createdAtStart" class="form-label small mb-1 ps-1">Criação Início</label>
+                    <input type="date" class="form-control form-control-sm" id="createdAtStart" name="createdAtStart" style="width: 150px;">
+                </div>
+
+                <div class="col-auto">
+                    <label for="createdAtEnd" class="form-label small mb-1 ps-1">Criação Fim</label>
+                    <input type="date" class="form-control form-control-sm" id="createdAtEnd" name="createdAtEnd" style="width: 150px;">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="filterUser" class="form-label small mb-1 ps-1">Usuário</label>
+                    <input type="text" class="form-control form-control-sm" id="filterUser" name="filterUser" placeholder="Usuário">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="filterSupplier" class="form-label small mb-1 ps-1">Fornecedor</label>
+                    <input type="text" class="form-control form-control-sm" id="filterSupplier" name="filterSupplier" placeholder="Fornecedor">
+                </div>
+
+                <div class="col-auto">
+                    <label for="collectAtStart" class="form-label small mb-1 ps-1">Coleta Início</label>
+                    <input type="date" class="form-control form-control-sm" id="collectAtStart" name="collectAtStart" style="width: 150px;">
+                </div>
+
+                <div class="col-auto">
+                    <label for="collectAtEnd" class="form-label small mb-1 ps-1">Coleta Fim</label>
+                    <input type="date" class="form-control form-control-sm" id="collectAtEnd" name="collectAtEnd" style="width: 150px;">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="filterProduct" class="form-label small mb-1 ps-1">Produto</label>
+                    <input type="text" class="form-control form-control-sm" id="filterProduct" name="filterProduct" placeholder="Produto">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="filterStatus" class="form-label small mb-1 ps-1">Status</label>
+                    <select class="form-select form-select-sm" id="filterStatus" name="filterStatus">
+                        <option value="">Todos</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Concluída">Concluída</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+                    <label for="filterVolume" class="form-label small mb-1 ps-1">Volume</label>
+                    <input type="number" step="0.01" class="form-control form-control-sm" id="filterVolume" name="filterVolume" placeholder="Vol.">
+                </div>
+
+                <div class="col-md-1">
+                    <label for="filterWeight" class="form-label small mb-1 ps-1">Peso</label>
+                    <input type="number" step="0.01" class="form-control form-control-sm" id="filterWeight" name="filterWeight" placeholder="Peso">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="filterFilial" class="form-label small mb-1 ps-1">Loja</label>
+                    <input type="text" class="form-control form-control-sm" id="filterFilial" name="filterFilial" placeholder="Loja">
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+                    <a href="@Url.Action("ListCollects", "Collect")" class="btn btn-secondary btn-sm">Limpar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

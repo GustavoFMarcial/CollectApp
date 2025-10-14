@@ -11,6 +11,8 @@
     {
         <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Collect" asp-action="CreateCollect">Inserir coleta</a>
     }
+
+    <div>@await Html.PartialAsync("_CollectFilters")</div>
     
     <table class="table table-hover" style="table-layout: fixed;">
         <thead>

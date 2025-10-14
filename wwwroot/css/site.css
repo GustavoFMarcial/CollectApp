@@ -148,3 +148,11 @@ input.form-control:focus {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+input.form-control-sm,
+select.form-select-sm {
+  min-height: auto !important;
+  height: 31px !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.875rem !important;
+}
