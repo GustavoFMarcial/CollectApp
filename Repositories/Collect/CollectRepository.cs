@@ -1,5 +1,7 @@
 using CollectApp.Data;
+using CollectApp.Extensions;
 using CollectApp.Models;
+using CollectApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectApp.Repositories
@@ -23,21 +25,24 @@ namespace CollectApp.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<(List<Collect> items, int totalCount)> ToCollectListAsync(int pageNum = 1, int pageSize = 10)
+        public async Task<(List<Collect> items, int totalCount)> ToCollectListAsync(CollectFilterViewModel filters, int pageNum = 1, int pageSize = 10)
         {
             IQueryable<Collect> query = _context.Collects.AsQueryable();
 
-            int totalCount = await query.CountAsync();
-
-            List<Collect> items = await query
+            query = query
                 .Include(c => c.Supplier)
                 .Include(c => c.Product)
                 .Include(c => c.Filial)
                 .Include(c => c.User)
+                .ApplyFilters(filters);
+
+            List<Collect> items = await query
                 .OrderBy(c => c.Id)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+                
+            int totalCount = await query.CountAsync();
                 
             return (items, totalCount);
         }

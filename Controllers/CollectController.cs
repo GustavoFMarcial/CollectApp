@@ -18,9 +18,9 @@ public class CollectController : Controller
         _collectService = collectService;
     }
 
-    public async Task<IActionResult> ListCollects(int pageNum = 1)
+    public async Task<IActionResult> ListCollects(CollectFilterViewModel filters, int pageNum = 1)
     {
-        PagedResultViewModel<CollectListViewModel> clivm = await _collectService.SetPagedResultCollectListViewModel(pageNum);
+        PagedResultViewModel<CollectListViewModel> clivm = await _collectService.SetPagedResultCollectListViewModel(filters, pageNum);
 
         return View(clivm);
     }
