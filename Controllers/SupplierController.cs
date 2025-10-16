@@ -19,7 +19,7 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> ListSuppliers(SupplierFilterViewModel filters, int pageNum = 1)
         {
-            PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(pageNum);
+            PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(filters, pageNum);
 
             return View(pagedResultSupplierListViewModel);
         }
@@ -27,7 +27,8 @@ namespace CollectApp.Controllers
         [HttpPost]
         public async Task<IActionResult> ListSuppliersJson([FromBody] FilterRequestInput request)
         {
-            PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(request.PageNum, request.PageSize, request.Input);
+            SupplierFilterViewModel sfvm = new SupplierFilterViewModel();
+            PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(sfvm, request.PageNum, request.PageSize, request.Input);
 
             return Json(pagedResultSupplierListViewModel);
         }
@@ -102,7 +103,8 @@ namespace CollectApp.Controllers
 
         public async Task<IActionResult> ListSuppliersJson(int pageNum = 1)
         {
-            PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(pageNum);
+            SupplierFilterViewModel sfvm = new SupplierFilterViewModel();
+            PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(sfvm, pageNum);
 
             return Json(pagedResultSupplierListViewModel);
         }

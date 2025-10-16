@@ -1,5 +1,5 @@
 @using CollectApp.ViewModels
-@model PagedResultViewModel<SupplierListViewModel>
+@model PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel>
 @{
     ViewData["Title"] = "Lista de fornecedores";
     ViewBag.Message = TempData["Message"];
@@ -10,7 +10,7 @@
     <h1 class="mb-2">Lista de fornecedores</h1>
     <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Supplier" asp-action="CreateSupplier">Inserir fornecedor</a>
 
-    @await Html.PartialAsync("_SupplierFilter")
+    @await Html.PartialAsync("_SupplierFilter", Model.Filters)
 
     <table class="table table-hover" style="table-layout: fixed;">
         <thead>

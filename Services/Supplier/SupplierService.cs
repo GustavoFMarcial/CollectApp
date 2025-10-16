@@ -15,9 +15,9 @@ namespace CollectApp.Services
             _collectRepository = collectRepository;
         }
 
-        public async Task<PagedResultViewModel<SupplierListViewModel>> SetPagedResultSupplierListViewModel(int pageNum = 1, int pageSize = 10, string? input = null)
+        public async Task<PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel>> SetPagedResultSupplierListViewModel(SupplierFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
         {
-            (List<Supplier> items, int totalCount) suppliers = await _supplierRepository.ToSupplierListAsync(pageNum, pageSize, input);
+            (List<Supplier> items, int totalCount) suppliers = await _supplierRepository.ToSupplierListAsync(filters, pageNum, pageSize, input);
 
             List<SupplierListViewModel> supplierListViewModel = suppliers.items.Select(s => new SupplierListViewModel
             {
@@ -27,11 +27,12 @@ namespace CollectApp.Services
                 Address = $"Rua {s.Street}, Bairro {s.Neighborhood}, nº {s.Number}, {s.City}/{s.State} - CEP {s.ZipCode}",
             }).ToList();
 
-            PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = new PagedResultViewModel<SupplierListViewModel>
+            PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel> pagedResultSupplierListViewModel = new PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel>
             {
                 Items = supplierListViewModel,
                 TotalPages = (int)Math.Ceiling(suppliers.totalCount / (double)pageSize),
                 PageNum = pageNum,
+                Filters = filters,
             };
 
             return pagedResultSupplierListViewModel;

@@ -1,5 +1,7 @@
 using CollectApp.Data;
+using CollectApp.Extensions;
 using CollectApp.Models;
+using CollectApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 
@@ -19,7 +21,7 @@ namespace CollectApp.Repositories
             return await _context.Suppliers.FindAsync(id);
         }
 
-        public async Task<(List<Supplier> items, int totalCount)> ToSupplierListAsync(int pageNum = 1, int pageSize = 10, string? input = null)
+        public async Task<(List<Supplier> items, int totalCount)> ToSupplierListAsync(SupplierFilterViewModel filters,int pageNum = 1, int pageSize = 10, string? input = null)
         {
             IQueryable<Supplier> query = _context.Suppliers.AsQueryable();
 
@@ -29,13 +31,14 @@ namespace CollectApp.Repositories
                     .Where(s => s.Name.Contains(input));
             }
 
-            int totalCount = await query.CountAsync();
-
             List<Supplier> items = await query
                 .OrderBy(s => s.Id)
+                .ApplyFilters(filters)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            int totalCount = await query.CountAsync();
 
             return (items, totalCount);
         }
