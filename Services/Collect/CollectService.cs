@@ -29,7 +29,7 @@ namespace CollectApp.Services
             _logger = logger;
         }
 
-        public async Task<PagedResultViewModel<CollectListViewModel>> SetPagedResultCollectListViewModel(CollectFilterViewModel filters, int pageNum = 1, int pageSize = 10)
+        public async Task<PagedResultViewModel<CollectListViewModel, CollectFilterViewModel>> SetPagedResultCollectListViewModel(CollectFilterViewModel filters, int pageNum = 1, int pageSize = 10)
         {
             (List<Collect> items, int totalCount) collects = await _collectRepository.ToCollectListAsync(filters, pageNum);
 
@@ -58,7 +58,7 @@ namespace CollectApp.Services
 
             List<CollectListViewModel> collectListViewModels = (await Task.WhenAll(collectTasks)).ToList();
 
-            return new PagedResultViewModel<CollectListViewModel>
+            return new PagedResultViewModel<CollectListViewModel, CollectFilterViewModel>
             {
                 Items = collectListViewModels,
                 TotalPages = (int)Math.Ceiling(collects.totalCount / (double)pageSize),

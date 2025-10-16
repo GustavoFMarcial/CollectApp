@@ -20,7 +20,7 @@ public class CollectController : Controller
 
     public async Task<IActionResult> ListCollects(CollectFilterViewModel filters, int pageNum = 1)
     {
-        PagedResultViewModel<CollectListViewModel> clivm = await _collectService.SetPagedResultCollectListViewModel(filters, pageNum);
+        PagedResultViewModel<CollectListViewModel, CollectFilterViewModel> clivm = await _collectService.SetPagedResultCollectListViewModel(filters, pageNum);
 
         return View(clivm);
     }

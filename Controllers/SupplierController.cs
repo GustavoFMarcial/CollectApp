@@ -17,7 +17,7 @@ namespace CollectApp.Controllers
             _supplierService = supplierService;
         }
 
-        public async Task<IActionResult> ListSuppliers(int pageNum = 1)
+        public async Task<IActionResult> ListSuppliers(SupplierFilterViewModel filters, int pageNum = 1)
         {
             PagedResultViewModel<SupplierListViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(pageNum);
 
