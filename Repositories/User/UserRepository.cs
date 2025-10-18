@@ -1,3 +1,4 @@
+using CollectApp.Extensions;
 using CollectApp.Models;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,7 @@ namespace CollectApp.Repositories
             IQueryable<ApplicationUser> query = _userManager.Users.AsQueryable();
 
             List<ApplicationUser> items = await query
+                .ApplyFilters(filters)
                 .OrderBy(u => u.Role)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)

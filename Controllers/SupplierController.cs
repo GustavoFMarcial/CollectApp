@@ -100,13 +100,5 @@ namespace CollectApp.Controllers
 
             return RedirectToAction(nameof(ListSuppliers));
         }
-
-        // public async Task<IActionResult> ListSuppliersJson(int pageNum = 1)
-        // {
-        //     SupplierFilterViewModel sfvm = new SupplierFilterViewModel();
-        //     PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel> pagedResultSupplierListViewModel = await _supplierService.SetPagedResultSupplierListViewModel(sfvm, pageNum);
-
-        //     return Json(pagedResultSupplierListViewModel);
-        // }
     }
 }

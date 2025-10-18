@@ -6,17 +6,16 @@
         <h6 class="mb-0">Filtros de Busca</h6>
     </div>
     <div class="card-body">
-        <form method="get" asp-controller="Collect" asp-action="ListCollects">
+        <form method="get" asp-controller="User" asp-action="ListUsers">
             <div class="row g-2">
                 <div class="col-md-1">
                     <label asp-for="Id" class="form-label small mb-1 ps-1">ID</label>
-                    <input asp-for="Id" type="number" class="form-control form-control-sm" placeholder="ID">
+                    <input asp-for="Id" type="text" class="form-control form-control-sm" placeholder="ID">
                 </div>
 
                 <div class="col-auto">
                     <label asp-for="StartCreation" class="form-label small mb-1 ps-1">Criação Início</label>
-                    <input asp-for="StartCreation" type="date" class="form-control form-control-sm"
-                        style="width: 150px;">
+                    <input asp-for="StartCreation" type="date" class="form-control form-control-sm" style="width: 150px;">
                 </div>
 
                 <div class="col-auto">
