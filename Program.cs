@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using CollectApp.Factories;
 using YourAppNamespace.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
