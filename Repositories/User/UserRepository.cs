@@ -1,4 +1,5 @@
 using CollectApp.Models;
+using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,17 +14,17 @@ namespace CollectApp.Repositories
             _userManager = userManager;
         }
 
-        public async Task<(List<ApplicationUser> items, int totalCount)> ToUserListAsync(int pageNum = 1, int pageSize = 10)
+        public async Task<(List<ApplicationUser> items, int totalCount)> ToUserListAsync(UserFilterViewModel filters, int pageNum = 1, int pageSize = 10)
         {
             IQueryable<ApplicationUser> query = _userManager.Users.AsQueryable();
-
-            int totalCount = await query.CountAsync();
 
             List<ApplicationUser> items = await query
                 .OrderBy(u => u.Role)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            int totalCount = await query.CountAsync();
 
             return (items, totalCount);
         }

@@ -15,9 +15,9 @@ namespace CollectApp.Controllers
             _userService = userService;
         }
 
-        public async Task<IActionResult> ListUsers(int pageNum = 1)
+        public async Task<IActionResult> ListUsers(UserFilterViewModel filters, int pageNum = 1)
         {
-            PagedResultViewModel<UserListViewModel> clivm = await _userService.SetPagedResultUserListViewModel(pageNum);
+            PagedResultViewModel<UserListViewModel, UserFilterViewModel> clivm = await _userService.SetPagedResultUserListViewModel(filters, pageNum);
 
             return View(clivm);
         }

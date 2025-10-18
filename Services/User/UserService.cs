@@ -2,6 +2,7 @@ using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +17,9 @@ namespace CollectApp.Services
         {
             _userRepository = userRepository;
         }
-        public async Task<PagedResultViewModel<UserListViewModel>> SetPagedResultUserListViewModel(int pageNum = 1, int pageSize = 10)
+        public async Task<PagedResultViewModel<UserListViewModel, UserFilterViewModel>> SetPagedResultUserListViewModel(UserFilterViewModel filters, int pageNum = 1, int pageSize = 10)
         {
-            (List<ApplicationUser> items, int totalCount) users = await _userRepository.ToUserListAsync(pageNum);
+            (List<ApplicationUser> items, int totalCount) users = await _userRepository.ToUserListAsync(filters, pageNum);
 
             var userListViewModel = users.items.Select(u => new UserListViewModel
             {
@@ -29,11 +30,12 @@ namespace CollectApp.Services
                 Status = u.Status,
             }).ToList();
 
-            return new PagedResultViewModel<UserListViewModel>
+            return new PagedResultViewModel<UserListViewModel, UserFilterViewModel>
             {
                 Items = userListViewModel,
                 TotalPages = (int)Math.Ceiling(users.totalCount / (double)pageSize),
                 PageNum = pageNum,
+                Filters = filters,
             };
         }
 
