@@ -31,8 +31,8 @@ namespace CollectApp.Repositories
             }
 
             List<Product> items = await query
-                .OrderBy(p => p.Id)
                 .ApplyFilters(filters)
+                .OrderBy(p => p.Id)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

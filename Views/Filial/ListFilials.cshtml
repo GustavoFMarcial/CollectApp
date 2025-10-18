@@ -1,5 +1,5 @@
 @using CollectApp.ViewModels
-@model PagedResultViewModel<FilialListViewModel>
+@model PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>
 
 @{
     ViewData["Title"] = "Lista de filiais";
@@ -10,6 +10,8 @@
 <div class="container">
     <h1 class="mb-2">Lista de filiais</h1>
     <a class="nav-link text-primary mb-4 d-inline-block" asp-controller="Filial" asp-action="CreateFilial">Inserir filial</a>
+
+    @Html.PartialAsync("_FilialFilters", Model.Filters)
 
     <table class="table table-hover" style="table-layout: fixed;">
         <thead>

@@ -1,5 +1,7 @@
 using CollectApp.Data;
+using CollectApp.Extensions;
 using CollectApp.Models;
+using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +21,7 @@ namespace CollectApp.Repositories
             return await _context.Filials.FindAsync(id);
         }
 
-        public async Task<(List<Filial> Items, int TotalCount)> ToFilialListAsync(int pageNum = 1, int pageSize = 10, string? input = null)
+        public async Task<(List<Filial> Items, int TotalCount)> ToFilialListAsync(FilialFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
         {
             IQueryable<Filial> query = _context.Filials.AsQueryable();
 
@@ -29,14 +31,14 @@ namespace CollectApp.Repositories
                     .Where(f => f.Name.Contains(input));
             }
 
-            int totalCount = await query.CountAsync();
-
             List<Filial> items = await query
+                .ApplyFilters(filters)
                 .OrderBy(f => f.Id)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
+            int totalCount = await query.CountAsync();
             return (items, totalCount);
         }
 
