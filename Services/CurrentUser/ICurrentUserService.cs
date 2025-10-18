@@ -1,10 +1,9 @@
 using System.Security.Claims;
 
-namespace CollectApp.Services
+namespace CollectApp.Services;
+
+public interface ICurrentUserService
 {
-    public interface ICurrentUserService
-    {
-        string UserId { get; }
-        ClaimsPrincipal User { get; }
-    }
+    string UserId { get; }
+    ClaimsPrincipal User { get; }
 }

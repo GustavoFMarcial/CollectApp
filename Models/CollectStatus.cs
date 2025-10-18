@@ -1,17 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CollectApp.Models
+namespace CollectApp.Models;
+
+public enum CollectStatus
 {
-    public enum CollectStatus
-    {
-        [Display(Name = "Pendente aprovar")]
-        PendenteAprovar,
+    [Display(Name = "Pendente aprovar")]
+    PendenteAprovar,
 
-        [Display(Name = "Pendente coletar")]
-        PendenteColetar,
+    [Display(Name = "Pendente coletar")]
+    PendenteColetar,
 
-        Coletado,
+    Coletado,
 
-        Cancelado,
-    }
+    Cancelado,
 }

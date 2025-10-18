@@ -1,8 +1,7 @@
-namespace CollectApp.Models
+namespace CollectApp.Models;
+
+public class Filial
 {
-    public class Filial
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-    }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
 }

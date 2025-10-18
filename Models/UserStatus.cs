@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CollectApp.Models
+namespace CollectApp.Models;
+
+public enum UserStatus
 {
-    public enum UserStatus
-    {
-        Ativo,
-        Inativo,
-    }
+    Ativo,
+    Inativo,
 }

@@ -2,129 +2,128 @@ using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
 
-namespace CollectApp.Services
+namespace CollectApp.Services;
+
+public class FilialService : IFilialService
 {
-    public class FilialService : IFilialService
+    private readonly IFilialRepository _filialRepository;
+    private readonly ICollectRepository _collectRepository;
+
+    public FilialService(IFilialRepository filialRepository, ICollectRepository collectRepository)
     {
-        private readonly IFilialRepository _filialRepository;
-        private readonly ICollectRepository _collectRepository;
+        _filialRepository = filialRepository;
+        _collectRepository = collectRepository;
+    }
 
-        public FilialService(IFilialRepository filialRepository, ICollectRepository collectRepository)
+    public async Task<OperationResult> CreateFilial(CreateFilialViewModel filialCreate)
+    {
+        Filial filial = new Filial
         {
-            _filialRepository = filialRepository;
-            _collectRepository = collectRepository;
+            Name = filialCreate.Name,
+        };
+
+        bool productExist = await _filialRepository.AnyFilialAsync(filialCreate.Name, filial.Id);
+
+        if (productExist)
+        {
+            return OperationResult.Fail($"Já existe uma filial cadastrada com o nome fornecido");
         }
 
-        public async Task<OperationResult> CreateFilial(CreateFilialViewModel filialCreate)
+        _filialRepository.AddFilial(filial);
+        await _filialRepository.SaveChangesFilialAsync();
+
+        return OperationResult.Ok();
+    }
+
+    public async Task<EditFilialViewModel> SetEditFilialViewModel(int? id)
+    {
+        Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
+
+        if (filial == null)
         {
-            Filial filial = new Filial
-            {
-                Name = filialCreate.Name,
-            };
-
-            bool productExist = await _filialRepository.AnyFilialAsync(filialCreate.Name, filial.Id);
-
-            if (productExist)
-            {
-                return OperationResult.Fail($"Já existe uma filial cadastrada com o nome fornecido");
-            }
-
-            _filialRepository.AddFilial(filial);
-            await _filialRepository.SaveChangesFilialAsync();
-
-            return OperationResult.Ok();
+            EditFilialViewModel NotFound = new EditFilialViewModel();
+            return NotFound;
         }
 
-        public async Task<EditFilialViewModel> SetEditFilialViewModel(int? id)
+        EditFilialViewModel epvm = new EditFilialViewModel
         {
-            Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
+            Id = filial.Id,
+            Name = filial.Name
+        };
 
-            if (filial == null)
-            {
-                EditFilialViewModel NotFound = new EditFilialViewModel();
-                return NotFound;
-            }
+        return epvm;
+    }
 
-            EditFilialViewModel epvm = new EditFilialViewModel
-            {
-                Id = filial.Id,
-                Name = filial.Name
-            };
+    public async Task<OperationResult> EditFilial(EditFilialViewModel filialEdit)
+    {
+        Filial? filial = await _filialRepository.GetFilialByIdAsync(filialEdit.Id);
 
-            return epvm;
+        if (filial == null)
+        {
+            OperationResult NotFound = new OperationResult();
+            return NotFound;
         }
 
-        public async Task<OperationResult> EditFilial(EditFilialViewModel filialEdit)
+        bool filialExist = await _filialRepository.AnyFilialAsync(filialEdit.Name, filialEdit.Id);
+
+        if (filialExist)
         {
-            Filial? filial = await _filialRepository.GetFilialByIdAsync(filialEdit.Id);
-
-            if (filial == null)
-            {
-                OperationResult NotFound = new OperationResult();
-                return NotFound;
-            }
-
-            bool filialExist = await _filialRepository.AnyFilialAsync(filialEdit.Name, filialEdit.Id);
-
-            if (filialExist)
-            {
-                return OperationResult.Fail($"Já existe uma filial cadastrada com o nome fornecido");
-            }
-
-            filial.Name = filialEdit.Name;
-            await _filialRepository.SaveChangesFilialAsync();
-
-            return OperationResult.Ok();
+            return OperationResult.Fail($"Já existe uma filial cadastrada com o nome fornecido");
         }
 
-        public async Task<PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>> SetPagedResultFilialListViewModel(FilialFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
+        filial.Name = filialEdit.Name;
+        await _filialRepository.SaveChangesFilialAsync();
+
+        return OperationResult.Ok();
+    }
+
+    public async Task<PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>> SetPagedResultFilialListViewModel(FilialFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
+    {
+        (List<Filial> Items, int TotalCount) filials = await _filialRepository.ToFilialListAsync(filters, pageNum, pageSize, input);
+
+        List<FilialListViewModel> filialListViewModel = filials.Items.Select(f => new FilialListViewModel
         {
-            (List<Filial> Items, int TotalCount) filials = await _filialRepository.ToFilialListAsync(filters, pageNum, pageSize, input);
+            Id = f.Id,
+            Name = f.Name,
+        }).ToList();
 
-            List<FilialListViewModel> filialListViewModel = filials.Items.Select(f => new FilialListViewModel
-            {
-                Id = f.Id,
-                Name = f.Name,
-            }).ToList();
+        PagedResultViewModel<FilialListViewModel, FilialFilterViewModel> pagedResultFilialListViewModel = new PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>
+        {
+            Items = filialListViewModel,
+            TotalPages = (int)Math.Ceiling(filials.TotalCount / (double)pageSize),
+            PageNum = pageNum,
+            Filters = filters,
+        };
 
-            PagedResultViewModel<FilialListViewModel, FilialFilterViewModel> pagedResultFilialListViewModel = new PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>
-            {
-                Items = filialListViewModel,
-                TotalPages = (int)Math.Ceiling(filials.TotalCount / (double)pageSize),
-                PageNum = pageNum,
-                Filters = filters,
-            };
+        return pagedResultFilialListViewModel;
+    }
 
-            return pagedResultFilialListViewModel;
+    public async Task<OperationResult> DeleteFilial(int? id)
+    {
+        if (id == null)
+        {
+            OperationResult NotFound = new OperationResult();
+            return NotFound;
         }
 
-        public async Task<OperationResult> DeleteFilial(int? id)
+        Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
+
+        if (filial == null)
         {
-            if (id == null)
-            {
-                OperationResult NotFound = new OperationResult();
-                return NotFound;
-            }
-
-            Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
-
-            if (filial == null)
-            {
-                OperationResult NotFound = new OperationResult();
-                return NotFound;
-            }
-
-            bool existFilialWithCollect = await _collectRepository.AnyCollectAsync("filial", filial.Id);
-
-            if (existFilialWithCollect)
-            {
-                return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a esta loja");
-            }
-
-            _filialRepository.RemoveFilial(filial);
-            await _filialRepository.SaveChangesFilialAsync();
-
-            return OperationResult.Ok();
+            OperationResult NotFound = new OperationResult();
+            return NotFound;
         }
+
+        bool existFilialWithCollect = await _collectRepository.AnyCollectAsync("filial", filial.Id);
+
+        if (existFilialWithCollect)
+        {
+            return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a esta loja");
+        }
+
+        _filialRepository.RemoveFilial(filial);
+        await _filialRepository.SaveChangesFilialAsync();
+
+        return OperationResult.Ok();
     }
 }

@@ -3,64 +3,62 @@ using CollectApp.Extensions;
 using CollectApp.Models;
 using CollectApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Serialization;
 
-namespace CollectApp.Repositories
+namespace CollectApp.Repositories;
+
+public class SupplierRepository : ISupplierRepository
 {
-    public class SupplierRepository : ISupplierRepository
+    private readonly CollectAppContext _context;
+
+    public SupplierRepository(CollectAppContext context)
     {
-        private readonly CollectAppContext _context;
+        _context = context;
+    }
 
-        public SupplierRepository(CollectAppContext context)
+    public async Task<Supplier?> GetSupplierByIdAsync(int? id)
+    {
+        return await _context.Suppliers.FindAsync(id);
+    }
+
+    public async Task<(List<Supplier> items, int totalCount)> ToSupplierListAsync(SupplierFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
+    {
+        IQueryable<Supplier> query = _context.Suppliers.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(input))
         {
-            _context = context;
+            query = query
+                .Where(s => s.Name.Contains(input));
         }
 
-        public async Task<Supplier?> GetSupplierByIdAsync(int? id)
-        {
-            return await _context.Suppliers.FindAsync(id);
-        }
+        List<Supplier> items = await query
+            .ApplyFilters(filters)
+            .OrderBy(s => s.Id)
+            .Skip((pageNum - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
-        public async Task<(List<Supplier> items, int totalCount)> ToSupplierListAsync(SupplierFilterViewModel filters,int pageNum = 1, int pageSize = 10, string? input = null)
-        {
-            IQueryable<Supplier> query = _context.Suppliers.AsQueryable();
+        int totalCount = await query.CountAsync();
 
-            if (!string.IsNullOrWhiteSpace(input))
-            {
-                query = query
-                    .Where(s => s.Name.Contains(input));
-            }
+        return (items, totalCount);
+    }
 
-            List<Supplier> items = await query
-                .ApplyFilters(filters)
-                .OrderBy(s => s.Id)
-                .Skip((pageNum - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+    public async Task<bool> AnySupplierAsync(string supplierCNPJ, int? supplierId)
+    {
+        return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplierCNPJ && s.Id != supplierId);
+    }
 
-            int totalCount = await query.CountAsync();
+    public void AddSupplier(Supplier supplier)
+    {
+        _context.Suppliers.Add(supplier);
+    }
 
-            return (items, totalCount);
-        }
+    public void RemoveSupplier(Supplier supplier)
+    {
+        _context.Suppliers.Remove(supplier);
+    }
 
-        public async Task<bool> AnySupplierAsync(string supplierCNPJ, int? supplierId)
-        {
-            return await _context.Suppliers.AnyAsync(s => s.CNPJ == supplierCNPJ && s.Id != supplierId);
-        }
-
-        public void AddSupplier(Supplier supplier)
-        {
-            _context.Suppliers.Add(supplier);
-        }
-
-        public void RemoveSupplier(Supplier supplier)
-        {
-            _context.Suppliers.Remove(supplier);
-        }
-
-        public async Task SaveChangesSupplierAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+    public async Task SaveChangesSupplierAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }

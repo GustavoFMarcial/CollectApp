@@ -1,132 +1,126 @@
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.CodeAnalysis.Differencing;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
-using Microsoft.EntityFrameworkCore;
 
-namespace CollectApp.Services
+namespace CollectApp.Services;
+
+public class UserService : IUserService
 {
-    public class UserService : IUserService
+    private readonly IUserRepository _userRepository;
+
+    public UserService(IUserRepository userRepository)
     {
-        private readonly IUserRepository _userRepository;
+        _userRepository = userRepository;
+    }
+    public async Task<PagedResultViewModel<UserListViewModel, UserFilterViewModel>> SetPagedResultUserListViewModel(UserFilterViewModel filters, int pageNum = 1, int pageSize = 10)
+    {
+        (List<ApplicationUser> items, int totalCount) users = await _userRepository.ToUserListAsync(filters, pageNum);
 
-        public UserService(IUserRepository userRepository)
+        var userListViewModel = users.items.Select(u => new UserListViewModel
         {
-            _userRepository = userRepository;
-        }
-        public async Task<PagedResultViewModel<UserListViewModel, UserFilterViewModel>> SetPagedResultUserListViewModel(UserFilterViewModel filters, int pageNum = 1, int pageSize = 10)
+            Id = u.Id,
+            CreatedAt = u.CreatedAt,
+            FullName = u.FullName,
+            Role = u.Role,
+            Status = u.Status,
+        }).ToList();
+
+        return new PagedResultViewModel<UserListViewModel, UserFilterViewModel>
         {
-            (List<ApplicationUser> items, int totalCount) users = await _userRepository.ToUserListAsync(filters, pageNum);
+            Items = userListViewModel,
+            TotalPages = (int)Math.Ceiling(users.totalCount / (double)pageSize),
+            PageNum = pageNum,
+            Filters = filters,
+        };
+    }
 
-            var userListViewModel = users.items.Select(u => new UserListViewModel
-            {
-                Id = u.Id,
-                CreatedAt = u.CreatedAt,
-                FullName = u.FullName,
-                Role = u.Role,
-                Status = u.Status,
-            }).ToList();
-
-            return new PagedResultViewModel<UserListViewModel, UserFilterViewModel>
-            {
-                Items = userListViewModel,
-                TotalPages = (int)Math.Ceiling(users.totalCount / (double)pageSize),
-                PageNum = pageNum,
-                Filters = filters,
-            };
-        }
-
-        public async Task ChangeUserStatus(string id)
+    public async Task ChangeUserStatus(string id)
+    {
+        if (id == null)
         {
-            if (id == null)
-            {
-                return;
-            }
-
-            ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
-
-            if (user == null)
-            {
-                return;
-            }
-
-            user.Status = user.Status switch
-            {
-                UserStatus.Ativo => UserStatus.Inativo,
-                UserStatus.Inativo => UserStatus.Ativo,
-                _ => user.Status,
-            };
-
-            if (user.Status == UserStatus.Ativo)
-            {
-                await _userRepository.UnlockOutUserAsync(user);
-            }
-            else
-            {
-                await _userRepository.LockOutUserAsync(user);
-            }
-
-            await _userRepository.SaveChangesUserAsync(user);
+            return;
         }
 
-        public async Task<EditUserViewModel> SetEditCollectViewModel(string id)
+        ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
+
+        if (user == null)
         {
-            if (id == null)
-            {
-                EditUserViewModel NotFound = new EditUserViewModel();
-                return NotFound;
-            }
-
-            ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
-
-            if (user == null)
-            {
-                EditUserViewModel NotFound = new EditUserViewModel();
-                return NotFound;
-            }
-
-            EditUserViewModel euvm = new EditUserViewModel
-            {
-                FullName = user.FullName,
-                Role = user.Role,
-            };
-
-            return euvm;
+            return;
         }
 
-        public async Task<OperationResult> EditUser(EditUserViewModel userEdit)
+        user.Status = user.Status switch
         {
-            var user = await _userRepository.GetUserByIdAsync(userEdit.Id);
+            UserStatus.Ativo => UserStatus.Inativo,
+            UserStatus.Inativo => UserStatus.Ativo,
+            _ => user.Status,
+        };
 
-            if (user == null)
-            {
-                return OperationResult.Fail("Usuário não encontrado.");
-            }
-                
-            bool userExist = await _userRepository.AnyUserAsync(userEdit.FullName, userEdit.Id);
-
-            if (userExist)
-            {
-                return OperationResult.Fail("Já existe um usuário com o nome completo informado.");
-            }
-                
-            IList<string> currentRoles = await _userRepository.GetRolesFromUserAsync(user);
-            if (currentRoles.Any())
-            {
-                await _userRepository.RemoveRolesFromUserAsync(user, currentRoles);
-            }
-                
-            await _userRepository.AddRoleToUserAsync(user, userEdit.Role);
-
-            user.FullName = userEdit.FullName;
-            user.Role = userEdit.Role;
-
-            await _userRepository.SaveChangesUserAsync(user);
-
-            return OperationResult.Ok();
+        if (user.Status == UserStatus.Ativo)
+        {
+            await _userRepository.UnlockOutUserAsync(user);
         }
+        else
+        {
+            await _userRepository.LockOutUserAsync(user);
+        }
+
+        await _userRepository.SaveChangesUserAsync(user);
+    }
+
+    public async Task<EditUserViewModel> SetEditCollectViewModel(string id)
+    {
+        if (id == null)
+        {
+            EditUserViewModel NotFound = new EditUserViewModel();
+            return NotFound;
+        }
+
+        ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
+
+        if (user == null)
+        {
+            EditUserViewModel NotFound = new EditUserViewModel();
+            return NotFound;
+        }
+
+        EditUserViewModel euvm = new EditUserViewModel
+        {
+            FullName = user.FullName,
+            Role = user.Role,
+        };
+
+        return euvm;
+    }
+
+    public async Task<OperationResult> EditUser(EditUserViewModel userEdit)
+    {
+        var user = await _userRepository.GetUserByIdAsync(userEdit.Id);
+
+        if (user == null)
+        {
+            return OperationResult.Fail("Usuário não encontrado.");
+        }
+
+        bool userExist = await _userRepository.AnyUserAsync(userEdit.FullName, userEdit.Id);
+
+        if (userExist)
+        {
+            return OperationResult.Fail("Já existe um usuário com o nome completo informado.");
+        }
+
+        IList<string> currentRoles = await _userRepository.GetRolesFromUserAsync(user);
+        if (currentRoles.Any())
+        {
+            await _userRepository.RemoveRolesFromUserAsync(user, currentRoles);
+        }
+
+        await _userRepository.AddRoleToUserAsync(user, userEdit.Role);
+
+        user.FullName = userEdit.FullName;
+        user.Role = userEdit.Role;
+
+        await _userRepository.SaveChangesUserAsync(user);
+
+        return OperationResult.Ok();
     }
 }

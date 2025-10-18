@@ -1,39 +1,37 @@
 using System.Security.Claims;
 using CollectApp.Authorization.Requirements;
-using CollectApp.Repositories;
 using Microsoft.AspNetCore.Authorization;
 
-namespace CollectApp.Authorization.Handlers
+namespace CollectApp.Authorization.Handlers;
+
+public class MustBeCollectOwnerHandler : AuthorizationHandler<MustBeCollectOwnerRequirement>
 {
-    public class MustBeCollectOwnerHandler : AuthorizationHandler<MustBeCollectOwnerRequirement>
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MustBeCollectOwnerRequirement requirement)
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MustBeCollectOwnerRequirement requirement)
+        string? currentUserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(currentUserId))
         {
-            string? currentUserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Task.CompletedTask; ;
+        }
 
-            if (string.IsNullOrEmpty(currentUserId))
-            {
-                return Task.CompletedTask;;
-            }
-
-            if (context.User.IsInRole("Admin"))
-            {
-                context.Succeed(requirement);
-                return Task.CompletedTask;
-            }
-
-            string collectUserId = "";
-            if (context.Resource is string id)
-            {
-                collectUserId = id;
-            } 
-
-            if (currentUserId == collectUserId)
-            {
-                context.Succeed(requirement);
-            }
-
+        if (context.User.IsInRole("Admin"))
+        {
+            context.Succeed(requirement);
             return Task.CompletedTask;
         }
+
+        string collectUserId = "";
+        if (context.Resource is string id)
+        {
+            collectUserId = id;
+        }
+
+        if (currentUserId == collectUserId)
+        {
+            context.Succeed(requirement);
+        }
+
+        return Task.CompletedTask;
     }
 }

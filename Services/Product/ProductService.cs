@@ -2,135 +2,134 @@ using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
 
-namespace CollectApp.Services
+namespace CollectApp.Services;
+
+public class ProductService : IProductService
 {
-    public class ProductService : IProductService
+    private readonly IProductRepository _productRepository;
+    private readonly ICollectRepository _collectRepository;
+
+    public ProductService(IProductRepository productRepository, ICollectRepository collectRepository)
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICollectRepository _collectRepository;
+        _productRepository = productRepository;
+        _collectRepository = collectRepository;
+    }
 
-        public ProductService(IProductRepository productRepository, ICollectRepository collectRepository)
+    public async Task<OperationResult> CreateProduct(CreateProductViewModel productCreate)
+    {
+        Product product = new Product
         {
-            _productRepository = productRepository;
-            _collectRepository = collectRepository;
+            Description = productCreate.Description,
+        };
+
+        bool productExist = await _productRepository.AnyProductAsync(productCreate.Description, product.Id);
+
+        if (productExist)
+        {
+            return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
         }
 
-        public async Task<OperationResult> CreateProduct(CreateProductViewModel productCreate)
+        _productRepository.AddProduct(product);
+        await _productRepository.SaveChangesProductAsync();
+
+        return OperationResult.Ok();
+    }
+
+    public async Task<EditProductViewModel> SetEditProductViewModel(int? id)
+    {
+        if (id == null)
         {
-            Product product = new Product
-            {
-                Description = productCreate.Description,
-            };
-
-            bool productExist = await _productRepository.AnyProductAsync(productCreate.Description, product.Id);
-
-            if (productExist)
-            {
-                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
-            }
-
-            _productRepository.AddProduct(product);
-            await _productRepository.SaveChangesProductAsync();
-
-            return OperationResult.Ok();
+            EditProductViewModel NotFound = new EditProductViewModel();
+            return NotFound;
         }
 
-        public async Task<EditProductViewModel> SetEditProductViewModel(int? id)
+        Product? product = await _productRepository.GetProductByIdAsync(id);
+
+        if (product == null)
         {
-            if (id == null)
-            {
-                EditProductViewModel NotFound = new EditProductViewModel();
-                return NotFound;
-            }
-
-            Product? product = await _productRepository.GetProductByIdAsync(id);
-
-            if (product == null)
-            {
-                EditProductViewModel NotFound = new EditProductViewModel();
-                return NotFound;
-            }
-
-            EditProductViewModel epvm = new EditProductViewModel
-            {
-                Id = product.Id,
-                Description = product.Description,
-            };
-
-            return epvm;
+            EditProductViewModel NotFound = new EditProductViewModel();
+            return NotFound;
         }
 
-        public async Task<OperationResult> EditProduct(EditProductViewModel productEdit)
+        EditProductViewModel epvm = new EditProductViewModel
         {
-            Product? product = await _productRepository.GetProductByIdAsync(productEdit.Id); ;
+            Id = product.Id,
+            Description = product.Description,
+        };
 
-            if (product == null)
-            {
-                OperationResult NotFound = new OperationResult();
-                return NotFound;
-            }
+        return epvm;
+    }
 
-            bool productExist = await _productRepository.AnyProductAsync(productEdit.Description, productEdit.Id);
+    public async Task<OperationResult> EditProduct(EditProductViewModel productEdit)
+    {
+        Product? product = await _productRepository.GetProductByIdAsync(productEdit.Id); ;
 
-            if (productExist)
-            {
-                return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
-            }
-
-            product.Description = productEdit.Description;
-            await _productRepository.SaveChangesProductAsync();
-
-            return OperationResult.Ok();
+        if (product == null)
+        {
+            OperationResult NotFound = new OperationResult();
+            return NotFound;
         }
 
-        public async Task<PagedResultViewModel<ProductListViewModel, ProductFilterViewModel>> SetPagedResultProductListViewModel(ProductFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
+        bool productExist = await _productRepository.AnyProductAsync(productEdit.Description, productEdit.Id);
+
+        if (productExist)
         {
-            (List<Product> items, int totalCount) products = await _productRepository.ToProductListAsync(filters, pageNum, pageSize, input);
-
-            List<ProductListViewModel> productListViewModel = products.items.Select(p => new ProductListViewModel
-            {
-                Id = p.Id,
-                Description = p.Description
-            }).ToList();
-
-            PagedResultViewModel<ProductListViewModel, ProductFilterViewModel> pagedResultProductListViewModel = new PagedResultViewModel<ProductListViewModel, ProductFilterViewModel>
-            {
-                Items = productListViewModel,
-                TotalPages = (int)Math.Ceiling(products.totalCount / (double)pageSize),
-                PageNum = pageNum,
-                Filters = filters,
-            };
-
-            return pagedResultProductListViewModel;
+            return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
         }
 
-        public async Task<OperationResult> DeleteProduct(int? id)
+        product.Description = productEdit.Description;
+        await _productRepository.SaveChangesProductAsync();
+
+        return OperationResult.Ok();
+    }
+
+    public async Task<PagedResultViewModel<ProductListViewModel, ProductFilterViewModel>> SetPagedResultProductListViewModel(ProductFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
+    {
+        (List<Product> items, int totalCount) products = await _productRepository.ToProductListAsync(filters, pageNum, pageSize, input);
+
+        List<ProductListViewModel> productListViewModel = products.items.Select(p => new ProductListViewModel
         {
-            if (id == null)
-            {
-                OperationResult NotFound = new OperationResult();
-                return NotFound;
-            }
+            Id = p.Id,
+            Description = p.Description
+        }).ToList();
 
-            Product? product = await _productRepository.GetProductByIdAsync(id);
+        PagedResultViewModel<ProductListViewModel, ProductFilterViewModel> pagedResultProductListViewModel = new PagedResultViewModel<ProductListViewModel, ProductFilterViewModel>
+        {
+            Items = productListViewModel,
+            TotalPages = (int)Math.Ceiling(products.totalCount / (double)pageSize),
+            PageNum = pageNum,
+            Filters = filters,
+        };
 
-            if (product == null)
-            {
-                OperationResult NotFound = new OperationResult();
-                return NotFound;
-            }
+        return pagedResultProductListViewModel;
+    }
 
-            bool existProductWithCollect = await _collectRepository.AnyCollectAsync("product", product.Id);
-
-            if (existProductWithCollect)
-            {
-                return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a este produto");
-            }
-
-            _productRepository.RemoveProduct(product);
-            await _productRepository.SaveChangesProductAsync();
-
-            return OperationResult.Ok();
+    public async Task<OperationResult> DeleteProduct(int? id)
+    {
+        if (id == null)
+        {
+            OperationResult NotFound = new OperationResult();
+            return NotFound;
         }
+
+        Product? product = await _productRepository.GetProductByIdAsync(id);
+
+        if (product == null)
+        {
+            OperationResult NotFound = new OperationResult();
+            return NotFound;
+        }
+
+        bool existProductWithCollect = await _collectRepository.AnyCollectAsync("product", product.Id);
+
+        if (existProductWithCollect)
+        {
+            return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a este produto");
+        }
+
+        _productRepository.RemoveProduct(product);
+        await _productRepository.SaveChangesProductAsync();
+
+        return OperationResult.Ok();
     }
 }

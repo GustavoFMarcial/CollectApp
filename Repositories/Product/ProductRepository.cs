@@ -4,62 +4,61 @@ using CollectApp.Models;
 using CollectApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace CollectApp.Repositories
+namespace CollectApp.Repositories;
+
+public class ProductRepository : IProductRepository
 {
-    public class ProductRepository : IProductRepository
+    private readonly CollectAppContext _context;
+
+    public ProductRepository(CollectAppContext context)
     {
-        private readonly CollectAppContext _context;
+        _context = context;
+    }
 
-        public ProductRepository(CollectAppContext context)
+    public async Task<Product?> GetProductByIdAsync(int? id)
+    {
+        return await _context.Products.FindAsync(id);
+    }
+
+    public async Task<(List<Product> items, int totalCount)> ToProductListAsync(ProductFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
+    {
+        IQueryable<Product> query = _context.Products.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(input))
         {
-            _context = context;
+            query = query
+                .Where(p => p.Description.Contains(input));
         }
 
-        public async Task<Product?> GetProductByIdAsync(int? id)
-        {
-            return await _context.Products.FindAsync(id);
-        }
+        List<Product> items = await query
+            .ApplyFilters(filters)
+            .OrderBy(p => p.Id)
+            .Skip((pageNum - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
-        public async Task<(List<Product> items, int totalCount)> ToProductListAsync(ProductFilterViewModel filters, int pageNum = 1, int pageSize = 10, string? input = null)
-        {
-            IQueryable<Product> query = _context.Products.AsQueryable();
+        int totalCount = await query.CountAsync();
 
-            if (!string.IsNullOrWhiteSpace(input))
-            {
-                query = query
-                    .Where(p => p.Description.Contains(input));
-            }
+        return (items, totalCount);
+    }
 
-            List<Product> items = await query
-                .ApplyFilters(filters)
-                .OrderBy(p => p.Id)
-                .Skip((pageNum - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+    public async Task<bool> AnyProductAsync(string productDescription, int? productId)
+    {
+        return await _context.Products.AnyAsync(p => p.Description == productDescription && p.Id != productId);
+    }
 
-            int totalCount = await query.CountAsync();
+    public void AddProduct(Product product)
+    {
+        _context.Products.Add(product);
+    }
 
-            return (items, totalCount);
-        }
+    public void RemoveProduct(Product product)
+    {
+        _context.Products.Remove(product);
+    }
 
-        public async Task<bool> AnyProductAsync(string productDescription, int? productId)
-        {
-            return await _context.Products.AnyAsync(p => p.Description == productDescription && p.Id != productId);
-        }
-
-        public void AddProduct(Product product)
-        {
-            _context.Products.Add(product);
-        }
-
-        public void RemoveProduct(Product product)
-        {
-            _context.Products.Remove(product);
-        }
-
-        public async Task SaveChangesProductAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+    public async Task SaveChangesProductAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }
