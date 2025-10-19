@@ -67,6 +67,30 @@ public class UserService : IUserService
         await _userRepository.SaveChangesUserAsync(user);
     }
 
+    public async Task<OperationResult> CreateUser(CreateUserViewModel createUser)
+    {
+        bool userExist = await _userRepository.AnyUserAsync(createUser.FullName, null);
+
+        if (userExist)
+        {
+            return OperationResult.Fail("Já existe um usuário com o nome completo informado.");
+        }
+
+        var user = new ApplicationUser
+        {
+            FullName = createUser.FullName,
+            Role = createUser.Role,
+            UserName = createUser.Username,
+        };
+
+        await _userRepository.SetUserNameAsync(user, createUser.Username, CancellationToken.None);
+        await _userRepository.CreateUserAsync(user, createUser.Password);
+        await _userRepository.SetLockoutEnabledAsync(user, true);
+        await _userRepository.AddRoleToUserAsync(user, createUser.Role);
+
+        return OperationResult.Ok();
+    }
+
     public async Task<EditUserViewModel> SetEditCollectViewModel(string id)
     {
         if (id == null)

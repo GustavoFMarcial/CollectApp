@@ -9,10 +9,12 @@ namespace CollectApp.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserStore<ApplicationUser> _userStore;
 
-    public UserRepository(UserManager<ApplicationUser> userManager)
+    public UserRepository(UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore)
     {
         _userManager = userManager;
+        _userStore = userStore;
     }
 
     public async Task<(List<ApplicationUser> items, int totalCount)> ToUserListAsync(UserFilterViewModel filters, int pageNum = 1, int pageSize = 10)
@@ -59,7 +61,7 @@ public class UserRepository : IUserRepository
         await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
     }
 
-    public async Task<bool> AnyUserAsync(string userFullName, string userId)
+    public async Task<bool> AnyUserAsync(string userFullName, string? userId)
     {
         return await _userManager.Users.AnyAsync(u => u.FullName == userFullName && u.Id != userId);
     }
@@ -77,5 +79,20 @@ public class UserRepository : IUserRepository
     public async Task<IList<string>> GetRolesFromUserAsync(ApplicationUser user)
     {
         return await _userManager.GetRolesAsync(user);
+    }
+
+    public async Task SetUserNameAsync(ApplicationUser user, string username, CancellationToken cancellationToken)
+    {
+        await _userStore.SetUserNameAsync(user, username, cancellationToken);
+    }
+
+    public async Task CreateUserAsync(ApplicationUser user, string password)
+    {
+        await _userManager.CreateAsync(user, password);
+    }
+
+    public async Task SetLockoutEnabledAsync(ApplicationUser user, bool isLockout)
+    {
+        await _userManager.SetLockoutEnabledAsync(user, isLockout);
     }
 }

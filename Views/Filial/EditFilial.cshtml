@@ -20,7 +20,7 @@
     </form>
 </div>
 
-@await Html.PartialAsync("_FilialModalError", ViewBag.Message as string)
+@await Html.PartialAsync("_ModalError", ViewBag.Message as string)
 
 @section Scripts 
 {
@@ -29,7 +29,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var showModal = '@ViewBag.ShowModal' === 'True';
             if (showModal) {
-                var modalElement = document.getElementById('FilialModalError');
+                var modalElement = document.getElementById('ModalError');
                 if (modalElement) {
                     var modal = new bootstrap.Modal(modalElement);
                     modal.show();

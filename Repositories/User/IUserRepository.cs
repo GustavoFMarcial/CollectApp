@@ -11,8 +11,11 @@ public interface IUserRepository
     public Task<IdentityResult> SaveChangesUserAsync(ApplicationUser user);
     public Task LockOutUserAsync(ApplicationUser user);
     public Task UnlockOutUserAsync(ApplicationUser user);
-    public Task<bool> AnyUserAsync(string userFullName, string userId);
+    public Task<bool> AnyUserAsync(string userFullName, string? userId);
     public Task RemoveRolesFromUserAsync(ApplicationUser user, IList<string> roles);
     public Task AddRoleToUserAsync(ApplicationUser user, string role);
     public Task<IList<string>> GetRolesFromUserAsync(ApplicationUser user);
+    public Task SetUserNameAsync(ApplicationUser user, string username, CancellationToken cancellationToken);
+    public Task CreateUserAsync(ApplicationUser user, string password);
+    public Task SetLockoutEnabledAsync(ApplicationUser user, bool isLockout);
 }

@@ -30,6 +30,31 @@ public class UserController : Controller
         return RedirectToAction(nameof(ListUsers));
     }
 
+    public IActionResult CreateUser()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateUser([Bind("FullName,Username,Password,ConfirmPassword,Role")] CreateUserViewModel createUser)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(createUser);
+        }
+
+        OperationResult result = await _userService.CreateUser(createUser);
+
+        if (!result.Success)
+        {
+            ViewBag.Message = result.Message;
+            ViewBag.ShowModal = true;
+            return View(createUser);
+        }
+
+        return RedirectToAction(nameof(ListUsers));
+    }
+
     public async Task<IActionResult> EditUser(string id)
     {
         EditUserViewModel esvm = await _userService.SetEditCollectViewModel(id);

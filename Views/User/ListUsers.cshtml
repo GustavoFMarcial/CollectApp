@@ -3,13 +3,13 @@
 
 @{
     ViewData["Title"] = "Lista de usuários";
-    @* ViewBag.Message = TempData["Message"];
-    ViewBag.ShowModal = TempData["ShowModal"]; *@
+    ViewBag.Message = TempData["Message"];
+    ViewBag.ShowModal = TempData["ShowModal"];
 }
 
 <div class="container">
     <h1 class="mb-2">Lista de usuários</h1>
-    <a class="nav-link text-primary mb-4 d-inline-block" asp-area="Identity" asp-page="/Account/Register">Criar usuário</a>
+    <a class="nav-link text-primary mb-4 d-inline-block" asp-controller="User" asp-action="CreateUser">Criar usuário</a>
 
     <div>@await Html.PartialAsync("_UserFilters", Model.Filters)
 </div>
@@ -50,6 +50,8 @@
     @await Html.PartialAsync("_UserPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
+@await Html.PartialAsync("_ModalError", ViewBag.Message as string)
+
 @section Scripts 
 {
     <script>
@@ -64,16 +66,16 @@
     </script>
     
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    @* <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             var showModal = '@ViewBag.ShowModal' === 'True';
             if (showModal) {
-                var modalElement = document.getElementById('FilialModalError');
+                var modalElement = document.getElementById('ModalError');
                 if (modalElement) {
                     var modal = new bootstrap.Modal(modalElement);
                     modal.show();
                 }
             }
         });
-    </script> *@
+    </script>
 }
