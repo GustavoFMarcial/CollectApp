@@ -36,7 +36,7 @@
                     </button>
                 </th>
             </tr>
-            @await Html.PartialAsync("_DeleteProductModal", product.Id)
+            @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = product.Id, Type = "Product", Title = "o produto"})
     }  
         </tbody>      
     </table>

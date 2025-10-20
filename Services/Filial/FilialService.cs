@@ -118,7 +118,7 @@ public class FilialService : IFilialService
 
         if (existFilialWithCollect)
         {
-            return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a esta loja");
+            return OperationResult.Fail("Não foi possível deletar, existe uma coleta vinculada a esta loja");
         }
 
         _filialRepository.RemoveFilial(filial);

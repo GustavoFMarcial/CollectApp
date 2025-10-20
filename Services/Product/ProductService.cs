@@ -124,7 +124,7 @@ public class ProductService : IProductService
 
         if (existProductWithCollect)
         {
-            return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a este produto");
+            return OperationResult.Fail("Não foi possível deletar, existe uma coleta vinculada a este produto");
         }
 
         _productRepository.RemoveProduct(product);

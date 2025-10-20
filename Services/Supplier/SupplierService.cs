@@ -154,7 +154,7 @@ public class SupplierService : ISupplierService
 
         if (existSupplierWithCollect)
         {
-            return OperationResult.Fail("Não é possível deletar, existe uma coleta vinculada a este fornecedor");
+            return OperationResult.Fail("Não foi possível deletar, existe uma coleta vinculada a este fornecedor");
         }
 
         _supplierRepository.RemoveSupplier(supplier);
