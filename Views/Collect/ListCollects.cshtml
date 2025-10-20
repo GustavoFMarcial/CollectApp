@@ -50,7 +50,7 @@
         </tbody>     
     </table>
 
-    @await Html.PartialAsync("_CollectPaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
+    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
 <script>
