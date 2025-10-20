@@ -1,7 +1,6 @@
-namespace CollectApp.ViewModels
+namespace CollectApp.ViewModels;
+
+public class CreateFilialViewModel
 {
-    public class CreateFilialViewModel
-    {
-        public string Name { get; set; } = string.Empty;
-    }
+    public string Name { get; set; } = string.Empty;
 }

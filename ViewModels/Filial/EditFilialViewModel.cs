@@ -1,13 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CollectApp.ViewModels
-{
-    public class EditFilialViewModel
-    {
-        [Required]
-        public int Id { get; set; }
+namespace CollectApp.ViewModels;
 
-        [Required]
-        public string Name { get; set; } = string.Empty;
-    }
+public class EditFilialViewModel
+{
+    [Required]
+    public int Id { get; set; }
+
+    [Required]
+    public string Name { get; set; } = string.Empty;
 }

@@ -1,8 +1,7 @@
-namespace CollectApp.ViewModels
+namespace CollectApp.ViewModels;
+
+public class ProductFilterViewModel
 {
-    public class ProductFilterViewModel
-    {
-        public int? Id { get; set; }
-        public string? Description { get; set; }
-    }
+    public int? Id { get; set; }
+    public string? Description { get; set; }
 }
