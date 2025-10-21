@@ -13,4 +13,10 @@ public class CollectAppContext : IdentityDbContext<ApplicationUser>
     public DbSet<Supplier> Suppliers { get; set; } = default!;
     public DbSet<Product> Products { get; set; } = default!;
     public DbSet<Filial> Filials { get; set; } = default!;
+    public DbSet<AuditLog> AuditLogs { get; set; } = default!;
+
+    // public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    // {
+        
+    // }
 }
