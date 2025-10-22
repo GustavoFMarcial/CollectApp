@@ -19,7 +19,7 @@
                 <th style="width: 150px;">@Html.DisplayNameFor(model => model.Items[0].Name)</th>
                 <th style="width: 160px;">@Html.DisplayNameFor(model => model.Items[0].CNPJ)</th>
                 <th style="width: 600px;">@Html.DisplayNameFor(model => model.Items[0].Address)</th>
-                <th style="width: 72px;"></th>
+                <th style="width: 80px;"></th>
             </tr>
         </thead>
         <tbody>
@@ -30,14 +30,17 @@
                 <td>@Html.DisplayFor(item => supplier.Name)</td>
                 <td>@Html.DisplayFor(item => supplier.CNPJ)</td>
                 <td>@Html.DisplayFor(item => supplier.Address)</td>
-                <th class="text-end">
+                <td class="text-end">
                     <a asp-action="EditSupplier" asp-route-id="@supplier.Id">
                         <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
                     </a>
                     <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@supplier.Id">
                         <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
                     </button>
-                </th>
+                    <button type="button" class="p-0 border-0 bg-transparent">
+                        <img src="~/assets/img/list-icon.svg" alt="Trash button" width="24" height="24" />
+                    </button>
+                </td>
             </tr>
             @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = supplier.Id, Type = "Supplier", Title = "o fornecedor"})
     }      

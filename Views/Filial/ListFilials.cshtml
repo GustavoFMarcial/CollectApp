@@ -9,7 +9,8 @@
 
 <div class="container">
     <h1 class="mb-2">Lista de filiais</h1>
-    <a class="nav-link text-primary mb-4 d-inline-block" asp-controller="Filial" asp-action="CreateFilial">Inserir filial</a>
+    <a class="nav-link text-primary mb-4 d-inline-block" asp-controller="Filial" asp-action="CreateFilial">Inserir
+        filial</a>
 
     <div>@await Html.PartialAsync("_FilialFilters", Model.Filters)</div>
 
@@ -31,25 +32,31 @@
                         <a asp-action="EditFilial" asp-route-id="@filial.Id">
                             <img src="~/assets/img/pencil-icon.svg" width="24" height="24" />
                         </a>
-                        <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@filial.Id">
+                        <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal-@filial.Id">
                             <img src="~/assets/img/trash-icon.svg" width="24" height="24" />
+                        </button>
+                        <button type="button" class="p-0 border-0 bg-transparent">
+                            <img src="~/assets/img/list-icon.svg" alt="Trash button" width="24" height="24" />
                         </button>
                     </td>
                 </tr>
-                @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = filial.Id, Type = "Filial", Title = "a filial"})
-            }
+                @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = filial.Id, Type = "Filial", Title =
+                "a filial"})
+                        }
         </tbody>
     </table>
 
-    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
+    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage
+        = Model.PageNum })
 </div>
 
 @await Html.PartialAsync("_ModalError", ViewBag.Message as string)
 
-@section Scripts 
+@section Scripts
 {
     <script>
-        document.addEventListener("click", function(e) {
+        document.addEventListener("click", function (e) {
             if (e.target.classList.contains("page-button")) {
                 const page = e.target.value;
                 if (parseInt(page) !== @Model.PageNum) {
@@ -58,8 +65,10 @@
             }
         });
     </script>
-    
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var showModal = '@ViewBag.ShowModal' === 'True';

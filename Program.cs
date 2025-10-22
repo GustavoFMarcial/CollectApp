@@ -110,15 +110,40 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
     var roles = new[] { "Admin", "Gestor", "Comprador" };
-
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
         {
             await roleManager.CreateAsync(new IdentityRole(role));
         }
+    }
+
+    var adminUserName = "admin";
+    var admin = await userManager.FindByNameAsync(adminUserName);
+    if (admin == null)
+    {
+        admin = new ApplicationUser
+        {
+            UserName = adminUserName,
+            Email = "admin@admin.com",
+            FullName = "Admin",
+            Role = "Admin",
+            Status = UserStatus.Ativo,
+            CreatedAt = DateTime.Now,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(admin, "Gpe.1@345");
+        if (!result.Succeeded)
+        {
+            throw new Exception("Falha ao criar usuário admin: " +
+                string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+
+        await userManager.AddToRoleAsync(admin, "Admin");
     }
 }
 
