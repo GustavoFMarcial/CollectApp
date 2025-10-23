@@ -40,8 +40,8 @@
                         <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@user.Id">
                             <img src="~/assets/img/x-icon.svg" width="24" height="24" />
                         </button>
-                        <button type="button" class="p-0 border-0 bg-transparent">
-                            <img src="~/assets/img/list-icon.svg" alt="Trash button" width="24" height="24" />
+                        <button data-entity="ApplicationUser" data-id="@user.Id" type="button" class="log-list p-0 border-0 bg-transparent">
+                            <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
                         </button>
                     </td>
                 </tr>

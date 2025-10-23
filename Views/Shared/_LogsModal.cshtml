@@ -1,0 +1,61 @@
+@using CollectApp.ViewModels
+@model List<AuditLogViewModel>
+
+<div class="modal fade" id="logsModal" tabindex="-1" aria-labelledby="logsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg rounded-4">
+
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title d-flex align-items-center" id="logsModalLabel">
+                    <i class="bi bi-journal-text me-2"></i>
+                    Histórico de alterações
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <div class="modal-body bg-light">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle table-bordered bg-white mb-0">
+                            <thead class="table-primary text-center">
+                                <tr>
+                                    <th>Campo</th>
+                                    <th>Usuário</th>
+                                    <th>Data da Alteração</th>
+                                    <th>Valor Anterior</th>
+                                    <th>Valor Novo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (AuditLogViewModel log in Model)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@log.Field</td>
+                                        <td>@log.UserName</td>
+                                        <td>@log.ChangedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@(string.IsNullOrEmpty(log.OldValue) ? "-" : log.OldValue)</td>
+                                        <td>@(string.IsNullOrEmpty(log.NewValue) ? "-" : log.NewValue)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-info-circle me-2 fs-5"></i>
+                        Nenhuma alteração registrada.
+                    </div>
+                }
+            </div>
+
+            <div class="modal-footer bg-white">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i> Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

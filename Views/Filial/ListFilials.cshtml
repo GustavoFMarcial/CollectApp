@@ -36,19 +36,18 @@
                             data-bs-target="#deleteModal-@filial.Id">
                             <img src="~/assets/img/trash-icon.svg" width="24" height="24" />
                         </button>
-                        <button type="button" class="p-0 border-0 bg-transparent">
-                            <img src="~/assets/img/list-icon.svg" alt="Trash button" width="24" height="24" />
+                        <button data-entity="Filial" data-id="@filial.Id" type="button"
+                            class="log-list p-0 border-0 bg-transparent">
+                            <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
                         </button>
                     </td>
                 </tr>
-                @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = filial.Id, Type = "Filial", Title =
-                "a filial"})
-                        }
+                @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = filial.Id, Type = "Filial", Title ="a filial"})
+            }
         </tbody>
     </table>
 
-    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage
-        = Model.PageNum })
+    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
 </div>
 
 @await Html.PartialAsync("_ModalError", ViewBag.Message as string)

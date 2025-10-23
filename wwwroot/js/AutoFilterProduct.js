@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchProductInput = document.getElementById("searchProductInput");
     const searchProduct = document.getElementById("searchProduct");
     const modalEl = document.getElementById("searchProductModal");
+
+    if (!modalEl) return;
+
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
     const ulButtonsPagination = document.getElementById("productButtonsPagination");
 
