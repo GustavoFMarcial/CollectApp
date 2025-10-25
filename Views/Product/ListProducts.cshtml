@@ -27,17 +27,17 @@
             <tr>
                 <td>@Html.DisplayFor(item => product.Id)</td>
                 <td>@Html.DisplayFor(item => product.Description)</td>
-                <th class="text-end">
+                <td class="text-end">
                     <a asp-action="EditProduct" asp-route-id="@product.Id">
                         <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
                     </a>
                     <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@product.Id">
                         <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
                     </button>
-                    <button data-entity="Product" data-id="@product.Id" type="button" class="log-list p-0 border-0 bg-transparent">
+                    <button data-entity="Product" data-id="@product.Id" type="button" class="log-list-button p-0 border-0 bg-transparent">
                         <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
                     </button>
-                </th>
+                </td>
             </tr>
             @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = product.Id, Type = "Product", Title = "o produto"})
     }  
@@ -48,6 +48,7 @@
 </div>
 
 @await Html.PartialAsync("_ModalError", ViewBag.Message as string)
+@await Html.PartialAsync("_LogsModal")
 
 @section Scripts 
 {

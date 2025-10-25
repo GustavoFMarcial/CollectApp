@@ -6,5 +6,5 @@ public class AuditLogViewModel
     public string OldValue { get; set; } = string.Empty;
     public string NewValue { get; set; } = string.Empty;
     public string UserName { get; set; } = string.Empty;
-    public DateTime ChangedAt { get; set; }
+    public string ChangedAt { get; set; } = string.Empty;
 }

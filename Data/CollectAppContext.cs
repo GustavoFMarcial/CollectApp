@@ -22,9 +22,9 @@ public class CollectAppContext : IdentityDbContext<ApplicationUser>
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var userName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "Sistema";
-        var now = DateTime.UtcNow;
-        var auditEntries = new List<AuditLog>();
+        string userName = _httpContextAccessor?.HttpContext?.User?.FindFirst("FullName")?.Value ?? "Sistema";
+        DateTime now = DateTime.UtcNow;
+        List<AuditLog> auditEntries = new List<AuditLog>();
 
         foreach (var entry in ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Modified))
@@ -51,7 +51,7 @@ public class CollectAppContext : IdentityDbContext<ApplicationUser>
                         OldValue = prop.OriginalValue?.ToString() ?? "",
                         NewValue = prop.CurrentValue?.ToString() ?? "",
                         UserName = userName,
-                        ChangedAt = now
+                        ChangedAt = now,
                     });
                 }
             }

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CollectApp.Extensions;
 using CollectApp.Models;
 using CollectApp.ViewModels;
@@ -89,6 +90,12 @@ public class UserRepository : IUserRepository
     public async Task CreateUserAsync(ApplicationUser user, string password)
     {
         await _userManager.CreateAsync(user, password);
+
+        var claims = new List<Claim>
+        {
+            new Claim("FullName", user.FullName),
+        };
+        await _userManager.AddClaimsAsync(user, claims);
     }
 
     public async Task SetLockoutEnabledAsync(ApplicationUser user, bool isLockout)

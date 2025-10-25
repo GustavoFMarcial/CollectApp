@@ -1,4 +1,5 @@
 using CollectApp.Services;
+using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollectApp.Controllers;
@@ -18,6 +19,7 @@ public class AuditLogController : Controller
     {
         Console.WriteLine(entityName);
         Console.WriteLine(entityId);
-        return Json("a");
+        List<AuditLogViewModel> alvm = await _auditLogService.GetLogs(entityName, entityId);
+        return Json(alvm);
     }
 }

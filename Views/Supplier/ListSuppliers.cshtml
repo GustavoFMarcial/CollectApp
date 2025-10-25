@@ -37,7 +37,7 @@
                     <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@supplier.Id">
                         <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
                     </button>
-                    <button data-entity="Supplier" data-id="@supplier.Id" type="button" class="log-list p-0 border-0 bg-transparent">
+                    <button data-entity="Supplier" data-id="@supplier.Id" type="button" class="log-list-button p-0 border-0 bg-transparent">
                         <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
                     </button>
                 </td>
@@ -51,6 +51,7 @@
 </div>
 
 @await Html.PartialAsync("_ModalError", ViewBag.Message as string)
+@await Html.PartialAsync("_LogsModal")
 
 @section Scripts 
 {

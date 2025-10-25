@@ -44,7 +44,7 @@
             </div>
         }
         <div>
-            <button data-entity="Collect" data-id="@Model.Id" type="button" class="log-list p-0 border-0 bg-transparent">
+            <button data-entity="Collect" data-id="@Model.Id" type="button" class="log-list-button p-0 border-0 bg-transparent">
                 <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
             </button>
         </div>
@@ -52,6 +52,7 @@
 </div>
 
 @await Html.PartialAsync("_CancelCollectModal", Model.Id)
+@await Html.PartialAsync("_LogsModal")
 
 @section Scripts
 {
