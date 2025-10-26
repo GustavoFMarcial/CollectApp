@@ -46,7 +46,6 @@ public class CollectAppContext : IdentityDbContext<ApplicationUser>
                     auditEntries.Add(new AuditLog
                     {
                         EntityName = entityName,
-                        // EntityId = int.TryParse(primaryKey, out var id) ? id : 0,
                         EntityId = primaryKey ?? "",
                         Field = prop.Metadata.Name,
                         OldValue = prop.OriginalValue?.ToString() ?? "",

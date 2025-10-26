@@ -1,3 +1,4 @@
+using CollectApp.Helpers;
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
@@ -16,6 +17,21 @@ public class AuditLogService : IAuditLogService
     public async Task<List<AuditLogViewModel>> GetLogs(string entityName, string entityId)
     {
         List<AuditLog> logs = await _auditLogRepository.GetLogs(entityName, entityId);
+
+        foreach (var log in logs)
+        {
+            log.Field = LogFieldTranslations.Translate(entityName, log.Field);
+
+            if (log.OldValue == "PendenteAprovar" || log.OldValue == "PendenteColetar")
+            {
+                log.OldValue = LogStatusValue.LogStatusValueSpaceBetween(log.OldValue);
+            }
+
+            if (log.NewValue == "PendenteAprovar" || log.NewValue == "PendenteColetar")
+            {
+                log.NewValue = LogStatusValue.LogStatusValueSpaceBetween(log.NewValue);
+            }
+        }
 
         List<AuditLogViewModel> lalvm = logs.Select(l => new AuditLogViewModel
         {

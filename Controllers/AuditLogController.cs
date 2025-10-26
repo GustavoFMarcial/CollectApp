@@ -17,8 +17,6 @@ public class AuditLogController : Controller
 
     public async Task<IActionResult> GetLogs(string entityName, string entityId)
     {
-        Console.WriteLine(entityName);
-        Console.WriteLine(entityId);
         List<AuditLogViewModel> alvm = await _auditLogService.GetLogs(entityName, entityId);
         return Json(alvm);
     }
