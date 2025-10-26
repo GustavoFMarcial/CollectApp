@@ -36,7 +36,7 @@ public class CollectAppContext : IdentityDbContext<ApplicationUser>
 
             foreach (var prop in entry.Properties)
             {
-                if (prop.Metadata.Name is "UpdatedAt" or "LastModified" or "LastUpdatedBy")
+                if (prop.Metadata.Name is "UpdatedAt" or "LastModified" or "LastUpdatedBy" or "ConcurrencyStamp" or "SecurityStamp")
                 {
                     continue;
                 }
@@ -46,7 +46,8 @@ public class CollectAppContext : IdentityDbContext<ApplicationUser>
                     auditEntries.Add(new AuditLog
                     {
                         EntityName = entityName,
-                        EntityId = int.TryParse(primaryKey, out var id) ? id : 0,
+                        // EntityId = int.TryParse(primaryKey, out var id) ? id : 0,
+                        EntityId = primaryKey ?? "",
                         Field = prop.Metadata.Name,
                         OldValue = prop.OriginalValue?.ToString() ?? "",
                         NewValue = prop.CurrentValue?.ToString() ?? "",

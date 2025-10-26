@@ -15,7 +15,7 @@ public class AuditLogController : Controller
         _auditLogService = auditLogService;
     }
 
-    public async Task<IActionResult> GetLogs(string entityName, int entityId)
+    public async Task<IActionResult> GetLogs(string entityName, string entityId)
     {
         Console.WriteLine(entityName);
         Console.WriteLine(entityId);

@@ -13,7 +13,7 @@ public class AuditLogRepository : IAuditLogRepository
         _context = context;
     }
 
-    public async Task<List<AuditLog>> GetLogs(string entityName, int entityId)
+    public async Task<List<AuditLog>> GetLogs(string entityName, string entityId)
     {
         IQueryable<AuditLog> query = _context.AuditLogs.AsQueryable();
 

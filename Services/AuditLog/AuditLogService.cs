@@ -13,7 +13,7 @@ public class AuditLogService : IAuditLogService
         _auditLogRepository = auditLogRepository;
     }
 
-    public async Task<List<AuditLogViewModel>> GetLogs(string entityName, int entityId)
+    public async Task<List<AuditLogViewModel>> GetLogs(string entityName, string entityId)
     {
         List<AuditLog> logs = await _auditLogRepository.GetLogs(entityName, entityId);
 
