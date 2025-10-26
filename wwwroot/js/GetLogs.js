@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = button.dataset.id;
 
             const logs = await fetchLogs(`/AuditLog/GetLogs?entityName=${entity}&entityId=${id}`);
+            console.log(logs);
             createLogRow(logs)
 
             const modalEl = document.getElementById("logsModal");

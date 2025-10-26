@@ -15,9 +15,12 @@ public class AuditLogController : Controller
         _auditLogService = auditLogService;
     }
 
-    public async Task<IActionResult> GetLogs(string entityName, string entityId)
+    public async Task<IActionResult> GetLogs(string entityName, string entityId, int pageNum = 1)
     {
-        List<AuditLogViewModel> alvm = await _auditLogService.GetLogs(entityName, entityId);
+        Console.WriteLine(entityName);
+        Console.WriteLine(entityId);
+        PagedResultViewModel<AuditLogViewModel, object> alvm = await _auditLogService.SetPagedResultAuditLogViewModel(entityName, entityId, pageNum);
+
         return Json(alvm);
     }
 }

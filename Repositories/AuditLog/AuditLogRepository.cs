@@ -13,16 +13,20 @@ public class AuditLogRepository : IAuditLogRepository
         _context = context;
     }
 
-    public async Task<List<AuditLog>> GetLogs(string entityName, string entityId)
+    public async Task<(List<AuditLog> items, int totalCount)> ToLogListAsync(string entityName, string entityId, int pageNum = 1, int pageSize = 10)
     {
         IQueryable<AuditLog> query = _context.AuditLogs.AsQueryable();
 
-        query = query
+        query = query.Where(a => a.EntityName == entityName && a.EntityId == entityId);
+
+        int totalCount = await query.CountAsync();
+
+        List<AuditLog> items = await query
             .OrderByDescending(a => a.ChangedAt)
-            .Where(a => a.EntityName == entityName && a.EntityId == entityId);
+            .Skip((pageNum - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
-        List<AuditLog> logs = await query.ToListAsync();
-
-        return logs;
+        return (items, totalCount);
     }
 }

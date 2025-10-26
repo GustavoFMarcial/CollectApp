@@ -14,11 +14,11 @@ public class AuditLogService : IAuditLogService
         _auditLogRepository = auditLogRepository;
     }
 
-    public async Task<List<AuditLogViewModel>> GetLogs(string entityName, string entityId)
+    public async Task<PagedResultViewModel<AuditLogViewModel, object>> SetPagedResultAuditLogViewModel(string entityName, string entityId, int pageNum = 1, int pageSize = 10)
     {
-        List<AuditLog> logs = await _auditLogRepository.GetLogs(entityName, entityId);
+        (List<AuditLog> items, int totalCount) logs = await _auditLogRepository.ToLogListAsync(entityName, entityId, pageNum);
 
-        foreach (var log in logs)
+        foreach (var log in logs.items)
         {
             log.Field = LogFieldTranslations.Translate(entityName, log.Field);
 
@@ -33,15 +33,22 @@ public class AuditLogService : IAuditLogService
             }
         }
 
-        List<AuditLogViewModel> lalvm = logs.Select(l => new AuditLogViewModel
+        List<AuditLogViewModel> lalvm = logs.items.Select(l => new AuditLogViewModel
         {
             Field = l.Field,
             OldValue = l.OldValue,
             NewValue = l.NewValue,
             UserName = l.UserName,
-            ChangedAt = TimeZoneInfo.ConvertTimeFromUtc(l.ChangedAt,TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time")).ToString("dd/MM/yyyy HH:mm"),
+            ChangedAt = TimeZoneInfo.ConvertTimeFromUtc(l.ChangedAt, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time")).ToString("dd/MM/yyyy HH:mm"),
         }).ToList();
 
-        return lalvm;
+        PagedResultViewModel<AuditLogViewModel, object> prvm = new PagedResultViewModel<AuditLogViewModel, object>
+        {
+            Items = lalvm,
+            TotalPages = (int)Math.Ceiling(logs.totalCount / (double)pageSize),
+            PageNum = pageNum,
+        };
+
+        return prvm;
     }
 }
