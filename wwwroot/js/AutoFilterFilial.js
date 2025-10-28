@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         button.textContent = i;
 
         const li = document.createElement("li");
-        li.classList.add("page-item")
+        li.classList.add("page-item");
         li.appendChild(button);
 
         return li;

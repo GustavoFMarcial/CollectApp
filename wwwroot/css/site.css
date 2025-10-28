@@ -156,3 +156,7 @@ select.form-select-sm {
   padding: 0.25rem 0.5rem !important;
   font-size: 0.875rem !important;
 }
+
+#logButtonsPagination{
+  margin-top: 1rem;
+}
