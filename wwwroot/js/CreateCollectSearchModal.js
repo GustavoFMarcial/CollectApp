@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputSupplier = document.getElementById("Supplier");
     const inputSupplierId = document.getElementById("SupplierId");
 
-    let currentEntity = "";
-
     const ulButtonsPagination = document.getElementById("entitiesSearchedButtonsPagination");
+    
+    let currentEntity = "";
 
     if (!inputProduct || !inputProductId || !inputFilial || !inputFilialId || !inputSupplier || !inputSupplierId || !entitiesList) return;
 

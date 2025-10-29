@@ -39,7 +39,7 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProduct([Bind("Description")] CreateProductViewModel productCreate)
+    public async Task<IActionResult> CreateProduct([Bind("Name")] CreateProductViewModel productCreate)
     {
         if (!ModelState.IsValid)
         {
@@ -66,7 +66,7 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditProduct([Bind("Id,Description")] EditProductViewModel productEdit)
+    public async Task<IActionResult> EditProduct([Bind("Id,Name")] EditProductViewModel productEdit)
     {
         if (!ModelState.IsValid)
         {
