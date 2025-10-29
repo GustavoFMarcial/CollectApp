@@ -12,9 +12,9 @@ public static class ProductQueryExtensions
             query = query.Where(p => p.Id == filters.Id);
         }
 
-        if (!string.IsNullOrEmpty(filters.Description))
+        if (!string.IsNullOrEmpty(filters.Name))
         {
-            query = query.Where(p => p.Description.Contains(filters.Description));
+            query = query.Where(p => p.Name.Contains(filters.Name));
         }
 
         return query;

@@ -34,7 +34,7 @@ public static class CollectQueryExtensions
 
         if (!string.IsNullOrEmpty(filters.Product))
         {
-            query = query.Where(c => c.Product.Description.Contains(filters.Product));
+            query = query.Where(c => c.Product.Name.Contains(filters.Product));
         }
 
         if (filters.Status.HasValue)

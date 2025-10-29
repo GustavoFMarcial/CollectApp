@@ -14,11 +14,12 @@
             <div class="position-relative">
                 <input asp-for="Supplier" id="Supplier" class="form-control pe-5" readonly>
                 <button type="button" 
-                        class="p-0 border-0 bg-transparent position-absolute"
+                        class="search-entity-button p-0 border-0 bg-transparent position-absolute"
                         style="top: 50%; right: 10px; transform: translateY(-50%);"
                         data-bs-toggle="modal" 
-                        data-bs-target="#searchSupplierModal"
-                        id="searchSuppliersButton">
+                        data-bs-target="#CreateCollectSearchEntitiesModal"
+                        id="searchSuppliersButton"
+                        value="Supplier">
                     <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
                 </button>
             </div>
@@ -35,11 +36,12 @@
             <div class="position-relative">
                 <input asp-for="Product" id="Product" class="form-control pe-5" readonly>
                 <button type="button" 
-                        class="p-0 border-0 bg-transparent position-absolute"
+                        class="search-entity-button p-0 border-0 bg-transparent position-absolute"
                         style="top: 50%; right: 10px; transform: translateY(-50%);"
                         data-bs-toggle="modal" 
-                        data-bs-target="#searchProductModal"
-                        id="searchProductsButton">
+                        data-bs-target="#CreateCollectSearchEntitiesModal"
+                        id="searchProductsButton"
+                        value="Product">
                     <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
                 </button>
             </div>
@@ -61,11 +63,12 @@
             <div class="position-relative">
                 <input asp-for="Filial" id="Filial" class="form-control pe-5" readonly>
                 <button type="button" 
-                        class="p-0 border-0 bg-transparent position-absolute"
+                        class="search-entity-button p-0 border-0 bg-transparent position-absolute"
                         style="top: 50%; right: 10px; transform: translateY(-50%);"
                         data-bs-toggle="modal" 
-                        data-bs-target="#searchFilialModal"
-                        id="searchFilialsButton">
+                        data-bs-target="#CreateCollectSearchEntitiesModal"
+                        id="searchFilialsButton"
+                        value="Filial">
                     <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
                 </button>
             </div>
@@ -79,9 +82,7 @@
     </form>
 </div>
 
-@await Html.PartialAsync("~/Views/Supplier/_SupplierSearchModal.cshtml")
-@await Html.PartialAsync("~/Views/Product/_ProductSearchModal.cshtml")
-@await Html.PartialAsync("~/Views/Filial/_FilialSearchModal.cshtml")
+@await Html.PartialAsync("~/Views/Shared/_CreateCollectSearchModal.cshtml")
 
 @section Scripts 
 {

@@ -17,7 +17,7 @@
         <thead>
             <tr>
                 <th style="width: 60px;">@Html.DisplayNameFor(model => model.Items[0].Id)</th>
-                <th style="width: 120px;">@Html.DisplayNameFor(model => model.Items[0].Description)</th>
+                <th style="width: 120px;">@Html.DisplayNameFor(model => model.Items[0].Name)</th>
                 <th></th>
             </tr>
         </thead>
@@ -26,7 +26,7 @@
     {
             <tr>
                 <td>@Html.DisplayFor(item => product.Id)</td>
-                <td>@Html.DisplayFor(item => product.Description)</td>
+                <td>@Html.DisplayFor(item => product.Name)</td>
                 <td class="text-end">
                     <a asp-action="EditProduct" asp-route-id="@product.Id">
                         <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />

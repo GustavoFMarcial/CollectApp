@@ -27,7 +27,7 @@ public class ProductRepository : IProductRepository
         if (!string.IsNullOrWhiteSpace(input))
         {
             query = query
-                .Where(p => p.Description.Contains(input));
+                .Where(p => p.Name.Contains(input));
         }
 
         List<Product> items = await query
@@ -44,7 +44,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<bool> AnyProductAsync(string productDescription, int? productId)
     {
-        return await _context.Products.AnyAsync(p => p.Description == productDescription && p.Id != productId);
+        return await _context.Products.AnyAsync(p => p.Name == productDescription && p.Id != productId);
     }
 
     public void AddProduct(Product product)

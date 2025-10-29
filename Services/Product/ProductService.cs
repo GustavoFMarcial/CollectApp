@@ -19,10 +19,10 @@ public class ProductService : IProductService
     {
         Product product = new Product
         {
-            Description = productCreate.Description,
+            Name = productCreate.Name,
         };
 
-        bool productExist = await _productRepository.AnyProductAsync(productCreate.Description, product.Id);
+        bool productExist = await _productRepository.AnyProductAsync(productCreate.Name, product.Id);
 
         if (productExist)
         {
@@ -54,7 +54,7 @@ public class ProductService : IProductService
         EditProductViewModel epvm = new EditProductViewModel
         {
             Id = product.Id,
-            Description = product.Description,
+            Name = product.Name,
         };
 
         return epvm;
@@ -70,14 +70,14 @@ public class ProductService : IProductService
             return NotFound;
         }
 
-        bool productExist = await _productRepository.AnyProductAsync(productEdit.Description, productEdit.Id);
+        bool productExist = await _productRepository.AnyProductAsync(productEdit.Name, productEdit.Id);
 
         if (productExist)
         {
             return OperationResult.Fail($"Já existe um produto cadastrado com a descrição fornecida");
         }
 
-        product.Description = productEdit.Description;
+        product.Name = productEdit.Name;
         await _productRepository.SaveChangesProductAsync();
 
         return OperationResult.Ok();
@@ -90,7 +90,7 @@ public class ProductService : IProductService
         List<ProductListViewModel> productListViewModel = products.items.Select(p => new ProductListViewModel
         {
             Id = p.Id,
-            Description = p.Description
+            Name = p.Name
         }).ToList();
 
         PagedResultViewModel<ProductListViewModel, ProductFilterViewModel> pagedResultProductListViewModel = new PagedResultViewModel<ProductListViewModel, ProductFilterViewModel>

@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const logList = document.getElementById("log-list");
     const logPaginationButtonsUl = document.getElementById("logButtonsPagination");
-    const logPaginationButtons = document.querySelectorAll(".pagination-log-button");
 
     document.body.addEventListener("click", async (e) => {
         const logButton = e.target.closest(".log-list-button");
