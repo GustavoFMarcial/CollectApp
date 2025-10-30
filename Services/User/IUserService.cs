@@ -11,4 +11,5 @@ public interface IUserService
     public Task<OperationResult> CreateUser(CreateUserViewModel createUser);
     public Task<OperationResult> EditUser(EditUserViewModel userEdit);
     public Task<SignInResult> LogIn(LoginViewModel credentials);
+    public Task LogOut();
 }

@@ -113,4 +113,9 @@ public class UserRepository : IUserRepository
     {
         return await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password, false, lockoutOnFailure: false);
     }
+
+    public async Task LogOut()
+    {
+        await _signInManager.SignOutAsync();
+    }
 }

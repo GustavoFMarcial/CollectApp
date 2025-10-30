@@ -19,4 +19,5 @@ public interface IUserRepository
     public Task CreateUserAsync(ApplicationUser user, string password);
     public Task SetLockoutEnabledAsync(ApplicationUser user, bool isLockout);
     public Task<SignInResult> LogInUser(LoginViewModel credentials);
+    public Task LogOut();
 }

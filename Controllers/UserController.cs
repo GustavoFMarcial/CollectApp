@@ -58,16 +58,19 @@ public class UserController : Controller
             _logger.LogInformation("User logged in.");
             return LocalRedirect(returnUrl);
         }
-        if (result.IsLockedOut)
-        {
-            _logger.LogWarning("User account locked out.");
-            return RedirectToPage("./Lockout");
-        }
         else
         {
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View();
+            return RedirectToAction(nameof(Login));
         }
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Logout(string? returnUrl = null)
+    {
+        await _userService.LogOut();
+
+        _logger.LogInformation("User logged out.");
+        return RedirectToAction(nameof(Login));
     }
 
     [Authorize(Policy = "CanCreateAndEditUsers")]

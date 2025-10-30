@@ -153,4 +153,9 @@ public class UserService : IUserService
     {
         return await _userRepository.LogInUser(credentials);
     }
+
+    public async Task LogOut()
+    {
+        await _userRepository.LogOut();
+    }
 }
