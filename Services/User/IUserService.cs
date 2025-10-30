@@ -1,4 +1,5 @@
 using CollectApp.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace CollectApp.Services;
 
@@ -9,4 +10,5 @@ public interface IUserService
     public Task<EditUserViewModel> SetEditCollectViewModel(string id);
     public Task<OperationResult> CreateUser(CreateUserViewModel createUser);
     public Task<OperationResult> EditUser(EditUserViewModel userEdit);
+    public Task<SignInResult> LogIn(LoginViewModel credentials);
 }

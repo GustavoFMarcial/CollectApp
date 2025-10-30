@@ -18,4 +18,5 @@ public interface IUserRepository
     public Task SetUserNameAsync(ApplicationUser user, string username, CancellationToken cancellationToken);
     public Task CreateUserAsync(ApplicationUser user, string password);
     public Task SetLockoutEnabledAsync(ApplicationUser user, bool isLockout);
+    public Task<SignInResult> LogInUser(LoginViewModel credentials);
 }

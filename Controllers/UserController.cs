@@ -5,16 +5,19 @@ using CollectApp.ViewModels;
 
 namespace CollectApp.Controllers;
 
-[Authorize(Policy = "CanCreateAndEditUsers")]
+
 public class UserController : Controller
 {
     public readonly IUserService _userService;
+    public readonly ILogger<UserController> _logger;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, ILogger<UserController> logger)
     {
         _userService = userService;
+        _logger = logger;
     }
 
+    [Authorize(Policy = "CanCreateAndEditUsers")]
     public async Task<IActionResult> ListUsers(UserFilterViewModel filters, int pageNum = 1)
     {
         PagedResultViewModel<UserListViewModel, UserFilterViewModel> clivm = await _userService.SetPagedResultUserListViewModel(filters, pageNum);
@@ -22,6 +25,7 @@ public class UserController : Controller
         return View(clivm);
     }
 
+    [Authorize(Policy = "CanCreateAndEditUsers")]
     [HttpPost]
     public async Task<IActionResult> ChangeUserStatus(string id)
     {
@@ -30,11 +34,49 @@ public class UserController : Controller
         return RedirectToAction(nameof(ListUsers));
     }
 
+    [AllowAnonymous]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<IActionResult> Login([Bind("Username,Password")] LoginViewModel credentials)
+    {
+        string returnUrl = Url.Content("~/");
+
+        if (!ModelState.IsValid)
+        {
+            return View(credentials);
+        }
+
+        Microsoft.AspNetCore.Identity.SignInResult result = await _userService.LogIn(credentials);
+
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("User logged in.");
+            return LocalRedirect(returnUrl);
+        }
+        if (result.IsLockedOut)
+        {
+            _logger.LogWarning("User account locked out.");
+            return RedirectToPage("./Lockout");
+        }
+        else
+        {
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View();
+        }
+    }
+
+    [Authorize(Policy = "CanCreateAndEditUsers")]
     public IActionResult CreateUser()
     {
         return View();
     }
 
+    [Authorize(Policy = "CanCreateAndEditUsers")]
     [HttpPost]
     public async Task<IActionResult> CreateUser([Bind("FullName,Username,Password,ConfirmPassword,Role")] CreateUserViewModel createUser)
     {
@@ -55,6 +97,7 @@ public class UserController : Controller
         return RedirectToAction(nameof(ListUsers));
     }
 
+    [Authorize(Policy = "CanCreateAndEditUsers")]
     public async Task<IActionResult> EditUser(string id)
     {
         EditUserViewModel esvm = await _userService.SetEditCollectViewModel(id);
@@ -62,6 +105,7 @@ public class UserController : Controller
         return View(esvm);
     }
 
+    [Authorize(Policy = "CanCreateAndEditUsers")]
     [HttpPost]
     public async Task<IActionResult> EditUser([Bind("Id,FullName,Role")] EditUserViewModel editUser)
     {

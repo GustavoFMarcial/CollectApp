@@ -1,6 +1,7 @@
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace CollectApp.Services;
 
@@ -146,5 +147,10 @@ public class UserService : IUserService
         await _userRepository.SaveChangesUserAsync(user);
 
         return OperationResult.Ok();
+    }
+
+    public async Task<SignInResult> LogIn(LoginViewModel credentials)
+    {
+        return await _userRepository.LogInUser(credentials);
     }
 }

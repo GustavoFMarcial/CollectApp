@@ -11,11 +11,13 @@ public class UserRepository : IUserRepository
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserStore<ApplicationUser> _userStore;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public UserRepository(UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore)
+    public UserRepository(UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore, SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _userStore = userStore;
+        _signInManager = signInManager;
     }
 
     public async Task<(List<ApplicationUser> items, int totalCount)> ToUserListAsync(UserFilterViewModel filters, int pageNum = 1, int pageSize = 10)
@@ -37,11 +39,15 @@ public class UserRepository : IUserRepository
     public async Task<ApplicationUser> GetUserByIdAsync(string id)
     {
         if (string.IsNullOrEmpty(id))
+        {
             throw new ArgumentNullException(nameof(id));
+        }
 
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
+        {
             throw new KeyNotFoundException($"Usuário com Id {id} não foi encontrado.");
+        }
 
         return user;
     }
@@ -101,5 +107,10 @@ public class UserRepository : IUserRepository
     public async Task SetLockoutEnabledAsync(ApplicationUser user, bool isLockout)
     {
         await _userManager.SetLockoutEnabledAsync(user, isLockout);
+    }
+
+    public async Task<SignInResult> LogInUser(LoginViewModel credentials)
+    {
+        return await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password, false, lockoutOnFailure: false);
     }
 }
