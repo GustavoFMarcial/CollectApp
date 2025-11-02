@@ -11,6 +11,7 @@ public class CollectController : Controller
 {
     private readonly ILogger<CollectController> _logger;
     private readonly ICollectService _collectService;
+    private string CurrentUserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
     public CollectController(ILogger<CollectController> logger, ICollectService collectService)
     {
@@ -40,21 +41,18 @@ public class CollectController : Controller
             return View(collectCreate);
         }
 
-        if (collectCreate == null)
-        {
-            return NotFound();
-        }
-
-        await _collectService.CreateCollect(collectCreate, HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        await _collectService.CreateCollect(collectCreate, CurrentUserId);
 
         return RedirectToAction(nameof(ListCollects));
     }
 
     public async Task<IActionResult> EditCollect(int? id)
     {
-        if (id == null)
+        bool isCollectOwner = await _collectService.MustBeCollectOwner();
+
+        if (!isCollectOwner || id == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(ListCollects));
         }
 
         EditCollectViewModel ecvm = await _collectService.SetEditCollectViewModel(id);
@@ -70,7 +68,7 @@ public class CollectController : Controller
 
         if (!isCollectOwner)
         {
-            return Forbid();
+            return RedirectToAction(nameof(ListCollects));
         }
 
         if (!ModelState.IsValid)
@@ -102,12 +100,7 @@ public class CollectController : Controller
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();
 
-        if (!isCollectOwner)
-        {
-            return Forbid();
-        }
-
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid || !isCollectOwner)
         {
             return RedirectToAction(nameof(ListCollects));
         }
@@ -123,21 +116,16 @@ public class CollectController : Controller
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();
 
-        if (!isCollectOwner)
+        if (!isCollectOwner || id == null)
         {
-            return Forbid();
-        }
-
-        if (id == null)
-        {
-            return NotFound();
+            return RedirectToAction(nameof(ListCollects));
         }
 
         Collect? collect = await _collectService.FindCollectAsync(id);
 
         if (collect == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(ListCollects));
         }
 
         await _collectService.CancelCollect(id);

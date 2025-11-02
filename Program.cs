@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using CollectApp.Factories;
-using YourAppNamespace.Middlewares;
+using CollectApp.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -166,6 +166,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseMiddleware<CheckLockoutMiddleware>();
 app.UseAuthorization();
+
 
 app.MapStaticAssets();
 

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CollectApp.Services;
 using CollectApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ public class FilialController : Controller
 {
     private readonly ILogger<FilialController> _logger;
     private readonly IFilialService _filialService;
+    private string CurrentUserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
     public FilialController(ILogger<FilialController> logger, IFilialService filialService)
     {
@@ -20,17 +22,15 @@ public class FilialController : Controller
     public async Task<IActionResult> ListFilials(FilialFilterViewModel filters, int pageNum = 1)
     {
         PagedResultViewModel<FilialListViewModel, FilialFilterViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(filters, pageNum);
-
         return View(pagedResultFilialListViewModel);
     }
 
     [HttpPost]
     public async Task<IActionResult> ListFilialsJson([FromBody] FilterRequestInput request)
     {
-        FilialFilterViewModel ffvm = new FilialFilterViewModel();
-        PagedResultViewModel<FilialListViewModel, FilialFilterViewModel> pagedResultFilialListViewModel = await _filialService.SetPagedResultFilialListViewModel(ffvm, request.PageNum, request.PageSize, request.Input);
-
-        return Json(pagedResultFilialListViewModel);
+        FilialFilterViewModel ffvm = new();
+        PagedResultViewModel<FilialListViewModel, FilialFilterViewModel> pagedResult = await _filialService.SetPagedResultFilialListViewModel(ffvm, request.PageNum, request.PageSize, request.Input);
+        return Json(new { success = true, data = pagedResult });
     }
 
     public IActionResult CreateFilial()
@@ -62,12 +62,12 @@ public class FilialController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(ListFilials));
         }
 
         EditFilialViewModel epvm = await _filialService.SetEditFilialViewModel(id);
 
-        return View(epvm);
+        return RedirectToAction(nameof(ListFilials));
     }
 
     [HttpPost]
@@ -93,13 +93,17 @@ public class FilialController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteFilial(int? id)
     {
+        if (id == null)
+        {
+            return RedirectToAction(nameof(ListFilials));
+        }
+
         OperationResult result = await _filialService.DeleteFilial(id);
 
         if (!result.Success)
         {
-            TempData["Message"] = result.Message;
-            TempData["ShowModal"] = true;
-            return RedirectToAction(nameof(ListFilials));
+            ViewBag.Message = result.Message;
+            ViewBag.ShowModal = true;
         }
 
         return RedirectToAction(nameof(ListFilials));

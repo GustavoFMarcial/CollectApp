@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputSupplierId = document.getElementById("SupplierId");
 
     const ulButtonsPagination = document.getElementById("entitiesSearchedButtonsPagination");
-    
+
     let currentEntity = "";
 
     if (!inputProduct || !inputProductId || !inputFilial || !inputFilialId || !inputSupplier || !inputSupplierId || !entitiesList) return;
@@ -80,9 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return li;
     }
 
-    function renderProducts(products) {
+    function renderEntities(entities) {
         entitiesList.textContent = "";
-        (products.items ?? products).forEach(p => {
+        (entities.items ?? entities).forEach(p => {
             entitiesList.appendChild(createProductRow(p));
         });
     }
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    async function fetchProducts(url, options = {}) {
+    async function fetchEntities(url, options = {}) {
         const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value
             || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
@@ -108,12 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
             headers
         });
 
-        if (!response.ok) {
-            console.error("Erro ao buscar produtos:", response.statusText);
+        const result = await response.json();
+        console.log(result);
+
+        if (result.success === false) {
+            console.error("Erro ao buscar entidades:", result.message);
+            alert(result.message);
             return { items: [] };
         }
 
-        return response.json();
+        return result;
     }
 
     searchEntitiesButton.forEach(button => {
@@ -122,11 +126,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const btn = e.target.closest("button");
             currentEntity = btn.value;
 
-            if (currentEntity == "Product"){
+            if (currentEntity == "Product") {
                 modalLabel.innerText = "Selecione um produto";
                 entityDescription.innerText = "Produto";
             }
-            else if (currentEntity == "Supplier"){
+            else if (currentEntity == "Supplier") {
                 modalLabel.innerText = "Selecione um fornecedor";
                 entityDescription.innerText = "Fornecedor";
             }
@@ -136,28 +140,28 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const input = searchEntitiesInput.value.trim();
-            console.log(currentEntity);
 
-            const products = await fetchProducts(`/${currentEntity}/List${currentEntity}sJson`, {
+            const response = await fetchEntities(`/${currentEntity}/List${currentEntity}sJson`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ input })
             });
-            renderProducts(products);
-            renderPaginationButtons(products);
+            renderEntities(response.items);
+            renderPaginationButtons(response);
         });
     });
 
     searchEntities.addEventListener("click", async () => {
         const input = searchEntitiesInput.value.trim();
 
-        const products = await fetchProducts(`/${currentEntity}/List${currentEntity}sJson`, {
+        const response = await fetchEntities(`/${currentEntity}/List${currentEntity}sJson`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ input })
         });
-        renderProducts(products);
-        renderPaginationButtons(products);
+
+        renderEntities(response.items);
+        renderPaginationButtons(response);
     });
 
     ulButtonsPagination.addEventListener("click", async (e) => {
@@ -165,13 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const pageNum = e.target.value;
 
         if (e.target.classList == "page-link page-button") {
-            const products = await fetchProducts(`/${currentEntity}/List${currentEntity}sJson`, {
+            const response = await fetchEntities(`/${currentEntity}/List${currentEntity}sJson`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ input, pageNum })
             });
-            renderProducts(products);
-            renderPaginationButtons(products)
+            renderEntities(response.items);
+            renderPaginationButtons(response)
         }
     });
 

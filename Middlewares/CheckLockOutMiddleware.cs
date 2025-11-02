@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using CollectApp.Models;
 
-namespace YourAppNamespace.Middlewares;
+namespace CollectApp.Middlewares;
 
 public class CheckLockoutMiddleware
 {
