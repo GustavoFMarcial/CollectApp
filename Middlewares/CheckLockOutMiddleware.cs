@@ -7,18 +7,14 @@ namespace CollectApp.Middlewares;
 public class CheckLockoutMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IServiceScopeFactory _scopeFactory;
 
-    public CheckLockoutMiddleware(RequestDelegate next, IServiceScopeFactory scopeFactory)
+    public CheckLockoutMiddleware(RequestDelegate next)
     {
         _next = next;
-        _scopeFactory = scopeFactory;
     }
 
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(HttpContext context, UserManager<ApplicationUser> userManager)
     {
-        using var scope = _scopeFactory.CreateScope();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
         if (context.User?.Identity?.IsAuthenticated == true)
         {
