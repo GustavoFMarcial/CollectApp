@@ -1,0 +1,70 @@
+@using CollectApp.ViewModels
+@model PagedResultViewModel<CollectListViewModel, CollectFilterViewModel>
+@{
+    ViewData["Title"] = "Lista de coletas";
+}
+
+<div class="container">
+    <h1 class="mb-2">Lista de coletas</h1>
+
+    @if (!User.IsInRole("Gestor"))
+    {
+        <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Collect" asp-action="CreateCollect">Inserir coleta</a>
+    }
+
+    <div>@await Html.PartialAsync("_CollectFilters", Model.Filters)</div>
+    
+    <table class="table table-hover" style="table-layout: fixed;">
+        <thead>
+            <tr>
+                <th style="width: 60px;">@Html.DisplayNameFor(model => model.Items[0].Id)</th>
+                <th style="width: 125px;">@Html.DisplayNameFor(model => model.Items[0].CreatedAt)</th>
+                <th style="width: 150px;">@Html.DisplayNameFor(model => model.Items[0].FullName)</th>
+                <th style="width: 150px;">@Html.DisplayNameFor(model => model.Items[0].SupplierName)</th>
+                <th style="width: 110px;">@Html.DisplayNameFor(model => model.Items[0].CollectAt)</th>
+                <th style="width: 120px;">@Html.DisplayNameFor(model => model.Items[0].ProductDescription)</th>
+                <th style="width: 150px;">@Html.DisplayNameFor(model => model.Items[0].Status)</th>
+                <th style="width: 80px;">@Html.DisplayNameFor(model => model.Items[0].Volume)</th>
+                <th style="width: 60px;">@Html.DisplayNameFor(model => model.Items[0].Weigth)</th>
+                <th style="width: 120px;">@Html.DisplayNameFor(model => model.Items[0].Filial)</th>
+                <th style="width: 130px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (CollectListViewModel collect in Model.Items)
+    {
+            <tr>
+                <td>@Html.DisplayFor(item => collect.Id)</td>
+                <td>@Html.DisplayFor(item => collect.CreatedAt)</td>
+                <td>@Html.DisplayFor(item => collect.FullName)</td>
+                <td>@Html.DisplayFor(item => collect.SupplierName)</td>
+                <td>@Html.DisplayFor(item => collect.CollectAt)</td>
+                <td>@Html.DisplayFor(Item => collect.ProductDescription)</td>
+                <td>@Html.DisplayFor(item => collect.Status)</td>
+                <td>@Html.DisplayFor(item => collect.Volume)</td>
+                <td>@Html.DisplayFor(item => collect.Weigth)</td>
+                <td>@Html.DisplayFor(item => collect.Filial)</td>
+                <td>@await Html.PartialAsync("_CollectsButtons", collect.ChangeCollect)</td>
+            </tr>
+    }   
+        </tbody>     
+    </table>
+
+    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
+</div>
+
+<script>
+    document.addEventListener("click", function(e) {
+        if (!e.target.classList.contains("page-button")) return;
+
+        const page = e.target.value;
+        const currentPage = @Model.PageNum;
+
+        if (parseInt(page) === currentPage) return;
+
+        const params = new URLSearchParams(window.location.search);
+        params.set("pageNum", page);
+
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    });
+</script>

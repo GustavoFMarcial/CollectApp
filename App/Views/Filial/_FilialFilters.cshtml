@@ -1,0 +1,29 @@
+@using CollectApp.ViewModels
+@model FilialFilterViewModel
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">Filtros de Busca</h6>
+    </div>
+    <div class="card-body">
+        <form method="get" asp-controller="Filial" asp-action="ListFilials">
+            <div class="row g-2">
+                <div class="col-md-1">
+                    <label asp-for="Id" class="form-label small mb-1 ps-1">ID</label>
+                    <input asp-for="Id" type="number" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="Name" class="form-label small mb-1 ps-1">Nome</label>
+                    <input asp-for="Name" type="text" class="form-control form-control-sm" style="width: 150px;">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+                    <a href="@Url.Action("ListFilials", "Filial")" class="btn btn-secondary btn-sm">Limpar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

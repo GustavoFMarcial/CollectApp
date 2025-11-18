@@ -1,0 +1,84 @@
+@using CollectApp.ViewModels
+@model PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>
+
+@{
+    ViewData["Title"] = "Lista de filiais";
+    ViewBag.Message = TempData["Message"];
+    ViewBag.ShowModal = TempData["ShowModal"];
+}
+
+<div class="container">
+    <h1 class="mb-2">Lista de filiais</h1>
+    <a class="nav-link text-primary mb-4 d-inline-block" asp-controller="Filial" asp-action="CreateFilial">Inserir
+        filial</a>
+
+    <div>@await Html.PartialAsync("_FilialFilters", Model.Filters)</div>
+
+    <table class="table table-hover" style="table-layout: fixed;">
+        <thead>
+            <tr>
+                <th style="width: 60px;">@Html.DisplayNameFor(m => m.Items[0].Id)</th>
+                <th style="width: 120px;">@Html.DisplayNameFor(m => m.Items[0].Name)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var filial in Model.Items)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => filial.Id)</td>
+                    <td>@Html.DisplayFor(item => filial.Name)</td>
+                    <td class="text-end">
+                        <a asp-action="EditFilial" asp-route-id="@filial.Id">
+                            <img src="~/assets/img/pencil-icon.svg" width="24" height="24" />
+                        </a>
+                        <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal-@filial.Id">
+                            <img src="~/assets/img/trash-icon.svg" width="24" height="24" />
+                        </button>
+                        <button data-entity="Filial" data-id="@filial.Id" type="button"
+                            class="log-list-button p-0 border-0 bg-transparent">
+                            <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
+                        </button>
+                    </td>
+                </tr>
+                @await Html.PartialAsync("_DeleteModal", new DeleteModalViewModel { Id = filial.Id, Type = "Filial", Title ="a filial"})
+            }
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
+</div>
+
+@await Html.PartialAsync("_ModalError", ViewBag.Message as string)
+@await Html.PartialAsync("_LogsModal")
+
+@section Scripts
+{
+    <script>
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("page-button")) {
+                const page = e.target.value;
+                if (parseInt(page) !== @Model.PageNum) {
+                    window.location.href = `/Filial/ListFilials?pageNum=${page}`;
+                }
+            }
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var showModal = '@ViewBag.ShowModal' === 'True';
+            if (showModal) {
+                var modalElement = document.getElementById('ModalError');
+                if (modalElement) {
+                    var modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+        });
+    </script>
+}

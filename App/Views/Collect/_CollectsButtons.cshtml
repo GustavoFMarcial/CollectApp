@@ -1,0 +1,62 @@
+@using CollectApp.Extensions
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model CollectApp.ViewModels.ChangeCollectViewModel
+
+<div class="d-flex justify-content-end gap-2">
+    @if (Model.Status.CanChangeStatus() && Model.CanChangeCollectStatus)
+    {
+        <form asp-controller="Collect" asp-action="ChangeCollectStatus" method="post">
+            <input asp-for="Id" type="hidden" value="@Model.Id">
+            <button class="p-0 border-0 bg-transparent">
+                <img src="~/assets/img/check-icon.svg" alt="Check button" width="24" height="24" />
+            </button>
+        </form>
+    }
+    @if (Model.CanEditOpenOrDeleteCollect)
+    {
+        @if (Model.Status.CanEdit())
+        {
+            <form asp-controller="Collect" method="post">
+                <a asp-action="EditCollect" asp-route-id="@Model.Id">
+                    <img src="~/assets/img/pencil-icon.svg" alt="Edit button" width="24" height="24" />
+                </a>
+            </form>
+        }
+        @if (Model.Status.CanOpen())
+        {
+            <form asp-controller="Collect" asp-action="OpenCollect" method="post">
+                <input asp-for="Id" type="hidden" value="@Model.Id">
+                <input asp-for="ToOpen" type="hidden" value="true">
+                <button class="p-0 border-0 bg-transparent">
+                    <img src="~/assets/img/padlock-icon.svg" alt="Open button" width="24" height="24" />
+                </button>
+            </form>
+        }
+        @if (Model.Status.CanDelete())
+        {
+            <div>
+                <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal"
+                    data-bs-target="#deleteModal-@Model.Id">
+                    <img src="~/assets/img/trash-icon.svg" alt="Trash button" width="24" height="24" />
+                </button>
+            </div>
+        }
+        <div>
+            <button data-entity="Collect" data-id="@Model.Id" type="button" class="log-list-button p-0 border-0 bg-transparent">
+                <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
+            </button>
+        </div>
+    }
+</div>
+
+@await Html.PartialAsync("_CancelCollectModal", Model.Id)
+@await Html.PartialAsync("_LogsModal")
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

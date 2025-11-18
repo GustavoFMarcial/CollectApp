@@ -1,0 +1,39 @@
+@using CollectApp.ViewModels
+@model SupplierFilterViewModel
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">Filtros de Busca</h6>
+    </div>
+    <div class="card-body">
+        <form method="get" asp-controller="Supplier" asp-action="ListSuppliers">
+            <div class="row g-2">
+                <div class="col-md-1">
+                    <label asp-for="Id" class="form-label small mb-1 ps-1">ID</label>
+                    <input asp-for="Id" type="number" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="Supplier" class="form-label small mb-1 ps-1">Fornecedor</label>
+                    <input asp-for="Supplier" type="text" class="form-control form-control-sm" style="width: 150px;">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="CNPJ" class="form-label small mb-1 ps-1">CNPJ</label>
+                    <input asp-for="CNPJ" type="text" class="form-control form-control-sm" style="width: 150px;">
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Address" class="form-label small mb-1 ps-1">Cidade</label>
+                    <input asp-for="Address" type="text" class="form-control form-control-sm">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+                    <a href="@Url.Action("ListSuppliers", "Supplier")" class="btn btn-secondary btn-sm">Limpar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+@using System.Text.Json
+@using System.Security.Claims
+@model CollectApp.ViewModels.CreateCollectViewModel
+@{
+    ViewData["Title"] = "Inserir coleta";
+}
+
+<div class="container">
+    <h1 class="mb-4">Insira uma coleta</h1>
+    <form asp-controller="Collect" asp-action="CreateCollect" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label>Fornecedor</label>
+            <div class="position-relative">
+                <input asp-for="Supplier" id="Supplier" class="form-control pe-5" readonly>
+                <button type="button" 
+                        class="search-entity-button p-0 border-0 bg-transparent position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%);"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#CreateCollectSearchEntitiesModal"
+                        id="searchSuppliersButton"
+                        value="Supplier">
+                    <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
+                </button>
+            </div>
+            <input asp-for="SupplierId" type="hidden">
+            <span asp-validation-for="Supplier" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="CollectAt"></label>
+            <input asp-for="CollectAt" class="form-control">
+            <span asp-validation-for="CollectAt" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label>Produto</label>
+            <div class="position-relative">
+                <input asp-for="Product" id="Product" class="form-control pe-5" readonly>
+                <button type="button" 
+                        class="search-entity-button p-0 border-0 bg-transparent position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%);"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#CreateCollectSearchEntitiesModal"
+                        id="searchProductsButton"
+                        value="Product">
+                    <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
+                </button>
+            </div>
+            <input asp-for="ProductId" type="hidden">
+            <span asp-validation-for="Product" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="Volume"></label>
+            <input asp-for="Volume" class="form-control">
+            <span asp-validation-for="Volume" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="Weight"></label>
+            <input asp-for="Weight" class="form-control">
+            <span asp-validation-for="Weight" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label>Loja</label>
+            <div class="position-relative">
+                <input asp-for="Filial" id="Filial" class="form-control pe-5" readonly>
+                <button type="button" 
+                        class="search-entity-button p-0 border-0 bg-transparent position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%);"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#CreateCollectSearchEntitiesModal"
+                        id="searchFilialsButton"
+                        value="Filial">
+                    <img src="~/assets/img/search-icon.svg" alt="Check button" width="24" height="24">
+                </button>
+            </div>
+            <input asp-for="FilialId" type="hidden">
+            <span asp-validation-for="Filial" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="text-end mt-4 col-4">
+            <button type="submit" class="btn btn-primary">Criar</button>
+            <a asp-controller="Collect" asp-action="ListCollects"><button type="button" class="btn btn-secondary">Voltar</button></a>
+        </div>
+    </form>
+</div>
+
+@await Html.PartialAsync("~/Views/Shared/_CreateCollectSearchModal.cshtml")
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

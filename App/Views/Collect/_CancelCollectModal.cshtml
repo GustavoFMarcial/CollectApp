@@ -1,0 +1,24 @@
+@model int
+
+<div class="modal fade" id="deleteModal-@Model" tabindex="-1" aria-labelledby="deleteModal-@Model" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModal-@Model">Cancelar coleta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        Deseja realmente cancelar a coleta de id: @Model ?
+      </div>
+      <div class="modal-footer">
+        <form asp-controller="Collect" asp-action="CancelCollect" method="post">
+            <input name="id" asp-for="@Model" type="hidden" value="@Model">
+            <button class="btn btn-danger">
+                Cancelar
+            </button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

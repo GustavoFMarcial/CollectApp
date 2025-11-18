@@ -1,0 +1,81 @@
+@using CollectApp.ViewModels
+@model CollectFilterViewModel
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">Filtros de Busca</h6>
+    </div>
+    <div class="card-body">
+        <form method="get" asp-controller="Collect" asp-action="ListCollects">
+            <div class="row g-2">
+                <div class="col-md-1">
+                    <label asp-for="Id" class="form-label small mb-1 ps-1">ID</label>
+                    <input asp-for="Id" type="number" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="StartCreation" class="form-label small mb-1 ps-1">Criação Início</label>
+                    <input asp-for="StartCreation" type="date" class="form-control form-control-sm" style="width: 150px;">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="EndCreation" class="form-label small mb-1 ps-1">Criação Fim</label>
+                    <input asp-for="EndCreation" type="date" class="form-control form-control-sm" style="width: 150px;">
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="User" class="form-label small mb-1 ps-1">Usuário</label>
+                    <input asp-for="User" type="text" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Supplier" class="form-label small mb-1 ps-1">Fornecedor</label>
+                    <input asp-for="Supplier" type="text" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="StartCollect" class="form-label small mb-1 ps-1">Coleta Início</label>
+                    <input asp-for="StartCollect" type="date" class="form-control form-control-sm" style="width: 150px;">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="EndCollect" class="form-label small mb-1 ps-1">Coleta Fim</label>
+                    <input asp-for="EndCollect" type="date" class="form-control form-control-sm" style="width: 150px;">
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Product" class="form-label small mb-1 ps-1">Produto</label>
+                    <input asp-for="Product" type="text" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Status" class="form-label small mb-1 ps-1">Status</label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<CollectStatus>()" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+                    <label asp-for="Volume" class="form-label small mb-1 ps-1">Volume</label>
+                    <input asp-for="Volume" type="number" step="0.01" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-1">
+                    <label asp-for="Weight" class="form-label small mb-1 ps-1">Peso</label>
+                    <input asp-for="Weight" type="number" step="0.01" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Filial" class="form-label small mb-1 ps-1">Loja</label>
+                    <input asp-for="Filial" type="text" class="form-control form-control-sm">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+                    <a href="@Url.Action("ListCollects", "Collect")" class="btn btn-secondary btn-sm">Limpar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

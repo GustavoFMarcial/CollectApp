@@ -1,0 +1,14 @@
+@using CollectApp.ViewModels
+@model PaginationViewModel
+
+<nav aria-label="pagination">
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            var activeClass = i == Model.CurrentPage ? "custom-active" : "";
+            <li class="page-item">
+                <button class="page-link page-button @activeClass" value="@i">@i</button>
+            </li>
+        }
+    </ul>
+</nav>

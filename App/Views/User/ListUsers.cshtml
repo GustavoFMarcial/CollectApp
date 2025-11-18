@@ -1,0 +1,85 @@
+@using CollectApp.ViewModels
+@model PagedResultViewModel<UserListViewModel, UserFilterViewModel>
+
+@{
+    ViewData["Title"] = "Lista de usuários";
+    ViewBag.Message = TempData["Message"];
+    ViewBag.ShowModal = TempData["ShowModal"];
+}
+
+<div class="container">
+    <h1 class="mb-2">Lista de usuários</h1>
+    <a class="nav-link text-primary mb-4 d-inline-block" asp-controller="User" asp-action="CreateUser">Criar usuário</a>
+
+    <div>@await Html.PartialAsync("_UserFilters", Model.Filters)
+</div>
+    <table class="table table-hover" style="table-layout: fixed;">
+        <thead>
+            <tr>
+                <th style="width: 350px">@Html.DisplayNameFor(m => m.Items[0].Id)</th>
+                <th style="width: 150px">@Html.DisplayNameFor(m => m.Items[0].CreatedAt)</th>
+                <th style="width: 150px">@Html.DisplayNameFor(m => m.Items[0].FullName)</th>
+                <th style="width: 100px">@Html.DisplayNameFor(m => m.Items[0].Role)</th>
+                <th style="width: 100px">@Html.DisplayNameFor(m => m.Items[0].Status)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Items)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => user.Id)</td>
+                    <td>@Html.DisplayFor(item => user.CreatedAt)</td>
+                    <td>@Html.DisplayFor(item => user.FullName)</td>
+                    <td>@Html.DisplayFor(item => user.Role)</td>
+                    <td>@Html.DisplayFor(item => user.Status)</td>
+                    <td class="text-end">
+                        <a asp-action="EditUser" asp-route-id="@user.Id">
+                            <img src="~/assets/img/pencil-icon.svg" width="24" height="24" />
+                        </a>
+                        <button type="button" class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal-@user.Id">
+                            <img src="~/assets/img/x-icon.svg" width="24" height="24" />
+                        </button>
+                        <button data-entity="ApplicationUser" data-id="@user.Id" type="button" class="log-list-button p-0 border-0 bg-transparent">
+                            <img src="~/assets/img/list-icon.svg" alt="Log list button" width="24" height="24" />
+                        </button>
+                    </td>
+                </tr>
+                @await Html.PartialAsync("_ChangeUserStatusModal", user.Id)
+            }
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
+</div>
+
+@await Html.PartialAsync("_ModalError", ViewBag.Message as string)
+@await Html.PartialAsync("_LogsModal")
+
+@section Scripts 
+{
+    <script>
+        document.addEventListener("click", function(e) {
+            if (e.target.classList.contains("page-button")) {
+                const page = e.target.value;
+                if (parseInt(page) !== @Model.PageNum) {
+                    window.location.href = `/User/ListUsers?pageNum=${page}`;
+                }
+            }
+        });
+    </script>
+    
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var showModal = '@ViewBag.ShowModal' === 'True';
+            if (showModal) {
+                var modalElement = document.getElementById('ModalError');
+                if (modalElement) {
+                    var modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+        });
+    </script>
+}
