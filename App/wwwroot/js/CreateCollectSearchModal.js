@@ -160,7 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify({ input })
         });
 
-        console.log(response);
         renderEntities(response.items);
         renderPaginationButtons(response);
     });
