@@ -11,6 +11,29 @@ namespace CollectAppTests.Services;
 
 public class CollectServiceTests
 {
+    private readonly Mock<ICollectRepository> _collectRepoMock;
+    private readonly Mock<ISupplierRepository> _supplierRepoMock;
+    private readonly Mock<IProductRepository> _productRepoMock;
+    private readonly Mock<IFilialRepository> _filialRepoMock;
+    private readonly Mock<IUserStore<ApplicationUser>> _userStoreMock;
+    private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
+    private readonly Mock<ICurrentUserService> _currentUserServiceMock;
+    private readonly Mock<IAuthorizationService> _authorizationServiceMock;
+    private readonly Mock<ILogger<CollectService>> _loggerMock;
+
+    public CollectServiceTests()
+    {
+        _collectRepoMock = new Mock<ICollectRepository>();
+        _supplierRepoMock = new Mock<ISupplierRepository>();
+        _productRepoMock = new Mock<IProductRepository>();
+        _filialRepoMock = new Mock<IFilialRepository>();
+        _userStoreMock = new Mock<IUserStore<ApplicationUser>>();
+        _userManagerMock = new Mock<UserManager<ApplicationUser>>(_userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
+        _currentUserServiceMock = new Mock<ICurrentUserService>();
+        _authorizationServiceMock = new Mock<IAuthorizationService>();
+        _loggerMock = new Mock<ILogger<CollectService>>();
+    }
+
     [Fact]
     public async Task SetPagedResultCollectListViewModel_WhenHasItems_ReturnsCorrectValue()
     {
@@ -106,40 +129,28 @@ public class CollectServiceTests
             }
         };
 
-        var collectRepoMock = new Mock<ICollectRepository>();
-        collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
+        _collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync((collectList, 1));
 
-        var supplierRepoMock = new Mock<ISupplierRepository>();
-        var productRepoMock = new Mock<IProductRepository>();
-        var filialRepoMock = new Mock<IFilialRepository>();
+        var _userManagerMock = new Mock<UserManager<ApplicationUser>>(_userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
 
-        var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
-        var userManagerMock = new Mock<UserManager<ApplicationUser>>(
-            userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
+        _currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
 
-        var currentUserServiceMock = new Mock<ICurrentUserService>();
-        currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[]{new Claim(ClaimTypes.NameIdentifier, "user123")})));
-
-        var authorizationServiceMock = new Mock<IAuthorizationService>();
-        authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), "CanChangeCollectStatus"))
+        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), "CanChangeCollectStatus"))
             .ReturnsAsync(AuthorizationResult.Success());
 
-        authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), "MustBeCollectOwner"))
+        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), "MustBeCollectOwner"))
             .ReturnsAsync(AuthorizationResult.Success());
-
-        var loggerMock = new Mock<ILogger<CollectService>>();
-
 
         var service = new CollectService(
-            collectRepoMock.Object,
-            supplierRepoMock.Object,
-            productRepoMock.Object,
-            filialRepoMock.Object,
-            userManagerMock.Object,
-            currentUserServiceMock.Object,
-            authorizationServiceMock.Object,
-            loggerMock.Object);
+            _collectRepoMock.Object,
+            _supplierRepoMock.Object,
+            _productRepoMock.Object,
+            _filialRepoMock.Object,
+            _userManagerMock.Object,
+            _currentUserServiceMock.Object,
+            _authorizationServiceMock.Object,
+            _loggerMock.Object);
 
         var result = await service.SetPagedResultCollectListViewModel(filters, 1, 10);
 
