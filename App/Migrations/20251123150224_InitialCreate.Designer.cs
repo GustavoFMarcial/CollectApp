@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectApp.Migrations
 {
     [DbContext(typeof(CollectAppContext))]
-    [Migration("20251021234753_InitialCreate")]
+    [Migration("20251123150224_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -115,8 +115,9 @@ namespace CollectApp.Migrations
                     b.Property<DateTime>("ChangedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<string>("EntityId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EntityName")
                         .IsRequired()
@@ -176,7 +177,7 @@ namespace CollectApp.Migrations
                     b.Property<int?>("Volume")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Weigth")
+                    b.Property<int?>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -220,7 +221,7 @@ namespace CollectApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

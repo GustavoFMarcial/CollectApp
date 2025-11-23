@@ -61,7 +61,7 @@ namespace CollectApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EntityId = table.Column<int>(type: "int", nullable: false),
+                    EntityId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Field = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OldValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NewValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -93,7 +93,7 @@ namespace CollectApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -239,7 +239,7 @@ namespace CollectApp.Migrations
                     CollectAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Volume = table.Column<int>(type: "int", nullable: true),
-                    Weigth = table.Column<int>(type: "int", nullable: true),
+                    Weight = table.Column<int>(type: "int", nullable: true),
                     FilialId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },

@@ -174,7 +174,7 @@ namespace CollectApp.Migrations
                     b.Property<int?>("Volume")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Weigth")
+                    b.Property<int?>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

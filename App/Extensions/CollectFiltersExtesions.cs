@@ -49,7 +49,7 @@ public static class CollectQueryExtensions
 
         if (filters.Weight > 0)
         {
-            query = query.Where(c => c.Weigth == filters.Weight);
+            query = query.Where(c => c.Weight == filters.Weight);
         }
 
         if (!string.IsNullOrEmpty(filters.Filial))

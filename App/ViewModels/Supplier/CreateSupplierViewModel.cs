@@ -28,7 +28,7 @@ public class CreateSupplierViewModel
 
     [DisplayName("Cidade")]
     [Required(ErrorMessage = "Campo cidade é obrigatório")]
-    public string? City { get; set; }
+    public string City { get; set; } = string.Empty;
 
     [DisplayName("UF")]
     [Required(ErrorMessage = "Campo UF é obrigatório")]

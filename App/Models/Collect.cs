@@ -12,7 +12,7 @@ public class Collect
     public int ProductId { get; set; }
     public Product Product { get; set; } = null!;
     public int? Volume { get; set; }
-    public int? Weigth { get; set; }
+    public int? Weight { get; set; }
     public int FilialId { get; set; }
     public Filial Filial { get; set; } = null!;
     public CollectStatus Status { get; set; } = CollectStatus.PendenteAprovar;

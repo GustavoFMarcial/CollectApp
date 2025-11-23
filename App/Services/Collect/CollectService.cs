@@ -44,7 +44,7 @@ public class CollectService : ICollectService
             ProductDescription = c.Product.Name,
             Status = c.Status,
             Volume = c.Volume,
-            Weigth = c.Weigth,
+            Weigth = c.Weight,
             Filial = c.Filial.Name,
             ChangeCollect = new ChangeCollectViewModel
             {
@@ -89,7 +89,7 @@ public class CollectService : ICollectService
             ProductId = product.Id,
             Product = product,
             Volume = collectCreate.Volume,
-            Weigth = collectCreate.Weight,
+            Weight = collectCreate.Weight,
             FilialId = filial.Id,
             Filial = filial,
         };
@@ -117,7 +117,7 @@ public class CollectService : ICollectService
             ProductId = collect.ProductId,
             Product = collect.Product.Name,
             Volume = collect.Volume,
-            Weight = collect.Weigth,
+            Weight = collect.Weight,
             FilialId = collect.FilialId,
             Filial = collect.Filial.Name,
         };
@@ -154,7 +154,7 @@ public class CollectService : ICollectService
         collect.ProductId = product.Id;
         collect.Product = product;
         collect.Volume = collectEdit.Volume;
-        collect.Weigth = collectEdit.Weight;
+        collect.Weight = collectEdit.Weight;
         collect.FilialId = filial.Id;
         collect.Filial = filial;
 
