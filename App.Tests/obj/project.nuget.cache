@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4eBvy0xoDjw=",
+  "dgSpecHash": "ObdioXJSxpI=",
   "success": true,
   "projectFilePath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App.Tests\\CollectApp.Tests.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
     "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\coverlet.collector\\6.0.2\\coverlet.collector.6.0.2.nupkg.sha512",
+    "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\fluentassertions\\8.8.0\\fluentassertions.8.8.0.nupkg.sha512",
     "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

@@ -365,3 +365,4 @@ C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\
 C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\App.Tests\obj\Debug\net9.0\CollectApp.Tests.pdb
 C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\App.Tests\obj\Debug\net9.0\CollectApp.Tests.genruntimeconfig.cache
 C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\App.Tests\obj\Debug\net9.0\ref\CollectApp.Tests.dll
+C:\Users\Gustavo F. Marcial\Desktop\coisas\Dev. Course\C#\projects\ASP.NET Core\CollectApp\App.Tests\bin\Debug\net9.0\FluentAssertions.dll

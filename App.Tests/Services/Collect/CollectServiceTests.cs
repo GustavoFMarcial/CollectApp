@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using FluentAssertions;
+using CollectAppTests.Builders;
 namespace CollectAppTests.Services;
 
 public class CollectServiceTests
@@ -37,21 +39,8 @@ public class CollectServiceTests
     [Fact]
     public async Task SetPagedResultCollectListViewModel_WhenHasItems_ReturnsCorrectValue()
     {
-        var filters = new CollectFilterViewModel
-        {
-            Id = 1,
-            StartCreation = new DateTime(2024, 1, 15, 10, 30, 0),
-            EndCreation = new DateTime(2024, 1, 15, 10, 30, 0),
-            User = "João Silva",
-            Supplier = "Fornecedor ABC Ltda",
-            StartCollect = new DateTime(2024, 1, 20, 14, 0, 0),
-            EndCollect = new DateTime(2024, 1, 20, 14, 0, 0),
-            Product = "Papel Reciclável",
-            Status = CollectStatus.PendenteAprovar,
-            Volume = 100,
-            Weight = 50,
-            Filial = "Filial SP Centro",
-        };
+
+        CollectFilterViewModel filters = new CollectFilterViewModelBuilder().Build();
 
         var collectList = new List<Collect>
         {
@@ -60,44 +49,16 @@ public class CollectServiceTests
                 Id = 1,
                 CreatedAt = new DateTime(2024, 1, 15, 10, 30, 0),
                 UserId = "user123",
-                User = new ApplicationUser
-                {
-                    Id = "user123",
-                    FullName = "João Silva",
-                    Role = "Coletor",
-                    Status = UserStatus.Ativo,
-                    CreatedAt = new DateTime(2023, 6, 1)
-                },
+                User = new UserBuilder().Build(),
                 SupplierId = 1,
-                Supplier = new Supplier
-                {
-                    Id = 1,
-                    CreatedAt = new DateTime(2023, 5, 10),
-                    CNPJ = "12.345.678/0001-90",
-                    Name = "Fornecedor ABC Ltda",
-                    Street = "Rua das Flores",
-                    Neighborhood = "Centro",
-                    Number = "100",
-                    City = "São Paulo",
-                    State = "SP",
-                    ZipCode = "01234-567"
-                },
+                Supplier = new SupplierBuilder().Build(),
                 CollectAt = new DateTime(2024, 1, 20, 14, 0, 0),
                 ProductId = 1,
-                Product = new Product
-                {
-                    Id = 1,
-                    CreatedAt = new DateTime(2023, 3, 15),
-                    Name = "Papel Reciclável"
-                },
+                Product = new ProductBuilder().Build(),
                 Volume = 100,
                 Weigth = 50,
                 FilialId = 1,
-                Filial = new Filial
-                {
-                    Id = 1,
-                    Name = "Filial SP Centro"
-                },
+                Filial = new FilialBuilder().Build(),
                 Status = CollectStatus.PendenteAprovar
             },
         };
@@ -162,29 +123,6 @@ public class CollectServiceTests
             Filters = filters,
         };
 
-        Assert.Equal(expected.TotalPages, result.TotalPages);
-        Assert.Equal(expected.PageNum, result.PageNum);
-        Assert.Equal(expected.Items.Count, result.Items.Count);
-
-        for (int i = 0; i < expected.Items.Count; i++)
-        {
-            Assert.Equal(expected.Items[i].Id, result.Items[i].Id);
-            Assert.Equal(expected.Items[i].CreatedAt, result.Items[i].CreatedAt);
-            Assert.Equal(expected.Items[i].UserId, result.Items[i].UserId);
-            Assert.Equal(expected.Items[i].FullName, result.Items[i].FullName);
-            Assert.Equal(expected.Items[i].SupplierName, result.Items[i].SupplierName);
-            Assert.Equal(expected.Items[i].CollectAt, result.Items[i].CollectAt);
-            Assert.Equal(expected.Items[i].ProductDescription, result.Items[i].ProductDescription);
-            Assert.Equal(expected.Items[i].Volume, result.Items[i].Volume);
-            Assert.Equal(expected.Items[i].Weigth, result.Items[i].Weigth);
-            Assert.Equal(expected.Items[i].Filial, result.Items[i].Filial);
-            Assert.Equal(expected.Items[i].Status, result.Items[i].Status);
-            Assert.Equal(expected.Items[i].ChangeCollect.Id, result.Items[i].ChangeCollect.Id);
-            Assert.Equal(expected.Items[i].ChangeCollect.Status, result.Items[i].ChangeCollect.Status);
-            Assert.Equal(expected.Items[i].ChangeCollect.ToOpen, result.Items[i].ChangeCollect.ToOpen);
-            Assert.Equal(expected.Items[i].ChangeCollect.UserId, result.Items[i].ChangeCollect.UserId);
-            Assert.Equal(expected.Items[i].ChangeCollect.CanChangeCollectStatus, result.Items[i].ChangeCollect.CanChangeCollectStatus);
-            Assert.Equal(expected.Items[i].ChangeCollect.CanEditOpenOrDeleteCollect, result.Items[i].ChangeCollect.CanEditOpenOrDeleteCollect);
-        }
+        result.Should().BeEquivalentTo(expected);
     }
 }
