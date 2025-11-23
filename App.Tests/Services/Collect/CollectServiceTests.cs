@@ -44,35 +44,20 @@ public class CollectServiceTests
 
         var collectList = new List<Collect>
         {
-            new Collect
-            {
-                Id = 1,
-                CreatedAt = new DateTime(2024, 1, 15, 10, 30, 0),
-                UserId = "user123",
-                User = new UserBuilder().Build(),
-                SupplierId = 1,
-                Supplier = new SupplierBuilder().Build(),
-                CollectAt = new DateTime(2024, 1, 20, 14, 0, 0),
-                ProductId = 1,
-                Product = new ProductBuilder().Build(),
-                Volume = 100,
-                Weigth = 50,
-                FilialId = 1,
-                Filial = new FilialBuilder().Build(),
-                Status = CollectStatus.PendenteAprovar
-            },
+            new CollectBuilder().Build(),
         };
+
 
         var collectListViewModel = new List<CollectListViewModel>
         {
             new CollectListViewModel
             {
                 Id = 1,
-                CreatedAt = new DateTime(2024, 1, 15, 10, 30, 0),
+                CreatedAt = new DateTime(2024, 1, 15),
                 UserId = "user123",
                 FullName = "João Silva",
                 SupplierName = "Fornecedor ABC Ltda",
-                CollectAt = new DateTime(2024, 1, 20, 14, 0, 0),
+                CollectAt = new DateTime(2024, 1, 20),
                 ProductDescription = "Papel Reciclável",
                 Volume = 100,
                 Weigth = 50,

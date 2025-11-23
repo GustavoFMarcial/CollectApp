@@ -14,9 +14,9 @@ public class ProductBuilder
         return this;
     }
 
-    public ProductBuilder WithCreatedAt(int year, int month, int day)
+    public ProductBuilder WithCreatedAt(DateTime createdAt)
     {
-        _createdAt = new DateTime(year, month, day);
+        _createdAt = createdAt;
         return this;
     }
 

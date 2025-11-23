@@ -35,9 +35,9 @@ public class UserBuilder
         return this;
     }
 
-    public UserBuilder WithCreatedAt(int year, int month, int day)
+    public UserBuilder WithCreatedAt(DateTime createdAt)
     {
-        _createdAt = new DateTime(year, month, day);
+        _createdAt = createdAt;
         return this;
     }
 

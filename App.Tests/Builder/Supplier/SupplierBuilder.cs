@@ -21,9 +21,9 @@ public class SupplierBuilder
         return this;
     }
 
-    public SupplierBuilder WithCreatedAt(int year, int month, int day)
+    public SupplierBuilder WithCreatedAt(DateTime createdAt)
     {
-        _createdAt = new DateTime(year, month, day);
+        _createdAt = createdAt;
         return this;
     }
 

@@ -24,15 +24,15 @@ public class CollectFilterViewModelBuilder
         return this;
     }
 
-    public CollectFilterViewModelBuilder WithStartCreation(int year, int month, int day)
+    public CollectFilterViewModelBuilder WithStartCreation(DateTime startCreation)
     {
-        _startCreation = new DateTime(year, month, day);
+        _startCreation = startCreation;
         return this;
     }
 
-    public CollectFilterViewModelBuilder WithEndCreation(int year, int month, int day)
+    public CollectFilterViewModelBuilder WithEndCreation(DateTime endCreation)
     {
-        _endCreation = new DateTime(year, month, day);
+        _endCreation = endCreation;
         return this;
     }
 
@@ -48,15 +48,15 @@ public class CollectFilterViewModelBuilder
         return this;
     }
 
-    public CollectFilterViewModelBuilder WithStartCollect(int year, int month, int day)
+    public CollectFilterViewModelBuilder WithStartCollect(DateTime startCollect)
     {
-        _startCollect = new DateTime(year, month, day);
+        _startCollect = startCollect;
         return this;
     }
 
-    public CollectFilterViewModelBuilder WithEndCollect(int year, int month, int day)
+    public CollectFilterViewModelBuilder WithEndCollect(DateTime endCollect)
     {
-        _endCollect = new DateTime(year, month, day);
+        _endCollect = endCollect;
         return this;
     }
 
