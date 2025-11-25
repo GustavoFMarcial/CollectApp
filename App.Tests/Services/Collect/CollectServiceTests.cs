@@ -1,39 +1,20 @@
 using Moq;
 using CollectApp.ViewModels;
-using CollectApp.Repositories;
-using CollectApp.Models;
 using CollectApp.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using FluentAssertions;
 using CollectAppTests.Builders;
+using CollectApp.Fixtures;
 namespace CollectAppTests.Services;
 
-public class CollectServiceTests
+public class CollectServiceTests  : IClassFixture<CollectServiceFixture>
 {
-    private readonly Mock<ICollectRepository> _collectRepoMock;
-    private readonly Mock<ISupplierRepository> _supplierRepoMock;
-    private readonly Mock<IProductRepository> _productRepoMock;
-    private readonly Mock<IFilialRepository> _filialRepoMock;
-    private readonly Mock<IUserStore<ApplicationUser>> _userStoreMock;
-    private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
-    private readonly Mock<ICurrentUserService> _currentUserServiceMock;
-    private readonly Mock<IAuthorizationService> _authorizationServiceMock;
-    private readonly Mock<ILogger<CollectService>> _loggerMock;
+    private readonly CollectServiceFixture _fx;
 
-    public CollectServiceTests()
+    public CollectServiceTests(CollectServiceFixture fx)
     {
-        _collectRepoMock = new Mock<ICollectRepository>();
-        _supplierRepoMock = new Mock<ISupplierRepository>();
-        _productRepoMock = new Mock<IProductRepository>();
-        _filialRepoMock = new Mock<IFilialRepository>();
-        _userStoreMock = new Mock<IUserStore<ApplicationUser>>();
-        _userManagerMock = new Mock<UserManager<ApplicationUser>>(_userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
-        _currentUserServiceMock = new Mock<ICurrentUserService>();
-        _authorizationServiceMock = new Mock<IAuthorizationService>();
-        _loggerMock = new Mock<ILogger<CollectService>>();
+        _fx = fx;
     }
 
     [Fact]
@@ -45,23 +26,23 @@ public class CollectServiceTests
 
         var filters = new CollectFilterViewModelBuilder().Build();
 
-        _collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
+        _fx._collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(([collect], 1));
 
-        _currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
+        _fx._currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
 
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
+        _fx._authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
             .ReturnsAsync(AuthorizationResult.Success());
 
         var service = new CollectService(
-            _collectRepoMock.Object,
-            _supplierRepoMock.Object,
-            _productRepoMock.Object,
-            _filialRepoMock.Object,
-            _userManagerMock.Object,
-            _currentUserServiceMock.Object,
-            _authorizationServiceMock.Object,
-            _loggerMock.Object);
+            _fx._collectRepoMock.Object,
+            _fx._supplierRepoMock.Object,
+            _fx._productRepoMock.Object,
+            _fx._filialRepoMock.Object,
+            _fx._userManagerMock.Object,
+            _fx._currentUserServiceMock.Object,
+            _fx._authorizationServiceMock.Object,
+            _fx._loggerMock.Object);
 
         var result = await service.SetPagedResultCollectListViewModel(filters, 1, 10);
 
@@ -75,7 +56,7 @@ public class CollectServiceTests
 
         result.Should().BeEquivalentTo(expected);
 
-        _collectRepoMock.Verify(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
-        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()), Times.Exactly(2));
+        _fx._collectRepoMock.Verify(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        _fx._authorizationServiceMock.Verify(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()), Times.Exactly(2));
     }
 }
