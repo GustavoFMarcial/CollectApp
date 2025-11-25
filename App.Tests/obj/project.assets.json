@@ -9187,8 +9187,8 @@
     },
     "CollectApp/1.0.0": {
       "type": "project",
-      "path": "../app/CollectApp.csproj",
-      "msbuildProject": "../app/CollectApp.csproj"
+      "path": "../App/CollectApp.csproj",
+      "msbuildProject": "../App/CollectApp.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -9234,8 +9234,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\app\\CollectApp.csproj": {
-              "projectPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\app\\CollectApp.csproj"
+            "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App\\CollectApp.csproj": {
+              "projectPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App\\CollectApp.csproj"
             }
           }
         }

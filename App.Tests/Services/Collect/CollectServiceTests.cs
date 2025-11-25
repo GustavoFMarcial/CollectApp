@@ -37,7 +37,7 @@ public class CollectServiceTests
     }
 
     [Fact]
-    public async Task SetPagedResultCollectListViewModel_WhenHasItems_ReturnsCorrectValue()
+    public async Task SetPagedResultCollectListViewModel_WithFilters_ReturnsCorrectValue()
     {
 
         CollectFilterViewModel filters = new CollectFilterViewModelBuilder().Build();
@@ -47,32 +47,9 @@ public class CollectServiceTests
             new CollectBuilder().Build(),
         };
 
-
         var collectListViewModel = new List<CollectListViewModel>
         {
-            new CollectListViewModel
-            {
-                Id = 1,
-                CreatedAt = new DateTime(2024, 1, 15),
-                UserId = "user123",
-                FullName = "João Silva",
-                SupplierName = "Fornecedor ABC Ltda",
-                CollectAt = new DateTime(2024, 1, 20),
-                ProductDescription = "Papel Reciclável",
-                Volume = 100,
-                Weigth = 50,
-                Filial = "Filial SP Centro",
-                Status = CollectStatus.PendenteAprovar,
-                ChangeCollect = new ChangeCollectViewModel
-                {
-                    Id = 1,
-                    Status = CollectStatus.PendenteAprovar,
-                    ToOpen = false,
-                    UserId = "user123",
-                    CanChangeCollectStatus = true,
-                    CanEditOpenOrDeleteCollect = true
-                }
-            }
+            new CollectListViewModelBuilder().Build(),
         };
 
         _collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
