@@ -6,24 +6,12 @@ namespace CollectAppTests.Builders;
 
 public class ChangeCollectViewModelBuilder
 {
-    private int _id = 1;
-    private CollectStatus _status = CollectStatus.PendenteAprovar;
+    private int _id;
+    private CollectStatus _status;
     private bool _toOpen = false;
-    private string _userId = "user123";
+    private string _userId = String.Empty;
     private bool _canChangeCollectStatus = true;
     private bool _canEditOpenOrDeleteCollect = true;
-
-    public ChangeCollectViewModelBuilder WithId(int id)
-    {
-        _id = id;
-        return this;
-    }
-
-    public ChangeCollectViewModelBuilder WithCollectStatus(CollectStatus status)
-    {
-        _status = status;
-        return this;
-    }
 
     public ChangeCollectViewModelBuilder WithToOpen(bool toOpen)
     {
@@ -31,13 +19,7 @@ public class ChangeCollectViewModelBuilder
         return this;
     }
 
-    public ChangeCollectViewModelBuilder WithUserId(string userId)
-    {
-        _userId = userId;
-        return this;
-    }
-
-    public ChangeCollectViewModelBuilder WithCanChangeCollectStatus(bool canChangeCollectStatus)
+    public ChangeCollectViewModelBuilder WithCanChangeCollectstatus(bool canChangeCollectStatus)
     {
         _canChangeCollectStatus = canChangeCollectStatus;
         return this;
@@ -46,6 +28,14 @@ public class ChangeCollectViewModelBuilder
     public ChangeCollectViewModelBuilder WithCanEditOpenOrDeleteCollect(bool canEditOpenOrDeleteCollect)
     {
         _canEditOpenOrDeleteCollect = canEditOpenOrDeleteCollect;
+        return this;
+    }
+
+    public ChangeCollectViewModelBuilder FromCollect(Collect c)
+    {
+        _id = c.Id;
+        _status = c.Status;
+        _userId = c.UserId;
         return this;
     }
 

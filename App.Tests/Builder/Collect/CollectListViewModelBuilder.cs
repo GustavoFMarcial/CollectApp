@@ -5,90 +5,33 @@ namespace CollectAppTests.Builders;
 
 public class CollectListViewModelBuilder
 {
-    private int _id = 1;
-    private DateTime _createdAt = new DateTime(2024, 1, 15);
-    private string _userId = "user123";
-    private string _fullName = "João Silva";
-    private string _supplierName = "Fornecedor ABC Ltda";
-    private DateTime _collectAt = new DateTime(2024, 1, 20);
-    private string _productDescription = "Papel Reciclável";
-    private int _volume = 100;
-    private int _weigth = 50;
-    private string _filial = "Filial SP Centro";
-    private CollectStatus _status = CollectStatus.PendenteAprovar;
-    private ChangeCollectViewModel _changeCollect = new ChangeCollectViewModelBuilder().Build();
+    private int _id;
+    private DateTime _createdAt;
+    private string _userId = string.Empty;
+    private string? _fullName;
+    private string? _supplierName;
+    private DateTime _collectAt;
+    private string? _productDescription;
+    private int? _volume;
+    private int? _weigth;
+    private string? _filial;
+    private CollectStatus _status;
+    private ChangeCollectViewModel _changeCollect = new();
 
-    public CollectListViewModelBuilder WithId(int id)
+    public CollectListViewModelBuilder FromCollect(Collect c)
     {
-        _id = id;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithCreatedAt(DateTime createdAt)
-    {
-        _createdAt = createdAt;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithUserId(string userId)
-    {
-        _userId = userId;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithFullName(string fullName)
-    {
-        _fullName = fullName;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithSupplierName(string supplierName)
-    {
-        _supplierName = supplierName;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithCollectAt(DateTime collectAt)
-    {
-        _collectAt = collectAt;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithProductDescription(string productDescription)
-    {
-        _productDescription = productDescription;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithVolume(int volume)
-    {
-        _volume = volume;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithWeight(int weight)
-    {
-        _weigth = weight;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithFilial(string filial)
-    {
-        _filial = filial;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithStatus(CollectStatus status)
-    {
-        _status = status;
-        return this;
-    }
-
-    public CollectListViewModelBuilder WithChangeCollect(Action<ChangeCollectViewModelBuilder> configure)
-    {
-        ChangeCollectViewModelBuilder ccvmb = new ChangeCollectViewModelBuilder();
-        configure(ccvmb);
-        _changeCollect = ccvmb.Build();
+        _id = c.Id;
+        _createdAt = c.CreatedAt;
+        _userId = c.UserId;
+        _fullName = c.User.FullName;
+        _supplierName = c.Supplier.Name;
+        _collectAt = c.CollectAt;
+        _productDescription = c.Product.Name;
+        _volume = c.Volume;
+        _weigth = c.Weight;
+        _filial = c.Filial.Name;
+        _status = c.Status;
+        _changeCollect = new ChangeCollectViewModelBuilder().FromCollect(c).Build();
         return this;
     }
 

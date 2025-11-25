@@ -37,32 +37,20 @@ public class CollectServiceTests
     }
 
     [Fact]
-    public async Task SetPagedResultCollectListViewModel_WithFilters_ReturnsCorrectValue()
+    public async Task SetPagedResultCollectListViewModel_ShouldReturnPagedResultWithMappedItems()
     {
+        var collect = new CollectBuilder().Build();
 
-        CollectFilterViewModel filters = new CollectFilterViewModelBuilder().Build();
+        var collectListViewModel = new CollectListViewModelBuilder().FromCollect(collect).Build();
 
-        var collectList = new List<Collect>
-        {
-            new CollectBuilder().Build(),
-        };
-
-        var collectListViewModel = new List<CollectListViewModel>
-        {
-            new CollectListViewModelBuilder().Build(),
-        };
+        var filters = new CollectFilterViewModelBuilder().Build();
 
         _collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
-            .ReturnsAsync((collectList, 1));
-
-        var _userManagerMock = new Mock<UserManager<ApplicationUser>>(_userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
+            .ReturnsAsync(([collect], 1));
 
         _currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
 
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), "CanChangeCollectStatus"))
-            .ReturnsAsync(AuthorizationResult.Success());
-
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), "MustBeCollectOwner"))
+        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
             .ReturnsAsync(AuthorizationResult.Success());
 
         var service = new CollectService(
@@ -79,12 +67,15 @@ public class CollectServiceTests
 
         var expected = new PagedResultViewModel<CollectListViewModel, CollectFilterViewModel>
         {
-            Items = collectListViewModel,
+            Items = [collectListViewModel],
             TotalPages = 1,
             PageNum = 1,
-            Filters = filters,
+            Filters = filters
         };
 
         result.Should().BeEquivalentTo(expected);
+
+        _collectRepoMock.Verify(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()), Times.Exactly(2));
     }
 }
