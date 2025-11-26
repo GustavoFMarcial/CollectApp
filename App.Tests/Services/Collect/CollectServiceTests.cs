@@ -45,12 +45,15 @@ public class CollectServiceTests
 
         var filters = new CollectFilterViewModelBuilder().Build();
 
-        _collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
+        _collectRepoMock.Setup(c => c.ToCollectListAsync(filters, 1, 10))
                 .ReturnsAsync(([collect], 1));
 
         _currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
 
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
+        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
+            .ReturnsAsync(AuthorizationResult.Success());
+
+        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, collect.UserId, "MustBeCollectOwner"))
             .ReturnsAsync(AuthorizationResult.Success());
 
         var service = new CollectService(
@@ -75,8 +78,9 @@ public class CollectServiceTests
 
         result.Should().BeEquivalentTo(expected);
 
-        _collectRepoMock.Verify(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
-        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()), Times.Exactly(2));
+        _collectRepoMock.Verify(c => c.ToCollectListAsync(filters, 1, 10), Times.Once);
+        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"), Times.Exactly(1));
+        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, collect.UserId, "MustBeCollectOwner"), Times.Exactly(1));
     }
 
     [Fact]
@@ -118,7 +122,7 @@ public class CollectServiceTests
                 .WithStatus(CollectStatus.Coletado)
                 .Build(),
             new CollectBuilder()
-                .WithId(2)
+                .WithId(3)
                 .WithCreatedAt(new DateTime(2025, 11, 22))
                 .WithUserId("user2")
                 .WithUser(u => u
@@ -160,13 +164,19 @@ public class CollectServiceTests
 
         var filters = new CollectFilterViewModel();
 
-        _collectRepoMock.Setup(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
+        _collectRepoMock.Setup(c => c.ToCollectListAsync(filters, 1, 10))
             .ReturnsAsync((collectList, 3));
 
         _currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
 
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
+        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
             .ReturnsAsync(AuthorizationResult.Success());
+
+        foreach(Collect c in collectList)
+        {
+            _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"))
+            .ReturnsAsync(AuthorizationResult.Success());
+        }
 
         var service = new CollectService(
             _collectRepoMock.Object,
@@ -190,7 +200,10 @@ public class CollectServiceTests
 
         result.Should().BeEquivalentTo(expected);
 
-        _collectRepoMock.Verify(c => c.ToCollectListAsync(It.IsAny<CollectFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
-        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()), Times.Exactly(6));
+        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"), Times.Exactly(3));
+        foreach(Collect c in collectList)
+        {
+            _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"), Times.Exactly(1));
+        }
     }
 }
