@@ -51,7 +51,7 @@ public class SupplierBuilder
         return this;
     }
 
-    public SupplierBuilder WitNumber(string number)
+    public SupplierBuilder WithNumber(string number)
     {
         _number = number;
         return this;
