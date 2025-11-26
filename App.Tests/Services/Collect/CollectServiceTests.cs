@@ -155,12 +155,10 @@ public class CollectServiceTests
                 .Build(),
         };
 
-        var collectListViewModel = new List<CollectListViewModel>
-        {
-            new CollectListViewModelBuilder().FromCollect(collectList[0]).Build(),
-            new CollectListViewModelBuilder().FromCollect(collectList[1]).Build(),
-            new CollectListViewModelBuilder().FromCollect(collectList[2]).Build(),
-        };
+        List<CollectListViewModel> collectListViewModel = collectList.Select(c => new CollectListViewModelBuilder()
+            .FromCollect(c)
+            .Build()
+        ).ToList();
 
         var filters = new CollectFilterViewModel();
 
@@ -172,7 +170,7 @@ public class CollectServiceTests
         _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
             .ReturnsAsync(AuthorizationResult.Success());
 
-        foreach(Collect c in collectList)
+        foreach (Collect c in collectList)
         {
             _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"))
             .ReturnsAsync(AuthorizationResult.Success());
@@ -201,7 +199,7 @@ public class CollectServiceTests
         result.Should().BeEquivalentTo(expected);
 
         _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"), Times.Exactly(3));
-        foreach(Collect c in collectList)
+        foreach (Collect c in collectList)
         {
             _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"), Times.Exactly(1));
         }
