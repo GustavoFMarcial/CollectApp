@@ -4,32 +4,17 @@ namespace CollectAppTests.Builders;
 
 public class CollectBuilder
 {
-    private int _id = 1;
-    private DateTime _createdAt = new DateTime(2024, 1, 15);
-    private string _userId = "user123";
+    private string _userId = "1";
     private ApplicationUser _user = new UserBuilder().Build();
     private int _supplierId = 1;
     private Supplier _supplier = new SupplierBuilder().Build();
-    private DateTime _collectAt = new DateTime(2024, 1, 20);
+    private DateTime _collectAt = new DateTime(2025, 12, 25);
     private int _productId = 1;
     private Product _product = new ProductBuilder().Build();
     private int _volume = 100;
     private int _weight = 50;
     private int _filialId = 1;
     private Filial _filial = new FilialBuilder().Build();
-    private CollectStatus _status = CollectStatus.PendenteAprovar;
-
-    public CollectBuilder WithId(int id)
-    {
-        _id = id;
-        return this;
-    }
-
-    public CollectBuilder WithCreatedAt(DateTime createdAt)
-    {
-        _createdAt = createdAt;
-        return this;
-    }
 
     public CollectBuilder WithUserId(string userId)
     {
@@ -105,18 +90,10 @@ public class CollectBuilder
         return this;
     }
 
-    public CollectBuilder WithStatus(CollectStatus stauts)
-    {
-        _status = stauts;
-        return this;
-    }
-
     public Collect Build()
     {
         return new Collect
         {
-            Id = _id,
-            CreatedAt = _createdAt,
             UserId = _userId,
             User = _user,
             SupplierId = _supplierId,
@@ -128,7 +105,6 @@ public class CollectBuilder
             Weight = _weight,
             FilialId = _filialId,
             Filial = _filial,
-            Status = _status,
         };
     }
 };

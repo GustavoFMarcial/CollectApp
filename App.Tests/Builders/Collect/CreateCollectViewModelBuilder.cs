@@ -5,14 +5,14 @@ namespace CollectAppTests.Builders;
 public class CreateCollectViewModelBuilder
 {
     private int _supplierId = 1;
-    private string? _supplier = "GMS";
+    private string? _supplier = "Fornecedor ABC LTDA";
     private DateTime _collectAt = new DateTime(2025, 12, 25);
     private int _productId = 1;
-    private string? _product = "Ferragem";
+    private string? _product = "Papel Reciclável";
     private int _volume = 100;
     private int _weight = 50;
     private int _filialId = 1;
-    private string? _filial = "Gênesis 08";
+    private string? _filial = "Filial SP Centro";
 
     public CreateCollectViewModelBuilder WithSupplierId(int supplierId)
     {

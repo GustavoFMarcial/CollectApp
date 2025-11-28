@@ -5,7 +5,7 @@ namespace CollectAppTests.Builders;
 
 public class UserBuilder
 {
-    private string _id = "user123";
+    private string _id = "1";
     private string _fullName = "João Silva";
     private string _role = "Comprador";
     private UserStatus _status = UserStatus.Ativo;

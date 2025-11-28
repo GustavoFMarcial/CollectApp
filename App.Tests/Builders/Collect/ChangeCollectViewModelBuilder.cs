@@ -13,24 +13,6 @@ public class ChangeCollectViewModelBuilder
     private bool _canChangeCollectStatus = true;
     private bool _canEditOpenOrDeleteCollect = true;
 
-    public ChangeCollectViewModelBuilder WithToOpen(bool toOpen)
-    {
-        _toOpen = toOpen;
-        return this;
-    }
-
-    public ChangeCollectViewModelBuilder WithCanChangeCollectstatus(bool canChangeCollectStatus)
-    {
-        _canChangeCollectStatus = canChangeCollectStatus;
-        return this;
-    }
-
-    public ChangeCollectViewModelBuilder WithCanEditOpenOrDeleteCollect(bool canEditOpenOrDeleteCollect)
-    {
-        _canEditOpenOrDeleteCollect = canEditOpenOrDeleteCollect;
-        return this;
-    }
-
     public ChangeCollectViewModelBuilder FromCollect(Collect c)
     {
         _id = c.Id;

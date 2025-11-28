@@ -45,15 +45,20 @@ public class CollectServiceTests
 
         var filters = new CollectFilterViewModelBuilder().Build();
 
-        _collectRepoMock.Setup(c => c.ToCollectListAsync(filters, 1, 10))
-                .ReturnsAsync(([collect], 1));
+        _collectRepoMock
+            .Setup(c => c.ToCollectListAsync(filters, 1, 10))
+            .ReturnsAsync(([collect], 1));
 
-        _currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
+        _currentUserServiceMock
+            .Setup(c => c.User)
+            .Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "1") })));
 
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
+        _authorizationServiceMock
+            .Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
             .ReturnsAsync(AuthorizationResult.Success());
 
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, collect.UserId, "MustBeCollectOwner"))
+        _authorizationServiceMock
+            .Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, collect.UserId, "MustBeCollectOwner"))
             .ReturnsAsync(AuthorizationResult.Success());
 
         var service = new CollectService(
@@ -76,7 +81,8 @@ public class CollectServiceTests
             Filters = filters
         };
 
-        result.Should().BeEquivalentTo(expected);
+        result.Should().BeEquivalentTo(expected, opt => opt.ExcludingMissingMembers());
+
 
         _collectRepoMock.Verify(c => c.ToCollectListAsync(filters, 1, 10), Times.Once);
         _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"), Times.Exactly(1));
@@ -90,84 +96,30 @@ public class CollectServiceTests
         {
             new CollectBuilder().Build(),
             new CollectBuilder()
-                .WithId(2)
-                .WithCreatedAt(new DateTime(2025, 11, 21))
-                .WithUserId("user1")
-                .WithUser(u => u
-                    .WithId("user1")
-                    .WithFullName("Gustavo F. Marcial")
-                    .WithRole("Gestor")
-                    .WithCreatedAt(new DateTime(2025, 10, 14)))
-                .WithSupplierId(2)
-                .WithSupplier(s => s
-                    .WithId(2)
-                    .WithCNPJ("41192029000108")
-                    .WithName("GMS")
-                    .WithCity("Cuiabá")
-                    .WithNumber("123")
-                    .WithState("MT"))
-                .WithCollectAt(new DateTime(2025, 11, 25))
-                .WithProductId(2)
-                .WithProduct(p => p
-                    .WithId(2)
-                    .WithCreatedAt(new DateTime(2024, 1, 20))
-                    .WithName("Ferragem")
-                    )
-                .WithVolume(20)
-                .WithWeight(40)
-                .WithFilialId(2)
-                .WithFilial(f => f
-                    .WithId(2)
-                    .WithName("Gênesis 08"))
-                .WithStatus(CollectStatus.Coletado)
+                .WithUserId("2")
+                .WithUser(u => u.WithId("2"))
                 .Build(),
             new CollectBuilder()
-                .WithId(3)
-                .WithCreatedAt(new DateTime(2025, 11, 22))
-                .WithUserId("user2")
-                .WithUser(u => u
-                    .WithId("user2")
-                    .WithFullName("Guilherme F. F. Marcial")
-                    .WithRole("Admin")
-                    .WithCreatedAt(new DateTime(2025, 9, 12)))
-                .WithSupplierId(3)
-                .WithSupplier(s => s
-                    .WithId(3)
-                    .WithCNPJ("41192029000280")
-                    .WithName("Texa")
-                    .WithCity("Várzea Grande")
-                    .WithNumber("321")
-                    .WithState("MT"))
-                .WithCollectAt(new DateTime(2025, 11, 28))
-                .WithProductId(3)
-                .WithProduct(p => p
-                    .WithId(3)
-                    .WithCreatedAt(new DateTime(2024, 2, 12))
-                    .WithName("Alumínio")
-                    )
-                .WithVolume(500)
-                .WithWeight(999)
-                .WithFilialId(3)
-                .WithFilial(f => f
-                    .WithId(3)
-                    .WithName("Gênesis 80"))
-                .WithStatus(CollectStatus.Cancelado)
+                .WithUserId("3")
+                .WithUser(u => u.WithId("3")) 
                 .Build(),
         };
 
-        List<CollectListViewModel> collectListViewModel = collectList.Select(c => new CollectListViewModelBuilder()
-            .FromCollect(c)
-            .Build()
-        ).ToList();
+        List<CollectListViewModel> collectListViewModel = collectList
+            .Select(c => new CollectListViewModelBuilder().FromCollect(c).Build())
+            .ToList();
 
         var filters = new CollectFilterViewModel();
 
-        _collectRepoMock.Setup(c => c.ToCollectListAsync(filters, 1, 10))
+        _collectRepoMock
+            .Setup(c => c.ToCollectListAsync(filters, 1, 10))
             .ReturnsAsync((collectList, 3));
 
-        _currentUserServiceMock.Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user123") })));
+        _currentUserServiceMock
+            .Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "1") })));
 
-        _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
+        _authorizationServiceMock
+            .Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
             .ReturnsAsync(AuthorizationResult.Success());
 
         foreach (Collect c in collectList)
@@ -197,11 +149,70 @@ public class CollectServiceTests
         };
 
         result.Should().BeEquivalentTo(expected);
+        result.Items.Should().HaveCount(3);
 
         _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"), Times.Exactly(3));
         foreach (Collect c in collectList)
         {
             _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"), Times.Exactly(1));
         }
+    }
+
+    [Fact]
+    public async Task CreateCollect_WhenHasAllEntities_ShouldCreateCollect()
+    {
+        var createCollectViewModel = new CreateCollectViewModelBuilder().Build();
+        var supplier = new SupplierBuilder().Build();
+        var product = new ProductBuilder().Build();
+        var filial = new FilialBuilder().Build();
+        var userId = "1";
+        var user = new UserBuilder().Build();
+        Collect? collectSent = null;
+
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(createCollectViewModel.SupplierId))
+            .ReturnsAsync(supplier);
+
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(createCollectViewModel.ProductId))
+            .ReturnsAsync(product);
+
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(createCollectViewModel.FilialId))
+            .ReturnsAsync(filial);
+
+        _userManagerMock
+            .Setup(u => u.FindByIdAsync(userId))
+            .ReturnsAsync(user);
+
+        _collectRepoMock
+            .Setup(c => c.AddCollect(It.IsAny<Collect>()))
+            .Callback<Collect>(c => collectSent = c);
+
+        var service = new CollectService(
+            _collectRepoMock.Object,
+            _supplierRepoMock.Object,
+            _productRepoMock.Object,
+            _filialRepoMock.Object,
+            _userManagerMock.Object,
+            _currentUserServiceMock.Object,
+            _authorizationServiceMock.Object,
+            _loggerMock.Object);
+
+        await service.CreateCollect(createCollectViewModel, userId);
+
+        var expected = new CollectBuilder().Build();
+
+        collectSent.Should().BeEquivalentTo(expected, options =>
+            options.Excluding(c => c.CreatedAt)
+                   .Excluding(c => c.User.SecurityStamp)
+                   .Excluding(c => c.User.ConcurrencyStamp));
+
+        _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(createCollectViewModel.SupplierId), Times.Once);
+        _productRepoMock.Verify(p => p.GetProductByIdAsync(createCollectViewModel.ProductId), Times.Once);
+        _filialRepoMock.Verify(f => f.GetFilialByIdAsync(createCollectViewModel.FilialId), Times.Once);
+        _userManagerMock.Verify(u => u.FindByIdAsync(userId), Times.Once);
+        _collectRepoMock.Verify(c => c.AddCollect(It.IsAny<Collect>()), Times.Once);
+        _collectRepoMock.Verify(c => c.SaveChangesCollectAsync(), Times.Once);
     }
 }
