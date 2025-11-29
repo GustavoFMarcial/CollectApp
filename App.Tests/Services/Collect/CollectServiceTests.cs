@@ -101,7 +101,7 @@ public class CollectServiceTests
                 .Build(),
             new CollectBuilder()
                 .WithUserId("3")
-                .WithUser(u => u.WithId("3")) 
+                .WithUser(u => u.WithId("3"))
                 .Build(),
         };
 
@@ -214,5 +214,60 @@ public class CollectServiceTests
         _userManagerMock.Verify(u => u.FindByIdAsync(userId), Times.Once);
         _collectRepoMock.Verify(c => c.AddCollect(It.IsAny<Collect>()), Times.Once);
         _collectRepoMock.Verify(c => c.SaveChangesCollectAsync(), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateCollect_WhenHasNoEntities_ShouldNotCreateCollect()
+    {
+        var createCollectViewModel = new CreateCollectViewModelBuilder().Build();
+        var supplier = new SupplierBuilder().Build();
+        var product = new ProductBuilder().Build();
+        var filial = new FilialBuilder().Build();
+        var userId = "1";
+        var user = new UserBuilder().Build();
+        Collect? collectSent = null;
+
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(createCollectViewModel.SupplierId))
+            .ReturnsAsync((Supplier?)null);
+
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(createCollectViewModel.ProductId))
+            .ReturnsAsync(product);
+
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(createCollectViewModel.FilialId))
+            .ReturnsAsync(filial);
+
+        _userManagerMock
+            .Setup(u => u.FindByIdAsync(userId))
+            .ReturnsAsync(user);
+
+        _collectRepoMock
+            .Setup(c => c.AddCollect(It.IsAny<Collect>()))
+            .Callback<Collect>(c => collectSent = c);
+
+        var service = new CollectService(
+            _collectRepoMock.Object,
+            _supplierRepoMock.Object,
+            _productRepoMock.Object,
+            _filialRepoMock.Object,
+            _userManagerMock.Object,
+            _currentUserServiceMock.Object,
+            _authorizationServiceMock.Object,
+            _loggerMock.Object);
+
+        await service.CreateCollect(createCollectViewModel, userId);
+
+        var expected = new CollectBuilder().Build();
+
+        collectSent.Should().BeNull();
+
+        _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(createCollectViewModel.SupplierId), Times.Once);
+        _productRepoMock.Verify(p => p.GetProductByIdAsync(createCollectViewModel.ProductId), Times.Once);
+        _filialRepoMock.Verify(f => f.GetFilialByIdAsync(createCollectViewModel.FilialId), Times.Once);
+        _userManagerMock.Verify(u => u.FindByIdAsync(userId), Times.Once);
+        _collectRepoMock.Verify(c => c.AddCollect(It.IsAny<Collect>()), Times.Never);
+        _collectRepoMock.Verify(c => c.SaveChangesCollectAsync(), Times.Never);
     }
 }
