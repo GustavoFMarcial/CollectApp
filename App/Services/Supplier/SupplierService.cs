@@ -125,20 +125,13 @@ public class SupplierService : ISupplierService
         return OperationResult.Ok();
     }
 
-    public async Task<OperationResult> DeleteSupplier(int? id)
+    public async Task<OperationResult?> DeleteSupplier(int id)
     {
-        if (id == null)
-        {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
-        }
-
         Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(id);
 
         if (supplier == null)
         {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
+            return null;
         }
 
         bool existSupplierWithCollect = await _collectRepository.AnyCollectAsync("supplier", supplier.Id);

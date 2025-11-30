@@ -101,9 +101,14 @@ public class SupplierController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteSupplier(int? id)
+    public async Task<IActionResult> DeleteSupplier(int id)
     {
-        OperationResult result = await _supplierService.DeleteSupplier(id);
+        OperationResult? result = await _supplierService.DeleteSupplier(id);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
 
         if (!result.Success)
         {
