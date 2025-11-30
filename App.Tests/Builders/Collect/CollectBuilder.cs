@@ -15,6 +15,7 @@ public class CollectBuilder
     private int _weight = 50;
     private int _filialId = 1;
     private Filial _filial = new FilialBuilder().Build();
+    private CollectStatus _status = CollectStatus.PendenteAprovar;
 
     public CollectBuilder WithUserId(string userId)
     {
@@ -88,6 +89,12 @@ public class CollectBuilder
         configure(fb);
         _filial = fb.Build();
         return this;
+    }
+
+    public CollectBuilder WithStatus (CollectStatus status)
+    {
+        _status = status;
+        return this;   
     }
 
     public Collect Build()

@@ -325,15 +325,15 @@ public class CollectServiceTests
     }
 
     [Fact]
-    public async Task EditCollect_WhenEntitiesFind_ShouldEditCollect()
+    public async Task EditCollect_WhenEntitiesFound_ShouldEditCollect()
     {
         var collect = new CollectBuilder().Build();
         var supplier = new SupplierBuilder().Build(); 
         var product = new ProductBuilder().Build();
         var filial = new FilialBuilder().Build();
-        var editCollectViewModel = new EditCollectViewModelBuilder().WithVolume(50).Build();
+        var editCollectViewModel = new EditCollectViewModelBuilder().WithId(1).WithVolume(50).Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(1))
             .ReturnsAsync(collect);
 
         _supplierRepoMock.Setup(s => s.GetSupplierByIdAsync(1))
