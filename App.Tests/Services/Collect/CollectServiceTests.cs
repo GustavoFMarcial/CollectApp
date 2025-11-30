@@ -318,9 +318,7 @@ public class CollectServiceTests
 
         var result = await service.SetEditCollectViewModel(1);
 
-        var expected = new EditCollectViewModel();
-
-        result.Should().BeEquivalentTo(expected);
+        result.Should().BeNull();
 
         _collectRepoMock.Verify(c => c.GetCollectByIdAsync(It.IsAny<int>()), Times.Once);
     }
