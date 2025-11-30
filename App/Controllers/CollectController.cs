@@ -46,16 +46,21 @@ public class CollectController : Controller
         return RedirectToAction(nameof(ListCollects));
     }
 
-    public async Task<IActionResult> EditCollect(int? id)
+    public async Task<IActionResult> EditCollect(int id)
     {
         bool isCollectOwner = await _collectService.MustBeCollectOwner();
 
-        if (!isCollectOwner || id == null)
+        if (!isCollectOwner)
         {
             return RedirectToAction(nameof(ListCollects));
         }
 
-        EditCollectViewModel ecvm = await _collectService.SetEditCollectViewModel(id);
+        EditCollectViewModel? ecvm = await _collectService.SetEditCollectViewModel(id);
+
+        if (ecvm == null)
+        {
+            return NotFound();
+        }
 
         return View(ecvm);
     }

@@ -98,14 +98,13 @@ public class CollectService : ICollectService
         await _collectRepository.SaveChangesCollectAsync();
     }
 
-    public async Task<EditCollectViewModel> SetEditCollectViewModel(int? id)
+    public async Task<EditCollectViewModel?> SetEditCollectViewModel(int id)
     {
         Collect? collect = await _collectRepository.GetCollectByIdAsync(id);
 
         if (collect == null || collect.Supplier == null || collect.Product == null || collect.Filial == null)
         {
-            EditCollectViewModel NotFound = new EditCollectViewModel();
-            return NotFound;
+            return null;
         }
 
         EditCollectViewModel ecvm = new EditCollectViewModel
