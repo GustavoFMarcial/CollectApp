@@ -70,20 +70,13 @@ public class SupplierService : ISupplierService
         return OperationResult.Ok();
     }
 
-    public async Task<EditSupplierViewModel> SetEditSupplierViewModel(int? id)
+    public async Task<EditSupplierViewModel?> SetEditSupplierViewModel(int id)
     {
-        if (id == null)
-        {
-            EditSupplierViewModel NotFound = new EditSupplierViewModel();
-            return NotFound;
-        }
-
         Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(id);
 
         if (supplier == null)
         {
-            EditSupplierViewModel NotFound = new EditSupplierViewModel();
-            return NotFound;
+            return null;
         }
 
         EditSupplierViewModel esvm = new EditSupplierViewModel

@@ -63,10 +63,14 @@ public class SupplierController : Controller
         return RedirectToAction(nameof(ListSuppliers));
     }
 
-    public async Task<IActionResult> EditSupplier(int? id)
+    public async Task<IActionResult> EditSupplier(int id)
     {
+        EditSupplierViewModel? esvm = await _supplierService.SetEditSupplierViewModel(id);
 
-        EditSupplierViewModel esvm = await _supplierService.SetEditSupplierViewModel(id);
+        if (esvm == null)
+        {
+            return NotFound();
+        }
 
         return View(esvm);
     }

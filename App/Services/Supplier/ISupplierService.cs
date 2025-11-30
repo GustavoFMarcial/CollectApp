@@ -9,5 +9,5 @@ public interface ISupplierService
     public Task<OperationResult?> CreateSupplier(CreateSupplierViewModel supplierCreate);
     public Task<OperationResult> DeleteSupplier(int? id);
     public Task<OperationResult> EditSupplier(EditSupplierViewModel supplierEdit);
-    public Task<EditSupplierViewModel> SetEditSupplierViewModel(int? id);
+    public Task<EditSupplierViewModel?> SetEditSupplierViewModel(int id);
 }
