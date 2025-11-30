@@ -31,6 +31,60 @@ public class EditCollectViewModelBuilder
         return this;
     }
 
+    public EditCollectViewModelBuilder WithSupplierId(int supplierId)
+    {
+        _supplierId = supplierId;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithSupplier(string supplier)
+    {
+        _supplier = supplier;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithCollectAt(DateTime collectAt)
+    {
+        _collectAt = collectAt;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithProductId(int productId)
+    {
+        _productId = productId;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithProduct(string product)
+    {
+        _product = product;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithVolume(int volume)
+    {
+        _volume = volume;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithWeight(int weight)
+    {
+        _weight = weight;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithFilialId(int filialId)
+    {
+        _filialId = filialId;
+        return this;
+    }
+
+    public EditCollectViewModelBuilder WithFilial(string filial)
+    {
+        _filial = filial;
+        return this;
+    }
+
     public EditCollectViewModel Build()
     {
         return new EditCollectViewModel

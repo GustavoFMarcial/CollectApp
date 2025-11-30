@@ -322,4 +322,26 @@ public class CollectServiceTests
 
         _collectRepoMock.Verify(c => c.GetCollectByIdAsync(It.IsAny<int>()), Times.Once);
     }
+
+    [Fact]
+    public async Task EditCollect_WhenEntitiesFind_ShouldEditCollect()
+    {
+        var collect = new CollectBuilder().Build();
+        var supplier = new SupplierBuilder().Build(); 
+        var product = new ProductBuilder().Build();
+        var filial = new FilialBuilder().Build();
+        var editCollectViewModel = new EditCollectViewModelBuilder().Build();
+
+        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(1))
+            .ReturnsAsync(collect);
+
+        _supplierRepoMock.Setup(s => s.GetSupplierByIdAsync(1))
+            .ReturnsAsync(supplier);
+        
+        _productRepoMock.Setup(p => p.GetProductByIdAsync(1))
+            .ReturnsAsync(product);
+
+        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(1))
+            .ReturnsAsync(filial);
+    }
 }
