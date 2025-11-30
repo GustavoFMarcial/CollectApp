@@ -272,7 +272,7 @@ public class CollectServiceTests
     }
 
     [Fact]
-    public async Task SetEditCollectViewModel_WhenHasId_ShouldReturnCollectToEdit()
+    public async Task SetEditCollectViewModel_WhenCollectFound_ShouldReturnCollectToEdit()
     {
         var collect = new CollectBuilder().Build();
 
@@ -292,6 +292,33 @@ public class CollectServiceTests
         var result = await service.SetEditCollectViewModel(1);
 
         var expected = new EditCollectViewModelBuilder().FromCollect(collect).Build();
+
+        result.Should().BeEquivalentTo(expected);
+
+        _collectRepoMock.Verify(c => c.GetCollectByIdAsync(It.IsAny<int>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task SetEditCollectViewModel_WhenCollectNotFound_ShouldNotReturnCollectToEdit()
+    {
+        var collect = new CollectBuilder().Build();
+
+        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync((Collect?)null);
+
+        var service = new CollectService(
+            _collectRepoMock.Object,
+            _supplierRepoMock.Object,
+            _productRepoMock.Object,
+            _filialRepoMock.Object,
+            _userManagerMock.Object,
+            _currentUserServiceMock.Object,
+            _authorizationServiceMock.Object,
+            _loggerMock.Object);
+
+        var result = await service.SetEditCollectViewModel(1);
+
+        var expected = new EditCollectViewModel();
 
         result.Should().BeEquivalentTo(expected);
 
