@@ -58,9 +58,14 @@ public class ProductController : Controller
         return RedirectToAction(nameof(ListProducts));
     }
 
-    public async Task<IActionResult> EditProduct(int? id)
+    public async Task<IActionResult> EditProduct(int id)
     {
-        EditProductViewModel epvm = await _productService.SetEditProductViewModel(id);
+        EditProductViewModel? epvm = await _productService.SetEditProductViewModel(id);
+
+        if (epvm == null)
+        {
+            return NotFound();
+        }
 
         return View(epvm);
     }

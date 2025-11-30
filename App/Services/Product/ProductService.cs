@@ -35,20 +35,13 @@ public class ProductService : IProductService
         return OperationResult.Ok();
     }
 
-    public async Task<EditProductViewModel> SetEditProductViewModel(int? id)
+    public async Task<EditProductViewModel?> SetEditProductViewModel(int id)
     {
-        if (id == null)
-        {
-            EditProductViewModel NotFound = new EditProductViewModel();
-            return NotFound;
-        }
-
         Product? product = await _productRepository.GetProductByIdAsync(id);
 
         if (product == null)
         {
-            EditProductViewModel NotFound = new EditProductViewModel();
-            return NotFound;
+            return null;
         }
 
         EditProductViewModel epvm = new EditProductViewModel
