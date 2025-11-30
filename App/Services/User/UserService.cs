@@ -92,7 +92,7 @@ public class UserService : IUserService
         return OperationResult.Ok();
     }
 
-    public async Task<EditUserViewModel?> SetEditCollectViewModel(string id)
+    public async Task<EditUserViewModel?> SetEditUserViewModel(string id)
     {
         ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
 

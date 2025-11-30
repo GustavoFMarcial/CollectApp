@@ -103,7 +103,7 @@ public class UserController : Controller
     [Authorize(Policy = "CanCreateAndEditUsers")]
     public async Task<IActionResult> EditUser(string id)
     {
-        EditUserViewModel? esvm = await _userService.SetEditCollectViewModel(id);
+        EditUserViewModel? esvm = await _userService.SetEditUserViewModel(id);
 
         if (esvm == null)
         {
