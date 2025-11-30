@@ -53,14 +53,13 @@ public class ProductService : IProductService
         return epvm;
     }
 
-    public async Task<OperationResult> EditProduct(EditProductViewModel productEdit)
+    public async Task<OperationResult?> EditProduct(EditProductViewModel productEdit)
     {
         Product? product = await _productRepository.GetProductByIdAsync(productEdit.Id); ;
 
         if (product == null)
         {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
+            return null;
         }
 
         bool productExist = await _productRepository.AnyProductAsync(productEdit.Name, productEdit.Id);

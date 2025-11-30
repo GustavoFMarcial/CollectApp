@@ -9,5 +9,5 @@ public interface IProductService
     public Task<OperationResult> CreateProduct(CreateProductViewModel productCreate);
     public Task<OperationResult> DeleteProduct(int? id);
     public Task<EditProductViewModel?> SetEditProductViewModel(int id);
-    public Task<OperationResult> EditProduct(EditProductViewModel productEdit);
+    public Task<OperationResult?> EditProduct(EditProductViewModel productEdit);
 }

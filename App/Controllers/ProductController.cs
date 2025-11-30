@@ -78,7 +78,12 @@ public class ProductController : Controller
             return View(productEdit);
         }
 
-        OperationResult result = await _productService.EditProduct(productEdit);
+        OperationResult? result = await _productService.EditProduct(productEdit);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
 
         if (!result.Success)
         {
