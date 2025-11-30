@@ -35,14 +35,13 @@ public class FilialService : IFilialService
         return OperationResult.Ok();
     }
 
-    public async Task<EditFilialViewModel> SetEditFilialViewModel(int? id)
+    public async Task<EditFilialViewModel?> SetEditFilialViewModel(int id)
     {
         Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
 
         if (filial == null)
         {
-            EditFilialViewModel NotFound = new EditFilialViewModel();
-            return NotFound;
+            return null;
         }
 
         EditFilialViewModel epvm = new EditFilialViewModel
@@ -54,14 +53,13 @@ public class FilialService : IFilialService
         return epvm;
     }
 
-    public async Task<OperationResult> EditFilial(EditFilialViewModel filialEdit)
+    public async Task<OperationResult?> EditFilial(EditFilialViewModel filialEdit)
     {
         Filial? filial = await _filialRepository.GetFilialByIdAsync(filialEdit.Id);
 
         if (filial == null)
         {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
+            return null;
         }
 
         bool filialExist = await _filialRepository.AnyFilialAsync(filialEdit.Name, filialEdit.Id);
@@ -98,20 +96,13 @@ public class FilialService : IFilialService
         return pagedResultFilialListViewModel;
     }
 
-    public async Task<OperationResult> DeleteFilial(int? id)
+    public async Task<OperationResult?> DeleteFilial(int id)
     {
-        if (id == null)
-        {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
-        }
-
         Filial? filial = await _filialRepository.GetFilialByIdAsync(id);
 
         if (filial == null)
         {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
+            return null;
         }
 
         bool existFilialWithCollect = await _collectRepository.AnyCollectAsync("filial", filial.Id);

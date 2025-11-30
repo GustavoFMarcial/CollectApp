@@ -58,14 +58,14 @@ public class FilialController : Controller
         return RedirectToAction(nameof(ListFilials));
     }
 
-    public async Task<IActionResult> EditFilial(int? id)
+    public async Task<IActionResult> EditFilial(int id)
     {
-        if (id == null)
-        {
-            return RedirectToAction(nameof(ListFilials));
-        }
+        EditFilialViewModel? epvm = await _filialService.SetEditFilialViewModel(id);
 
-        EditFilialViewModel epvm = await _filialService.SetEditFilialViewModel(id);
+        if (epvm == null)
+        {
+            return NotFound();
+        }
 
         return RedirectToAction(nameof(ListFilials));
     }
@@ -78,7 +78,12 @@ public class FilialController : Controller
             return View(filialEdit);
         }
 
-        OperationResult result = await _filialService.EditFilial(filialEdit);
+        OperationResult? result = await _filialService.EditFilial(filialEdit);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
 
         if (!result.Success)
         {
@@ -91,14 +96,15 @@ public class FilialController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteFilial(int? id)
+    public async Task<IActionResult> DeleteFilial(int id)
     {
-        if (id == null)
-        {
-            return RedirectToAction(nameof(ListFilials));
-        }
 
-        OperationResult result = await _filialService.DeleteFilial(id);
+        OperationResult? result = await _filialService.DeleteFilial(id);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
 
         if (!result.Success)
         {
