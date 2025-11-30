@@ -46,7 +46,12 @@ public class SupplierController : Controller
             return View(supplierCreate);
         }
 
-        OperationResult result = await _supplierService.CreateSupplier(supplierCreate);
+        OperationResult? result = await _supplierService.CreateSupplier(supplierCreate);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
 
         if (!result.Success)
         {

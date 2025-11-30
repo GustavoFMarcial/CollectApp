@@ -38,12 +38,11 @@ public class SupplierService : ISupplierService
         return pagedResultSupplierListViewModel;
     }
 
-    public async Task<OperationResult> CreateSupplier(CreateSupplierViewModel supplierCreate)
+    public async Task<OperationResult?> CreateSupplier(CreateSupplierViewModel supplierCreate)
     {
         if (supplierCreate == null)
         {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
+            return null;
         }
 
         Supplier supplier = new Supplier
