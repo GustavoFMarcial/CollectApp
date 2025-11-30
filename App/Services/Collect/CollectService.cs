@@ -128,12 +128,7 @@ public class CollectService : ICollectService
     {
         Collect? collect = await _collectRepository.GetCollectByIdAsync(collectEdit.Id);
 
-        if (collect == null)
-        {
-            return;
-        }
-
-        if (collect.Status != CollectStatus.PendenteAprovar)
+        if (collect == null || collect.Status != CollectStatus.PendenteAprovar)
         {
             return;
         }
