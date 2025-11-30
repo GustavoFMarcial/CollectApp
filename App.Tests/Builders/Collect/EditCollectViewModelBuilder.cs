@@ -31,6 +31,12 @@ public class EditCollectViewModelBuilder
         return this;
     }
 
+    public EditCollectViewModelBuilder WithId(int id)
+    {
+        _id = id;
+        return this;
+    }
+
     public EditCollectViewModelBuilder WithSupplierId(int supplierId)
     {
         _supplierId = supplierId;

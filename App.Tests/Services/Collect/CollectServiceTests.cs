@@ -9,6 +9,7 @@ using CollectApp.Models;
 using CollectApp.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.CodeAnalysis.Differencing;
 namespace CollectAppTests.Services;
 
 public class CollectServiceTests
@@ -330,9 +331,9 @@ public class CollectServiceTests
         var supplier = new SupplierBuilder().Build(); 
         var product = new ProductBuilder().Build();
         var filial = new FilialBuilder().Build();
-        var editCollectViewModel = new EditCollectViewModelBuilder().Build();
+        var editCollectViewModel = new EditCollectViewModelBuilder().WithVolume(50).Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(1))
+        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(collect);
 
         _supplierRepoMock.Setup(s => s.GetSupplierByIdAsync(1))
@@ -343,5 +344,23 @@ public class CollectServiceTests
 
         _filialRepoMock.Setup(f => f.GetFilialByIdAsync(1))
             .ReturnsAsync(filial);
+
+        var service = new CollectService(
+            _collectRepoMock.Object,
+            _supplierRepoMock.Object,
+            _productRepoMock.Object,
+            _filialRepoMock.Object,
+            _userManagerMock.Object,
+            _currentUserServiceMock.Object,
+            _authorizationServiceMock.Object,
+            _loggerMock.Object);
+
+        await service.EditCollect(editCollectViewModel);
+
+        _collectRepoMock.Verify(c => c.GetCollectByIdAsync(1), Times.Once);
+        _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(1), Times.Once);
+        _productRepoMock.Verify(p => p.GetProductByIdAsync(1), Times.Once);
+        _filialRepoMock.Verify(f => f.GetFilialByIdAsync(1), Times.Once);
+        _collectRepoMock.Verify(c => c.SaveChangesCollectAsync(), Times.Once);
     }
 }
