@@ -92,20 +92,13 @@ public class UserService : IUserService
         return OperationResult.Ok();
     }
 
-    public async Task<EditUserViewModel> SetEditCollectViewModel(string id)
+    public async Task<EditUserViewModel?> SetEditCollectViewModel(string id)
     {
-        if (id == null)
-        {
-            EditUserViewModel NotFound = new EditUserViewModel();
-            return NotFound;
-        }
-
         ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
 
         if (user == null)
         {
-            EditUserViewModel NotFound = new EditUserViewModel();
-            return NotFound;
+            return null;
         }
 
         EditUserViewModel euvm = new EditUserViewModel
