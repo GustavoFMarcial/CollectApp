@@ -96,9 +96,14 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteProduct(int? id)
+    public async Task<IActionResult> DeleteProduct(int id)
     {
-        OperationResult result = await _productService.DeleteProduct(id);
+        OperationResult? result = await _productService.DeleteProduct(id);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
 
         if (!result.Success)
         {

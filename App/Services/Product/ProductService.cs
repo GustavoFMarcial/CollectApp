@@ -96,20 +96,13 @@ public class ProductService : IProductService
         return pagedResultProductListViewModel;
     }
 
-    public async Task<OperationResult> DeleteProduct(int? id)
+    public async Task<OperationResult?> DeleteProduct(int id)
     {
-        if (id == null)
-        {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
-        }
-
         Product? product = await _productRepository.GetProductByIdAsync(id);
 
         if (product == null)
         {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
+            return null;
         }
 
         bool existProductWithCollect = await _collectRepository.AnyCollectAsync("product", product.Id);
