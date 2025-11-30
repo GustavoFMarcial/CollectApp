@@ -95,14 +95,13 @@ public class SupplierService : ISupplierService
         return esvm;
     }
 
-    public async Task<OperationResult> EditSupplier(EditSupplierViewModel supplierEdit)
+    public async Task<OperationResult?> EditSupplier(EditSupplierViewModel supplierEdit)
     {
         Supplier? supplier = await _supplierRepository.GetSupplierByIdAsync(supplierEdit.Id);
 
         if (supplier == null)
         {
-            OperationResult NotFound = new OperationResult();
-            return NotFound;
+            return null;
         }
 
         bool supplierExist = await _supplierRepository.AnySupplierAsync(supplierEdit.CNPJ, supplier.Id);

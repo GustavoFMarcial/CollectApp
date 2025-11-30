@@ -83,7 +83,12 @@ public class SupplierController : Controller
             return View(supplierEdit);
         }
 
-        OperationResult result = await _supplierService.EditSupplier(supplierEdit);
+        OperationResult? result = await _supplierService.EditSupplier(supplierEdit);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
 
         if (!result.Success)
         {
