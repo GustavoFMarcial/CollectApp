@@ -331,7 +331,14 @@ public class CollectServiceTests
         var supplier = new SupplierBuilder().Build(); 
         var product = new ProductBuilder().Build();
         var filial = new FilialBuilder().Build();
-        var editCollectViewModel = new EditCollectViewModelBuilder().WithId(1).WithVolume(50).Build();
+        var editCollectViewModel = new EditCollectViewModelBuilder()
+            .WithId(1)
+            .WithVolume(50)
+            .WithWeight(100)
+            .WithSupplierId(1)
+            .WithProductId(1)
+            .WithFilialId(1)
+            .Build();
 
         _collectRepoMock.Setup(c => c.GetCollectByIdAsync(1))
             .ReturnsAsync(collect);
@@ -356,6 +363,9 @@ public class CollectServiceTests
             _loggerMock.Object);
 
         await service.EditCollect(editCollectViewModel);
+
+        collect.Volume.Should().Be(50);
+        collect.Weight.Should().Be(100);
 
         _collectRepoMock.Verify(c => c.GetCollectByIdAsync(1), Times.Once);
         _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(1), Times.Once);
