@@ -21,8 +21,13 @@ public class ProductServiceTests
     [Fact]
     public async Task CreateProduct_WhenProductExistIsFalse_ShouldCreateProduct()
     {
+        Product? productSent = null;
+
         _productRepoMock.Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
+
+        _productRepoMock.Setup(p => p.AddProduct(It.IsAny<Product>()))
+            .Callback<Product>(p => productSent = p);
 
         var createProductViewModel = new CreateProductViewModelBuilder().Build();
 
@@ -36,6 +41,8 @@ public class ProductServiceTests
         var expected = new OperationResultBuilder().WithSuccess(true).Build();
 
         result.Should().BeEquivalentTo(expected);
+        productSent.Should().NotBeNull();
+        productSent.Name.Should().Be(createProductViewModel.Name);
 
         _productRepoMock.Verify(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         _productRepoMock.Verify(p => p.AddProduct(It.IsAny<Product>()), Times.Once);
