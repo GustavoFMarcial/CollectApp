@@ -4,6 +4,7 @@ using CollectApp.Services;
 using CollectApp.ViewModels;
 using CollectAppTests.Builders;
 using FluentAssertions;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Moq;
 
 namespace CollectAppTests.Services;
@@ -22,10 +23,15 @@ public class FilialServiceTests
     [Fact]
     public async Task CreateFilial_WhenFilialExistIsFalse_ShouldCreateFilial()
     {
+        Filial? filialSent = null;
+
         var createFilialViewModel = new CreateFilialViewModelBuilder().Build();
 
         _filialRepoMock.Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
+
+        _filialRepoMock.Setup(f => f.AddFilial(It.IsAny<Filial>()))
+            .Callback<Filial>(f => filialSent = f);
 
         var service = new FilialService(
             _filialRepoMock.Object,
@@ -39,6 +45,8 @@ public class FilialServiceTests
             .Build();
 
         result.Should().BeEquivalentTo(expected);
+        filialSent.Should().NotBeNull();
+        filialSent.Name.Should().Be(createFilialViewModel.Name);
 
         _filialRepoMock.Verify(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         _filialRepoMock.Verify(f => f.AddFilial(It.IsAny<Filial>()), Times.Once);
