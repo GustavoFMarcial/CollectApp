@@ -9187,8 +9187,8 @@
     },
     "CollectApp/1.0.0": {
       "type": "project",
-      "path": "../app/CollectApp.csproj",
-      "msbuildProject": "../app/CollectApp.csproj"
+      "path": "../App/CollectApp.csproj",
+      "msbuildProject": "../App/CollectApp.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -9209,11 +9209,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App.Tests\\CollectApp.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\app.tests\\CollectApp.Tests.csproj",
       "projectName": "CollectApp.Tests",
-      "projectPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App.Tests\\CollectApp.Tests.csproj",
+      "projectPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\app.tests\\CollectApp.Tests.csproj",
       "packagesPath": "C:\\Users\\Gustavo F. Marcial\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App.Tests\\obj\\",
+      "outputPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\app.tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -9234,8 +9234,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\app\\CollectApp.csproj": {
-              "projectPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\app\\CollectApp.csproj"
+            "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App\\CollectApp.csproj": {
+              "projectPath": "C:\\Users\\Gustavo F. Marcial\\Desktop\\coisas\\Dev. Course\\C#\\projects\\ASP.NET Core\\CollectApp\\App\\CollectApp.csproj"
             }
           }
         }
