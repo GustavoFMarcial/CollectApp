@@ -123,4 +123,37 @@ public class ProductServiceTests
         _productRepoMock.Verify(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Never);
         _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Never);
     }
+
+    [Fact]
+    public async Task EditFilial_WhenProductExistIsTrue_ShouldNotEditProduct()
+    {
+        var product = new ProductBuilder().Build();
+
+        var EditProductViewModel = new EditProductViewModelBuilder().Build();
+
+        _productRepoMock.Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(product);
+
+        _productRepoMock.Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
+            .ReturnsAsync(true);
+
+        var service = new ProductService(
+            _productRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.EditProduct(EditProductViewModel);
+
+        var expected = new OperationResultBuilder()
+            .WithSuccess(false)
+            .WithMessage("Já existe um produto cadastrado com a descrição fornecida")
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+        product.Name.Should().NotBe(EditProductViewModel.Name);
+
+        _productRepoMock.Verify(p => p.GetProductByIdAsync(It.IsAny<int>()), Times.Once);
+        _productRepoMock.Verify(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+        _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Never);
+    }
 }
