@@ -1,0 +1,163 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating>.form-control-plaintext::placeholder,
+.form-floating>.form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating>.form-control-plaintext:focus::placeholder,
+.form-floating>.form-control:focus::placeholder {
+  text-align: start;
+}
+
+.span-font-size {
+  font-size: 0.75rem;
+}
+
+#listProducts {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-top: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  z-index: 1050;
+}
+
+#listProducts li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+#listProducts li:hover {
+  background-color: #f8f9fa;
+}
+
+#listSuppliers {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-top: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  z-index: 1050;
+}
+
+#listSuppliers li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+#listSuppliers li:hover {
+  background-color: #f8f9fa;
+}
+
+input.form-control {
+  display: block;
+  width: 100%;
+  min-height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  appearance: none;
+  border-radius: .375rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+input.form-control:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+.page-button, .page-log-button {
+  background-color: white;
+  color: black;
+  border: 1px solid #dee2e6;
+}
+
+.page-button:hover, .page-log-button:hover {
+  background-color: #f2f2f2;
+  color: black;
+}
+
+.page-button.custom-active, .page-log-button.custom-active {
+  background-color: #d6d6d6;
+  color: black;
+  border-color: #c0c0c0;
+  font-weight: bold;
+}
+
+
+.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+input.form-control-sm,
+select.form-select-sm {
+  min-height: auto !important;
+  height: 31px !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.875rem !important;
+}
+
+#logButtonsPagination{
+  margin-top: 1rem;
+}

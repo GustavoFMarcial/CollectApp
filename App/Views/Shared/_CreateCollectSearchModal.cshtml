@@ -1,0 +1,48 @@
+<div class="modal fade" id="CreateCollectSearchEntitiesModal" tabindex="-1" aria-labelledby="CreateCollectSearchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="height: 600px; max-height: 90vh;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="CreateCollectSearchModal"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto;">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th colspan="3">
+                            <div class="d-flex justify-content-center mt-1 mb-2">
+                                <div class="position-relative" style="max-width: 300px; width: 100%;">
+                                    <input type="text" id="searchEntitiesInput"
+                                          class="form-control pe-5">
+                                    <button id="searchEntitiesButton"
+                                            type="button" 
+                                            class="p-0 border-0 bg-transparent position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%);">
+                                        <img src="~/assets/img/search-icon.svg" alt="Buscar" width="24" height="24">
+                                    </button>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Id</th>
+                        <th id="entity-th-description"></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="entitiesSearchedList">
+                </tbody>
+            </table>
+            <nav aria-label="Entities pagination">
+              <ul id="entitiesSearchedButtonsPagination" class="pagination justify-content-center">
+              </ul>
+            </nav>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

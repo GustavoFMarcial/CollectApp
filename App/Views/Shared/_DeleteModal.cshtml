@@ -1,0 +1,23 @@
+@using CollectApp.ViewModels
+@model DeleteModalViewModel
+
+<div class="modal fade" id="deleteModal-@Model.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@Model.Id" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel-@Model.Id">Deletar @Model.Title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        Deseja realmente deletar @Model.Title de id: @Model.Id?
+      </div>
+      <div class="modal-footer">
+        <form asp-controller="@Model.Type" asp-action="@($"Delete{Model.Type}")" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button class="btn btn-danger">Deletar</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+@using CollectApp.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Logar";
+}
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg p-4" style="min-width: 380px; max-width: 420px; border-radius: 12px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Acesso ao Sistema ColetasApp</h2>
+        </div>
+        <form id="account" method="post" asp-controller="User" asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" placeholder="Usuário" autocomplete="username" aria-required="true" />
+                <label asp-for="Username">Usuário</label>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-4">
+                <input asp-for="Password" type="password" class="form-control" placeholder="Senha" autocomplete="current-password" aria-required="true" />
+                <label asp-for="Password">Senha</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button id="login-submit" type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                Entrar
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

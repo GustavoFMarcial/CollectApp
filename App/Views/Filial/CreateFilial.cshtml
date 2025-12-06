@@ -1,0 +1,39 @@
+@model CollectApp.ViewModels.CreateFilialViewModel
+@{
+    ViewData["Title"] = "Inserir filial";
+}
+
+<div class="container">
+    <h1 class="mb-4">Insira uma filial</h1>
+    <form asp-controller="Filial" asp-action="CreateFilial" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form-group mt-4 col-4 position-relative">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" autofocus>
+            <span asp-validation-for="Name" class="text-danger position-absolute span-font-size"></span>
+        </div>
+        <div class="text-end mt-4 col-4">
+            <button type="submit" class="btn btn-primary">Criar</button>
+            <a asp-controller="Filial" asp-action="ListFilials"><button type="button" class="btn btn-secondary">Voltar</button></a>
+        </div>
+    </form>
+</div>
+
+@await Html.PartialAsync("_ModalError", ViewBag.Message as string)
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var showModal = '@ViewBag.ShowModal' === 'True';
+            if (showModal) {
+                var modalElement = document.getElementById('ModalError');
+                if (modalElement) {
+                    var modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+        });
+    </script>
+}
