@@ -41,7 +41,10 @@ public class CollectServiceTests
     {
         var collect = new CollectBuilder().Build();
 
-        var collectListViewModel = new CollectListViewModelBuilder().FromCollect(collect).Build();
+        var collectListViewModel = 
+            new CollectListViewModelBuilder()
+            .FromCollect(collect)
+            .Build();
 
         var filters = new CollectFilterViewModelBuilder().Build();
 
@@ -81,7 +84,7 @@ public class CollectServiceTests
             Filters = filters
         };
 
-        result.Should().BeEquivalentTo(expected, opt => opt.ExcludingMissingMembers());
+        result.Should().BeEquivalentTo(expected);
 
 
         _collectRepoMock.Verify(c => c.ToCollectListAsync(filters, 1, 10), Times.Once);
@@ -276,7 +279,8 @@ public class CollectServiceTests
     {
         var collect = new CollectBuilder().Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(collect);
 
         var service = new CollectService(
@@ -291,7 +295,10 @@ public class CollectServiceTests
 
         var result = await service.SetEditCollectViewModel(1);
 
-        var expected = new EditCollectViewModelBuilder().FromCollect(collect).Build();
+        var expected = 
+            new EditCollectViewModelBuilder()
+            .FromCollect(collect)
+            .Build();
 
         result.Should().BeEquivalentTo(expected);
 
@@ -303,7 +310,8 @@ public class CollectServiceTests
     {
         var collect = new CollectBuilder().Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync((Collect?)null);
 
         var service = new CollectService(
@@ -330,7 +338,8 @@ public class CollectServiceTests
         var supplier = new SupplierBuilder().Build();
         var product = new ProductBuilder().Build();
         var filial = new FilialBuilder().Build();
-        var editCollectViewModel = new EditCollectViewModelBuilder()
+        var editCollectViewModel = 
+            new EditCollectViewModelBuilder()
             .WithId(1)
             .WithVolume(50)
             .WithWeight(100)
@@ -339,16 +348,20 @@ public class CollectServiceTests
             .WithFilialId(1)
             .Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(1))
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(1))
             .ReturnsAsync(collect);
 
-        _supplierRepoMock.Setup(s => s.GetSupplierByIdAsync(1))
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(1))
             .ReturnsAsync(supplier);
 
-        _productRepoMock.Setup(p => p.GetProductByIdAsync(1))
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(1))
             .ReturnsAsync(product);
 
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(1))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(1))
             .ReturnsAsync(filial);
 
         var service = new CollectService(
@@ -380,7 +393,8 @@ public class CollectServiceTests
         var supplier = new SupplierBuilder().Build();
         var product = new ProductBuilder().Build();
         var filial = new FilialBuilder().Build();
-        var editCollectViewModel = new EditCollectViewModelBuilder()
+        var editCollectViewModel = 
+            new EditCollectViewModelBuilder()
             .WithId(1)
             .WithVolume(50)
             .WithWeight(100)
@@ -389,16 +403,20 @@ public class CollectServiceTests
             .WithFilialId(1)
             .Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(1))
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(1))
             .ReturnsAsync((Collect?)null);
 
-        _supplierRepoMock.Setup(s => s.GetSupplierByIdAsync(1))
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(1))
             .ReturnsAsync(supplier);
 
-        _productRepoMock.Setup(p => p.GetProductByIdAsync(1))
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(1))
             .ReturnsAsync(product);
 
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(1))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(1))
             .ReturnsAsync(filial);
 
         var service = new CollectService(
@@ -429,7 +447,8 @@ public class CollectServiceTests
         var collect = new CollectBuilder().Build();
         var changeCollectViewModel = new ChangeCollectViewModelBuilder().FromCollect(collect).Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        _collectRepoMock.
+            Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(collect);
 
         var service = new CollectService(
@@ -453,10 +472,19 @@ public class CollectServiceTests
     [Fact]
     public async Task UpdateCollectStatus_WhenCollectStatusIsPendenterColetarAndToOpenIsTrue_ShouldChangeCollectStatusToPendenteAprovar()
     {
-        var collect = new CollectBuilder().WithStatus(CollectStatus.PendenteColetar).Build();
-        var changeCollectViewModel = new ChangeCollectViewModelBuilder().WithToOpen(true).FromCollect(collect).Build();
+        var collect = 
+            new CollectBuilder()
+            .WithStatus(CollectStatus.PendenteColetar)
+            .Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        var changeCollectViewModel = 
+            new ChangeCollectViewModelBuilder()
+            .WithToOpen(true)
+            .FromCollect(collect)
+            .Build();
+
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(collect);
 
         var service = new CollectService(
@@ -480,10 +508,18 @@ public class CollectServiceTests
     [Fact]
     public async Task UpdateCollectStatus_WhenCollectStatusIsColetado_ShouldNotChangeCollectStatus()
     {
-        var collect = new CollectBuilder().WithStatus(CollectStatus.Coletado).Build();
-        var changeCollectViewModel = new ChangeCollectViewModelBuilder().FromCollect(collect).Build();
+        var collect = 
+            new CollectBuilder()
+            .WithStatus(CollectStatus.Coletado)
+            .Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        var changeCollectViewModel = 
+            new ChangeCollectViewModelBuilder()
+            .FromCollect(collect)
+            .Build();
+
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(collect);
 
         var service = new CollectService(
@@ -509,7 +545,8 @@ public class CollectServiceTests
     {
         var collect = new CollectBuilder().Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(collect);
 
         var service = new CollectService(
@@ -533,9 +570,13 @@ public class CollectServiceTests
     [Fact]
     public async Task CancelCollect_WhenCollectStatusIsNotPendenteAprovar_ShouldNotChangeCollectStatusToCancelado()
     {
-        var collect = new CollectBuilder().WithStatus(CollectStatus.PendenteColetar).Build();
+        var collect = 
+            new CollectBuilder()
+            .WithStatus(CollectStatus.PendenteColetar)
+            .Build();
 
-        _collectRepoMock.Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
+        _collectRepoMock
+            .Setup(c => c.GetCollectByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(collect);
 
         var service = new CollectService(

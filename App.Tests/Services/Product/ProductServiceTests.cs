@@ -23,10 +23,12 @@ public class ProductServiceTests
     {
         Product? productSent = null;
 
-        _productRepoMock.Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _productRepoMock
+            .Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
-        _productRepoMock.Setup(p => p.AddProduct(It.IsAny<Product>()))
+        _productRepoMock
+            .Setup(p => p.AddProduct(It.IsAny<Product>()))
             .Callback<Product>(p => productSent = p);
 
         var createProductViewModel = new CreateProductViewModelBuilder().Build();
@@ -38,7 +40,9 @@ public class ProductServiceTests
 
         var result = await service.CreateProduct(createProductViewModel);
 
-        var expected = new OperationResultBuilder().WithSuccess(true).Build();
+        var expected = new OperationResultBuilder()
+            .WithSuccess(true)
+            .Build();
 
         result.Should().BeEquivalentTo(expected);
         productSent.Should().NotBeNull();
@@ -52,7 +56,8 @@ public class ProductServiceTests
     [Fact]
     public async Task CreateProduct_WhenProductExistIsTrue_ShouldNotCreateProduct()
     {
-        _productRepoMock.Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _productRepoMock
+            .Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(true);
 
         var createProductViewModel = new CreateProductViewModelBuilder().Build();
@@ -83,10 +88,12 @@ public class ProductServiceTests
 
         var EditProductViewModel = new EditProductViewModelBuilder().Build();
 
-        _productRepoMock.Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(product);
 
-        _productRepoMock.Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _productRepoMock
+            .Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
         var service = new ProductService(
@@ -96,7 +103,9 @@ public class ProductServiceTests
 
         var result = await service.EditProduct(EditProductViewModel);
 
-        var expected = new OperationResultBuilder().WithSuccess(true).Build();
+        var expected = new OperationResultBuilder()
+            .WithSuccess(true)
+            .Build();
 
         result.Should().BeEquivalentTo(expected);
         product.Name.Should().Be(EditProductViewModel.Name);
@@ -113,7 +122,8 @@ public class ProductServiceTests
 
         var EditProductViewModel = new EditProductViewModelBuilder().Build();
 
-        _productRepoMock.Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
             .ReturnsAsync((Product?)null);
 
         var service = new ProductService(
@@ -138,10 +148,12 @@ public class ProductServiceTests
 
         var EditProductViewModel = new EditProductViewModelBuilder().Build();
 
-        _productRepoMock.Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(product);
 
-        _productRepoMock.Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _productRepoMock
+            .Setup(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(true);
 
         var service = new ProductService(

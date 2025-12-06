@@ -4,7 +4,6 @@ using CollectApp.Services;
 using CollectApp.ViewModels;
 using CollectAppTests.Builders;
 using FluentAssertions;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Moq;
 
 namespace CollectAppTests.Services;
@@ -27,10 +26,12 @@ public class FilialServiceTests
 
         var createFilialViewModel = new CreateFilialViewModelBuilder().Build();
 
-        _filialRepoMock.Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
-        _filialRepoMock.Setup(f => f.AddFilial(It.IsAny<Filial>()))
+        _filialRepoMock
+            .Setup(f => f.AddFilial(It.IsAny<Filial>()))
             .Callback<Filial>(f => filialSent = f);
 
         var service = new FilialService(
@@ -40,7 +41,8 @@ public class FilialServiceTests
 
         var result = await service.CreateFilial(createFilialViewModel);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(true)
             .Build();
 
@@ -58,7 +60,8 @@ public class FilialServiceTests
     {
         var createFilialViewModel = new CreateFilialViewModelBuilder().Build();
 
-        _filialRepoMock.Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(true);
 
         var service = new FilialService(
@@ -68,7 +71,8 @@ public class FilialServiceTests
 
         var result = await service.CreateFilial(createFilialViewModel);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(false)
             .WithMessage("Já existe uma filial cadastrada com o nome fornecido")
             .Build();
@@ -86,10 +90,12 @@ public class FilialServiceTests
         var filial = new FilialBuilder().Build();
         var editFilialViewModel = new EditFilialViewModelBuilder().Build();
 
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(filial);
 
-        _filialRepoMock.Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
         var service = new FilialService(
@@ -99,7 +105,8 @@ public class FilialServiceTests
 
         var result = await service.EditFilial(editFilialViewModel);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(true)
             .Build();
 
@@ -116,10 +123,12 @@ public class FilialServiceTests
     {
         var editFilialViewModel = new EditFilialViewModelBuilder().Build();
 
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
             .ReturnsAsync((Filial?)null);
 
-        _filialRepoMock.Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
         var service = new FilialService(
@@ -142,10 +151,12 @@ public class FilialServiceTests
         var filial = new FilialBuilder().Build();
         var editFilialViewModel = new EditFilialViewModelBuilder().Build();
 
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(filial);
 
-        _filialRepoMock.Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.AnyFilialAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(true);
 
         var service = new FilialService(
@@ -155,7 +166,8 @@ public class FilialServiceTests
 
         var result = await service.EditFilial(editFilialViewModel);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(false)
             .WithMessage("Já existe uma filial cadastrada com o nome fornecido")
             .Build();
@@ -173,16 +185,19 @@ public class FilialServiceTests
     {
         var filial = new FilialBuilder().Build();
 
-        var filters = new FilialFilterViewModelBuilder()
+        var filters = 
+            new FilialFilterViewModelBuilder()
             .WithId(1)
             .WithName("Filial SP Centro")
             .Build();
 
-        var filialListViewModel = new FilialListViewModelBuilder()
+        var filialListViewModel = 
+            new FilialListViewModelBuilder()
             .FromFilial(filial)
             .Build();
 
-        _filialRepoMock.Setup(f => f.ToFilialListAsync(It.IsAny<FilialFilterViewModel>(), 1, 10, ""))
+        _filialRepoMock
+            .Setup(f => f.ToFilialListAsync(It.IsAny<FilialFilterViewModel>(), 1, 10, ""))
             .ReturnsAsync(([filial], 1));
 
         var service = new FilialService(
@@ -228,7 +243,8 @@ public class FilialServiceTests
             .Select(f => new FilialListViewModelBuilder().FromFilial(f).Build())
             .ToList();
 
-        _filialRepoMock.Setup(f => f.ToFilialListAsync(It.IsAny<FilialFilterViewModel>(), 1, 10, ""))
+        _filialRepoMock
+            .Setup(f => f.ToFilialListAsync(It.IsAny<FilialFilterViewModel>(), 1, 10, ""))
             .ReturnsAsync((filialList, 3));
 
         var service = new FilialService(
@@ -255,7 +271,8 @@ public class FilialServiceTests
     [Fact]
     public async Task DeleteFilial_WhenFilialIsNull_ShouldNotDeleteFilial()
     {
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
             .ReturnsAsync((Filial?)null);
 
         var service = new FilialService(
@@ -278,10 +295,12 @@ public class FilialServiceTests
     {
         var filial = new FilialBuilder().Build();
 
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(filial);
 
-        _collectRepoMock.Setup(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _collectRepoMock
+            .Setup(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(true);
 
         var service = new FilialService(
@@ -291,7 +310,8 @@ public class FilialServiceTests
 
         var result = await service.DeleteFilial(1);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(false)
             .WithMessage("Não foi possível deletar, existe uma coleta vinculada a esta loja")
             .Build();
@@ -309,10 +329,12 @@ public class FilialServiceTests
     {
         var filial = new FilialBuilder().Build();
 
-        _filialRepoMock.Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
+        _filialRepoMock
+            .Setup(f => f.GetFilialByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(filial);
 
-        _collectRepoMock.Setup(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()))
+        _collectRepoMock
+            .Setup(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
         var service = new FilialService(
@@ -322,7 +344,8 @@ public class FilialServiceTests
 
         var result = await service.DeleteFilial(1);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(true)
             .Build();
 
