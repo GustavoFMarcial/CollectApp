@@ -98,4 +98,29 @@ public class ProductServiceTests
         _productRepoMock.Verify(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Once);
     }
+
+    [Fact]
+    public async Task EditFilial_WhenProductIsNull_ShouldNotEditProduct()
+    {
+        var product = new ProductBuilder().Build();
+
+        var EditProductViewModel = new EditProductViewModelBuilder().Build();
+
+        _productRepoMock.Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync((Product?)null);
+
+        var service = new ProductService(
+            _productRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.EditProduct(EditProductViewModel);
+
+        result.Should().BeNull();
+        product.Name.Should().NotBe(EditProductViewModel.Name);
+
+        _productRepoMock.Verify(p => p.GetProductByIdAsync(It.IsAny<int>()), Times.Once);
+        _productRepoMock.Verify(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Never);
+        _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Never);
+    }
 }
