@@ -1,6 +1,7 @@
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.Services;
+using CollectApp.ViewModels;
 using CollectAppTests.Builders;
 using FluentAssertions;
 using Moq;
