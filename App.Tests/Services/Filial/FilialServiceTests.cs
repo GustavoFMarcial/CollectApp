@@ -181,24 +181,32 @@ public class FilialServiceTests
     }
 
     [Fact]
-    public async Task SetPagedResultFilialListViewModel_WhenHasFilters_ShouldReturnFilteredList()
+    public async Task SetPagedResultFilialListViewModel_WhenHasItems_ShouldReturnListWithItems()
     {
-        var filial = new FilialBuilder().Build();
+        var filialList = new List<Filial>
+        {
+            new FilialBuilder().Build(),
+            new FilialBuilder()
+                .WithId(2)
+                .WithName("Expansão")
+                .Build(),
+            new FilialBuilder()
+                .WithId(3)
+                .WithName("Samambaia")
+                .Build(),
+        };
 
-        var filters = 
-            new FilialFilterViewModelBuilder()
-            .WithId(1)
-            .WithName("Filial SP Centro")
-            .Build();
+        var filters = new FilialFilterViewModel();
 
-        var filialListViewModel = 
+        var filialListViewModel = filialList.Select(f =>
             new FilialListViewModelBuilder()
-            .FromFilial(filial)
-            .Build();
+            .FromFilial(f)
+            .Build())
+            .ToList();
 
         _filialRepoMock
             .Setup(f => f.ToFilialListAsync(It.IsAny<FilialFilterViewModel>(), 1, 10, ""))
-            .ReturnsAsync(([filial], 1));
+            .ReturnsAsync((filialList, 3));
 
         var service = new FilialService(
             _filialRepoMock.Object,
@@ -209,14 +217,14 @@ public class FilialServiceTests
 
         var expected = new PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>
         {
-            Items = [filialListViewModel],
+            Items = filialListViewModel,
             TotalPages = 1,
             PageNum = 1,
             Filters = filters,
         };
 
         result.Should().BeEquivalentTo(expected);
-        result.Items.Should().HaveCount(1);
+        result.Items.Should().HaveCount(3);
 
         _filialRepoMock.Verify(f => f.ToFilialListAsync(filters, 1, 10, ""), Times.Once);
     }
