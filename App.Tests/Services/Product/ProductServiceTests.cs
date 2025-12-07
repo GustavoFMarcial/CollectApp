@@ -176,4 +176,53 @@ public class ProductServiceTests
         _productRepoMock.Verify(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Never);
     }
+
+
+    [Fact]
+    public async Task SetPagedResultProductListViewModel_WhenHasItems_ShouldReturnListWithItems()
+    {
+        var productList = new List<Product>
+        {
+            new ProductBuilder().Build(),
+            new ProductBuilder()
+                .WithId(2)
+                .WithName("Manga")
+                .Build(),
+            new ProductBuilder()
+                .WithId(3)
+                .WithName("Mussarela")
+                .Build(),
+        };
+
+        var productListViewModel = productList.Select(p => 
+            new ProductListViewModelBuilder()
+            .FromProduct(p)
+            .Build())
+            .ToList();
+
+        var filters = new ProductFilterViewModel();
+
+        _productRepoMock
+            .Setup(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""))
+            .ReturnsAsync((productList, 3));
+
+        var service = new ProductService(
+            _productRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.SetPagedResultProductListViewModel(filters, 1, 10, "");
+
+        var expected = new PagedResultViewModel<ProductListViewModel, ProductFilterViewModel>
+        {
+            Items = productListViewModel,
+            TotalPages = 1,
+            PageNum = 1,
+            Filters = filters,
+        };
+
+        result.Should().BeEquivalentTo(expected);
+
+        _productRepoMock.Verify(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""), Times.Once);
+    }
 }
