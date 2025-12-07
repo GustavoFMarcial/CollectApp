@@ -278,4 +278,38 @@ public class ProductServiceTests
         _productRepoMock.Verify(p => p.RemoveProduct(It.IsAny<Product>()), Times.Never);
         _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Never);
     }
+
+    [Fact]
+    public async Task DeleteProduct_WhenExistProductWithCollectIsTrue_ShouldNotDeleteProduct()
+    {
+        var product = new ProductBuilder().Build();
+
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(product);
+
+        _collectRepoMock
+            .Setup(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()))
+            .ReturnsAsync(true);
+
+        var service = new ProductService(
+            _productRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.DeleteProduct(1);
+
+        var expected = 
+            new OperationResultBuilder()
+            .WithSuccess(false)
+            .WithMessage("Não foi possível deletar, existe uma coleta vinculada a este produto")
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+
+        _productRepoMock.Verify(p => p.GetProductByIdAsync(It.IsAny<int>()), Times.Once);
+        _collectRepoMock.Verify(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+        _productRepoMock.Verify(p => p.RemoveProduct(It.IsAny<Product>()), Times.Never);
+        _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Never);
+    }
 }
