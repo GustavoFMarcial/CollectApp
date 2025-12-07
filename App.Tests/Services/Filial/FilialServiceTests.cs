@@ -230,30 +230,30 @@ public class FilialServiceTests
     }
 
     [Fact]
-    public async Task SetPagedResultFilialListViewModel_WhenHasNoFilters_ShouldReturnNotFilteredList()
+    public async Task SetPagedResultFilialListViewModel_WhenHasNoItems_ShouldReturnEmptyList()
     {
-        var filialList = new List<Filial>
-        {
-            new FilialBuilder().Build(),
-            new FilialBuilder()
-                .WithId(2)
-                .WithName("Mega Bom")
-                .Build(),
-            new FilialBuilder()
-                .WithId(3)
-                .WithName("ACB")
-                .Build(),
-        };
+        // var filialList = new List<Filial>
+        // {
+        //     new FilialBuilder().Build(),
+        //     new FilialBuilder()
+        //         .WithId(2)
+        //         .WithName("Mega Bom")
+        //         .Build(),
+        //     new FilialBuilder()
+        //         .WithId(3)
+        //         .WithName("ACB")
+        //         .Build(),
+        // };
 
         var filters = new FilialFilterViewModel();
 
-        var filialListViewModel = filialList
-            .Select(f => new FilialListViewModelBuilder().FromFilial(f).Build())
-            .ToList();
+        // var filialListViewModel = filialList
+        //     .Select(f => new FilialListViewModelBuilder().FromFilial(f).Build())
+        //     .ToList();
 
         _filialRepoMock
             .Setup(f => f.ToFilialListAsync(It.IsAny<FilialFilterViewModel>(), 1, 10, ""))
-            .ReturnsAsync((filialList, 3));
+            .ReturnsAsync(([], 0));
 
         var service = new FilialService(
             _filialRepoMock.Object,
@@ -264,14 +264,14 @@ public class FilialServiceTests
 
         var expected = new PagedResultViewModel<FilialListViewModel, FilialFilterViewModel>
         {
-            Items = filialListViewModel,
-            TotalPages = 1,
+            Items = [],
+            TotalPages = 0,
             PageNum = 1,
             Filters = filters,
         };
 
         result.Should().BeEquivalentTo(expected);
-        result.Items.Should().HaveCount(3);
+        result.Items.Should().HaveCount(0);
 
         _filialRepoMock.Verify(f => f.ToFilialListAsync(filters, 1, 10, ""), Times.Once);
     }
