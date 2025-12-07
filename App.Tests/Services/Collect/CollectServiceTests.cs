@@ -71,7 +71,7 @@ public class CollectServiceTests
         _authorizationServiceMock
             .Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
             .ReturnsAsync(AuthorizationResult.Success());
-            
+
         foreach (Collect c in collectList)
         {
             _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"))
@@ -109,43 +109,17 @@ public class CollectServiceTests
     }
 
     [Fact]
-    public async Task SetPagedResultCollectListViewModel_WhenHasNoFilters_ShouldReturnNotFilteredList()
+    public async Task SetPagedResultCollectListViewModel_WhenHasNoItems_ShouldReturnEmptyList()
     {
-        var collectList = new List<Collect>
-        {
-            new CollectBuilder().Build(),
-            new CollectBuilder()
-                .WithUserId("2")
-                .WithUser(u => u.WithId("2"))
-                .Build(),
-            new CollectBuilder()
-                .WithUserId("3")
-                .WithUser(u => u.WithId("3"))
-                .Build(),
-        };
-
-        List<CollectListViewModel> collectListViewModel = collectList
-            .Select(c => new CollectListViewModelBuilder().FromCollect(c).Build())
-            .ToList();
-
         var filters = new CollectFilterViewModel();
 
         _collectRepoMock
             .Setup(c => c.ToCollectListAsync(filters, 1, 10))
-            .ReturnsAsync((collectList, 3));
+            .ReturnsAsync(([], 0));
 
         _currentUserServiceMock
-            .Setup(c => c.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "1") })));
-
-        _authorizationServiceMock
-            .Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"))
-            .ReturnsAsync(AuthorizationResult.Success());
-
-        foreach (Collect c in collectList)
-        {
-            _authorizationServiceMock.Setup(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"))
-            .ReturnsAsync(AuthorizationResult.Success());
-        }
+            .Setup(c => c.User)
+            .Returns(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "1") })));
 
         var service = new CollectService(
             _collectRepoMock.Object,
@@ -161,20 +135,17 @@ public class CollectServiceTests
 
         var expected = new PagedResultViewModel<CollectListViewModel, CollectFilterViewModel>
         {
-            Items = collectListViewModel,
-            TotalPages = 1,
+            Items = [],
+            TotalPages = 0,
             PageNum = 1,
             Filters = filters
         };
 
         result.Should().BeEquivalentTo(expected);
-        result.Items.Should().HaveCount(3);
+        result.Items.Should().HaveCount(0);
 
-        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, null, "CanChangeCollectStatus"), Times.Exactly(3));
-        foreach (Collect c in collectList)
-        {
-            _authorizationServiceMock.Verify(a => a.AuthorizeAsync(_currentUserServiceMock.Object.User, c.UserId, "MustBeCollectOwner"), Times.Exactly(1));
-        }
+        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), null, It.IsAny<string>()), Times.Never());
+        _authorizationServiceMock.Verify(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<int>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
