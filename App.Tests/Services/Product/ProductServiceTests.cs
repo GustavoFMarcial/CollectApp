@@ -222,6 +222,7 @@ public class ProductServiceTests
         };
 
         result.Should().BeEquivalentTo(expected);
+        result.Items.Should().HaveCount(3);
 
         _productRepoMock.Verify(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""), Times.Once);
     }
@@ -251,6 +252,7 @@ public class ProductServiceTests
         };
 
         result.Should().BeEquivalentTo(expected);
+        result.Items.Should().HaveCount(0);
 
         _productRepoMock.Verify(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""), Times.Once);
     }

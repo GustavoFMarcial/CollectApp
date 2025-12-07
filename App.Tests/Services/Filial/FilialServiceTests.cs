@@ -232,24 +232,7 @@ public class FilialServiceTests
     [Fact]
     public async Task SetPagedResultFilialListViewModel_WhenHasNoItems_ShouldReturnEmptyList()
     {
-        // var filialList = new List<Filial>
-        // {
-        //     new FilialBuilder().Build(),
-        //     new FilialBuilder()
-        //         .WithId(2)
-        //         .WithName("Mega Bom")
-        //         .Build(),
-        //     new FilialBuilder()
-        //         .WithId(3)
-        //         .WithName("ACB")
-        //         .Build(),
-        // };
-
         var filters = new FilialFilterViewModel();
-
-        // var filialListViewModel = filialList
-        //     .Select(f => new FilialListViewModelBuilder().FromFilial(f).Build())
-        //     .ToList();
 
         _filialRepoMock
             .Setup(f => f.ToFilialListAsync(It.IsAny<FilialFilterViewModel>(), 1, 10, ""))
