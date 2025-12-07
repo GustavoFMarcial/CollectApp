@@ -225,4 +225,33 @@ public class ProductServiceTests
 
         _productRepoMock.Verify(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""), Times.Once);
     }
+
+    [Fact]
+    public async Task SetPagedResultProductListViewModel_WhenHasNoItems_ShouldReturnEmptyList()
+    {
+        var filters = new ProductFilterViewModel();
+
+        _productRepoMock
+            .Setup(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""))
+            .ReturnsAsync(([], 0));
+
+        var service = new ProductService(
+            _productRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.SetPagedResultProductListViewModel(filters, 1, 10, "");
+
+        var expected = new PagedResultViewModel<ProductListViewModel, ProductFilterViewModel>
+        {
+            Items = [],
+            TotalPages = 0,
+            PageNum = 1,
+            Filters = filters,
+        };
+
+        result.Should().BeEquivalentTo(expected);
+
+        _productRepoMock.Verify(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""), Times.Once);
+    }
 }
