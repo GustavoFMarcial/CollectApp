@@ -83,7 +83,7 @@ public class ProductServiceTests
     }
 
     [Fact]
-    public async Task EditFilial_WhenProductIsNotNullAndProductExistIsFalse_ShouldEditProduct()
+    public async Task EditProduct_WhenProductIsNotNullAndProductExistIsFalse_ShouldEditProduct()
     {
         var product = new ProductBuilder().Build();
 
@@ -117,7 +117,7 @@ public class ProductServiceTests
     }
 
     [Fact]
-    public async Task EditFilial_WhenProductIsNull_ShouldNotEditProduct()
+    public async Task EditProduct_WhenProductIsNull_ShouldNotEditProduct()
     {
         var product = new ProductBuilder().Build();
 
@@ -143,7 +143,7 @@ public class ProductServiceTests
     }
 
     [Fact]
-    public async Task EditFilial_WhenProductExistIsTrue_ShouldNotEditProduct()
+    public async Task EditProduct_WhenProductExistIsTrue_ShouldNotEditProduct()
     {
         var product = new ProductBuilder().Build();
 
@@ -255,5 +255,27 @@ public class ProductServiceTests
         result.Items.Should().HaveCount(0);
 
         _productRepoMock.Verify(p => p.ToProductListAsync(It.IsAny<ProductFilterViewModel>(), 1, 10, ""), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteProduct_WhenProductIsNull_ShouldNotDeleteProduct()
+    {
+        _productRepoMock
+            .Setup(p => p.GetProductByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync((Product?)null);
+
+        var service = new ProductService(
+            _productRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.DeleteProduct(1);
+
+        result.Should().BeNull();
+
+        _productRepoMock.Verify(p => p.GetProductByIdAsync(It.IsAny<int>()), Times.Once);
+        _collectRepoMock.Verify(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Never);
+        _productRepoMock.Verify(p => p.RemoveProduct(It.IsAny<Product>()), Times.Never);
+        _productRepoMock.Verify(p => p.SaveChangesProductAsync(), Times.Never);
     }
 }
