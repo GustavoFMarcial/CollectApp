@@ -209,4 +209,45 @@ public class SupplierServiceTests
         _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(It.IsAny<int>()), Times.Once);
         _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
     }
+
+    [Fact]
+    public async Task EditSupplier_WhenSupplierIsNotNullAndSupplierExistIsFalse_ShouldNotEditSupplier()
+    {
+        var supplier = new SupplierBuilder().Build();
+
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(supplier);
+
+        _supplierRepoMock
+            .Setup(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()))
+            .ReturnsAsync(false);
+
+        var editSupplierViewModel = new EditSupplierViewModelBuilder().Build();
+
+        var service = new SupplierService(
+            _supplierRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.EditSupplier(editSupplierViewModel);
+
+        var expected = 
+            new OperationResultBuilder()
+            .WithSuccess(true)
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+        supplier.Name.Should().Be(editSupplierViewModel.Name);
+        supplier.CNPJ.Should().Be(editSupplierViewModel.CNPJ);
+        supplier.Street.Should().Be(editSupplierViewModel.Street);
+        supplier.Neighborhood.Should().Be(editSupplierViewModel.Neighborhood);
+        supplier.Number.Should().Be(editSupplierViewModel.Number);
+        supplier.City.Should().Be(editSupplierViewModel.City);
+        supplier.State.Should().Be(editSupplierViewModel.State);
+        supplier.ZipCode.Should().Be(editSupplierViewModel.ZipCode);
+
+        _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(It.IsAny<int>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Once);
+    }
 }
