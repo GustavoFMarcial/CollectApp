@@ -151,4 +151,26 @@ public class SupplierServiceTests
         _supplierRepoMock.Verify(s => s.AddSupplier(It.IsAny<Supplier>()), Times.Never);
         _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
     }
+
+    [Fact]
+    public async Task EditSupplier_WhenSupplierIsNull_ShouldNotEditSupplier()
+    {
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync((Supplier?)null);
+
+        var editSupplierViewModel = new EditSupplierViewModelBuilder().Build();
+
+        var service = new SupplierService(
+            _supplierRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.EditSupplier(editSupplierViewModel);
+
+        result.Should().BeNull();
+
+        _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(It.IsAny<int>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
+    }
 }
