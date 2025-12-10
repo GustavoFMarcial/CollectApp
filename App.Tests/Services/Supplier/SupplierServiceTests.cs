@@ -123,4 +123,32 @@ public class SupplierServiceTests
         _supplierRepoMock.Verify(s => s.AddSupplier(It.IsAny<Supplier>()), Times.Once);
         _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Once);
     }
+
+    [Fact]
+    public async Task CreateSupplier_WhenSupplierExistIsTrue_ShouldNotCreateSupplier()
+    {
+        _supplierRepoMock
+            .Setup(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()))
+            .ReturnsAsync(true);
+
+        var createSupplierViewModel = new CreateSupplierViewModelBuilder().Build();
+
+        var service = new SupplierService(
+            _supplierRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.CreateSupplier(createSupplierViewModel);
+
+        var expected = new OperationResultBuilder()
+            .WithSuccess(false)
+            .WithMessage("Já existe um fornecedor cadastrado com o CNPJ fornecido")
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+
+        _supplierRepoMock.Verify(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.AddSupplier(It.IsAny<Supplier>()), Times.Never);
+        _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
+    }
 }
