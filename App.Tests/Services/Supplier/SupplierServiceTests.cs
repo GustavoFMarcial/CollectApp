@@ -66,4 +66,33 @@ public class SupplierServiceTests
 
         _supplierRepoMock.Verify(s => s.ToSupplierListAsync(It.IsAny<SupplierFilterViewModel>(), 1, 10, ""), Times.Once);
     }
+
+    [Fact]
+    public async Task SetPagedResultSupplierListViewModel_WhenHasNoItems_ShouldReturnEmptyList()
+    {
+        var filters = new SupplierFilterViewModel();
+
+        _supplierRepoMock
+            .Setup(s => s.ToSupplierListAsync(It.IsAny<SupplierFilterViewModel>(), 1, 10, ""))
+            .ReturnsAsync(([], 0));
+
+        var service = new SupplierService(
+            _supplierRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.SetPagedResultSupplierListViewModel(filters, 1, 10, "");
+
+        var expected = new PagedResultViewModel<SupplierListViewModel, SupplierFilterViewModel>
+        {
+            Items = [],
+            TotalPages = 0,
+            PageNum = 1,
+            Filters = filters,
+        };
+
+        result.Should().BeEquivalentTo(expected);
+
+        _supplierRepoMock.Verify(s => s.ToSupplierListAsync(It.IsAny<SupplierFilterViewModel>(), 1, 10, ""), Times.Once);
+    }
 }
