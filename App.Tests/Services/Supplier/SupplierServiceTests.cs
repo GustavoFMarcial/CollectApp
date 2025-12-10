@@ -113,7 +113,8 @@ public class SupplierServiceTests
 
         var result = await service.CreateSupplier(createSupplierViewModel);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(true)
             .Build();
 
@@ -140,7 +141,8 @@ public class SupplierServiceTests
 
         var result = await service.CreateSupplier(createSupplierViewModel);
 
-        var expected = new OperationResultBuilder()
+        var expected = 
+            new OperationResultBuilder()
             .WithSuccess(false)
             .WithMessage("Já existe um fornecedor cadastrado com o CNPJ fornecido")
             .Build();
@@ -169,6 +171,40 @@ public class SupplierServiceTests
         var result = await service.EditSupplier(editSupplierViewModel);
 
         result.Should().BeNull();
+
+        _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(It.IsAny<int>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
+    }
+
+    [Fact]
+    public async Task EditSupplier_WhenSupplierExistIsTrue_ShouldNotEditSupplier()
+    {
+        var supplier = new SupplierBuilder().Build();
+
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(supplier);
+
+        _supplierRepoMock
+            .Setup(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()))
+            .ReturnsAsync(true);
+
+        var editSupplierViewModel = new EditSupplierViewModelBuilder().Build();
+
+        var service = new SupplierService(
+            _supplierRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.EditSupplier(editSupplierViewModel);
+
+        var expected = 
+            new OperationResultBuilder()
+            .WithSuccess(false)
+            .WithMessage("Já existe um fornecedor cadastrado com o CNPJ fornecido")
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
 
         _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(It.IsAny<int>()), Times.Once);
         _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
