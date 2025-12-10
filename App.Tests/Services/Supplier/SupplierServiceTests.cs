@@ -304,4 +304,36 @@ public class SupplierServiceTests
         _supplierRepoMock.Verify(s => s.RemoveSupplier(It.IsAny<Supplier>()), Times.Never);
         _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
     }
+
+    [Fact]
+    public async Task DeleteSupplier_WhenSupplierIsNotNullAndExistSupplierWithCollectIsFalse_ShouldNotDeleteSupplier()
+    {
+        var supplier = new SupplierBuilder().Build();
+
+        _supplierRepoMock
+            .Setup(s => s.GetSupplierByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(supplier);
+
+        _collectRepoMock
+            .Setup(c => c.AnyCollectAsync(It.IsAny<string>(), It.IsAny<int>()))
+            .ReturnsAsync(false);
+
+        var service = new SupplierService(
+            _supplierRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.DeleteSupplier(1);
+
+        var expected =
+            new OperationResultBuilder()
+            .WithSuccess(true)
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+
+        _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(It.IsAny<int>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.RemoveSupplier(It.IsAny<Supplier>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Once);
+    }
 }
