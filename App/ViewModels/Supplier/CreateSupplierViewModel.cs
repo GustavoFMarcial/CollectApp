@@ -32,7 +32,7 @@ public class CreateSupplierViewModel
 
     [DisplayName("UF")]
     [Required(ErrorMessage = "Campo UF é obrigatório")]
-    [RegularExpression(@"^[A-Za-z]{2}$", ErrorMessage = "Campo UF deve conter 2 caracteres (exempo \"SP\").")]
+    [RegularExpression(@"^[A-Za-z]{2}$", ErrorMessage = "Campo UF deve conter 2 caracteres (exemplo \"SP\").")]
     public string? State { get; set; }
 
     [DisplayName("CEP")]

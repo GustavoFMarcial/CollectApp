@@ -40,11 +40,6 @@ public class SupplierService : ISupplierService
 
     public async Task<OperationResult?> CreateSupplier(CreateSupplierViewModel supplierCreate)
     {
-        if (supplierCreate == null)
-        {
-            return null;
-        }
-
         Supplier supplier = new Supplier
         {
             Name = supplierCreate.Name,
@@ -57,7 +52,7 @@ public class SupplierService : ISupplierService
             ZipCode = supplierCreate.ZipCode,
         };
 
-        bool supplierExist = await _supplierRepository.AnySupplierAsync(supplierCreate.CNPJ, null);
+        bool supplierExist = await _supplierRepository.AnySupplierAsync(supplierCreate.CNPJ, supplier.Id);
 
         if (supplierExist)
         {
