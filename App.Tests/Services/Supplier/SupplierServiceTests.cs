@@ -1,6 +1,7 @@
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.Services;
+using CollectApp.Tests.Builders;
 using CollectApp.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -94,5 +95,32 @@ public class SupplierServiceTests
         result.Should().BeEquivalentTo(expected);
 
         _supplierRepoMock.Verify(s => s.ToSupplierListAsync(It.IsAny<SupplierFilterViewModel>(), 1, 10, ""), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateSupplier_WhenSupplierExistIsFalse_ShouldCreateSupplier()
+    {
+        _supplierRepoMock
+            .Setup(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()))
+            .ReturnsAsync(false);
+
+        var createSupplierViewModel = new CreateSupplierViewModelBuilder().Build();
+
+        var service = new SupplierService(
+            _supplierRepoMock.Object,
+            _collectRepoMock.Object
+        );
+
+        var result = await service.CreateSupplier(createSupplierViewModel);
+
+        var expected = new OperationResultBuilder()
+            .WithSuccess(true)
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+
+        _supplierRepoMock.Verify(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.AddSupplier(It.IsAny<Supplier>()), Times.Once);
+        _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Once);
     }
 }
