@@ -63,4 +63,29 @@ public class AuditLogServiceTests
 
         _auditLogRepoMock.Verify(a => a.ToLogListAsync(It.IsAny<string>(), It.IsAny<string>(), 1, 10), Times.Once);
     }
+
+    [Fact]
+    public async Task SetPagedResultAuditLogViewModel_WhenHasNoItems_ShouldReturnEmptyList()
+    {
+        _auditLogRepoMock
+            .Setup(a => a.ToLogListAsync(It.IsAny<string>(), It.IsAny<string>(), 1, 10))
+            .ReturnsAsync(([], 0));
+
+        var service = new AuditLogService(
+            _auditLogRepoMock.Object
+        );
+
+        var result = await service.SetPagedResultAuditLogViewModel("Supplier", "1", 1, 10);
+
+        var expected = new PagedResultViewModel<AuditLogViewModel, object>
+        {
+            Items = [],
+            TotalPages = 0,
+            PageNum = 1,
+        };
+
+        result.Should().BeEquivalentTo(expected);
+
+        _auditLogRepoMock.Verify(a => a.ToLogListAsync(It.IsAny<string>(), It.IsAny<string>(), 1, 10), Times.Once);
+    }
 }
