@@ -9,7 +9,7 @@ public static class LogFieldTranslations
             ["Supplier"] = "Fornecedor",
             ["CollectAt"] = "Data coleta",
             ["Product"] = "Produto",
-            ["Weigth"] = "Peso",
+            ["Weight"] = "Peso",
             ["Filial"] = "Loja",
         },
         ["Supplier"] = new Dictionary<string, string>
