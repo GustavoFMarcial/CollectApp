@@ -11,7 +11,7 @@ public class AuditLogBuilder
     private string _oldValue = "Valor Antigo";
     private string _newValue = "Valor Novo";
     private string _userName = "usuario.teste";
-    private DateTime _changedAt = DateTime.Now;
+    private DateTime _changedAt = DateTime.UtcNow;
 
     public AuditLogBuilder WithId(int id)
     {

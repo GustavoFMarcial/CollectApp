@@ -1,3 +1,4 @@
+using CollectApp.Helpers;
 using CollectApp.Models;
 using CollectApp.ViewModels;
 
@@ -5,19 +6,31 @@ namespace CollectAppTests.Builders;
 
 public class AuditLogViewModelBuilder
 {
-    private string _field = "Name";
-    private string _oldValue = "Valor Antigo";
-    private string _newValue = "Valor Novo";
-    private string _userName = "usuario.teste";
-    private DateTime _changedAt = DateTime.Now;
+    private string _field = string.Empty;
+    private string _oldValue = string.Empty;
+    private string _newValue = string.Empty;
+    private string _userName = string.Empty;
+    private DateTime _changedAt;
 
     public AuditLogViewModelBuilder FromAuditLog(AuditLog a)
     {
+        a.Field = LogFieldTranslations.Translate(a.EntityName, a.Field);
+
+        if (a.OldValue == "PendenteAprovar" || a.OldValue == "PendenteColetar")
+        {
+            a.OldValue = LogStatusValue.LogStatusValueSpaceBetween(a.OldValue);
+        }
+
+        if (a.NewValue == "PendenteAprovar" || a.NewValue == "PendenteColetar")
+        {
+            a.NewValue = LogStatusValue.LogStatusValueSpaceBetween(a.NewValue);
+        }
+
         _field = a.Field;
         _oldValue = a.OldValue;
         _newValue = a.NewValue;
         _userName = a.UserName;
-        _changedAt = a.ChangedAt;
+        _changedAt = DateTime.SpecifyKind(a.ChangedAt, DateTimeKind.Utc);
         return this;
     }
 
