@@ -33,13 +33,19 @@ public class AuditLogService : IAuditLogService
             }
         }
 
-        List<AuditLogViewModel> lalvm = logs.items.Select(l => new AuditLogViewModel
+        List<AuditLogViewModel> lalvm = logs.items.Select(l =>
         {
-            Field = l.Field,
-            OldValue = l.OldValue,
-            NewValue = l.NewValue,
-            UserName = l.UserName,
-            ChangedAt = TimeZoneInfo.ConvertTimeFromUtc(l.ChangedAt, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time")).ToString("dd/MM/yyyy HH:mm"),
+            var utcDate = DateTime.SpecifyKind(l.ChangedAt, DateTimeKind.Utc);
+            var localDate = TimeZoneInfo.ConvertTimeFromUtc(utcDate, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+
+            return new AuditLogViewModel
+            {
+                Field = l.Field,
+                OldValue = l.OldValue,
+                NewValue = l.NewValue,
+                UserName = l.UserName,
+                ChangedAt = localDate.ToString("dd/MM/yyyy HH:mm")
+            };
         }).ToList();
 
         PagedResultViewModel<AuditLogViewModel, object> prvm = new PagedResultViewModel<AuditLogViewModel, object>
