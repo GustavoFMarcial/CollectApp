@@ -37,11 +37,6 @@ public class UserService : IUserService
 
     public async Task ChangeUserStatus(string id)
     {
-        if (id == null)
-        {
-            return;
-        }
-
         ApplicationUser? user = await _userRepository.GetUserByIdAsync(id);
 
         if (user == null)
