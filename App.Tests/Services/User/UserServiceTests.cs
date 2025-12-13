@@ -66,4 +66,32 @@ public class UserServiceTests
 
         _userRepoMock.Verify(u => u.ToUserListAsync(It.IsAny<UserFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
     }
+
+    [Fact]
+    public async Task SetPagedResultUserListViewModel_WhenHasNoItems_ShouldReturnEmptyList()
+    {
+        var filters = new UserFilterViewModel();
+
+        _userRepoMock
+            .Setup(u => u.ToUserListAsync(It.IsAny<UserFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()))
+            .ReturnsAsync(([], 0));
+
+        var service = new UserService(
+            _userRepoMock.Object
+        );
+
+        var result = await service.SetPagedResultUserListViewModel(filters, 1, 10);
+
+        var expected = new PagedResultViewModel<UserListViewModel, UserFilterViewModel>
+        {
+            Items = [],
+            TotalPages = 0,
+            PageNum = 1,
+            Filters = filters,
+        };
+
+        result.Should().BeEquivalentTo(expected);
+
+        _userRepoMock.Verify(u => u.ToUserListAsync(It.IsAny<UserFilterViewModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+    }
 }
