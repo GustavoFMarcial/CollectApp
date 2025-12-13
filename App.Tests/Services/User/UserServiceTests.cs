@@ -140,4 +140,29 @@ public class UserServiceTests
         _userRepoMock.Verify(u => u.LockOutUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
         _userRepoMock.Verify(u => u.SaveChangesUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
     }
+
+    [Fact]
+    public async Task ChangeUserStatus_WhenUserStatusIsInativo_ShouldChangeUserStatusToAtivo()
+    {
+        var user = new UserBuilder()
+            .WithStatus(UserStatus.Inativo)
+            .Build();
+
+        _userRepoMock
+            .Setup(u => u.GetUserByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(user);
+
+        var service = new UserService(
+            _userRepoMock.Object
+        );
+
+        await service.ChangeUserStatus(user.Id);
+
+        user.Status.Should().Be(UserStatus.Ativo);
+
+        _userRepoMock.Verify(u => u.GetUserByIdAsync(It.IsAny<string>()), Times.Once);
+        _userRepoMock.Verify(u => u.UnlockOutUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
+        _userRepoMock.Verify(u => u.LockOutUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
+        _userRepoMock.Verify(u => u.SaveChangesUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
+    }
 }
