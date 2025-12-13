@@ -1,4 +1,5 @@
 using CollectApp.Models;
+using CollectApp.ViewModels;
 
 namespace CollectAppTests.Builders;
 
@@ -20,9 +21,9 @@ public class UserListViewModelBuilder
         return this;
     }
 
-    public ApplicationUser Build()
+    public UserListViewModel Build()
     {
-        return new ApplicationUser
+        return new UserListViewModel
         {
             Id = _id,
             CreatedAt = _createdAt,
