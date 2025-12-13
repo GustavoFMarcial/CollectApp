@@ -1,4 +1,3 @@
-using CollectApp.Models;
 using CollectApp.ViewModels;
 
 namespace CollectApp.Services;

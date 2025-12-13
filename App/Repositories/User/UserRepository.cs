@@ -36,7 +36,7 @@ public class UserRepository : IUserRepository
         return (items, totalCount);
     }
 
-    public async Task<ApplicationUser> GetUserByIdAsync(string id)
+    public async Task<ApplicationUser?> GetUserByIdAsync(string id)
     {
         if (string.IsNullOrEmpty(id))
         {

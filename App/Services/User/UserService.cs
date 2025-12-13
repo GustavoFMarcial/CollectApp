@@ -42,7 +42,7 @@ public class UserService : IUserService
             return;
         }
 
-        ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
+        ApplicationUser? user = await _userRepository.GetUserByIdAsync(id);
 
         if (user == null)
         {
@@ -94,7 +94,7 @@ public class UserService : IUserService
 
     public async Task<EditUserViewModel?> SetEditUserViewModel(string id)
     {
-        ApplicationUser user = await _userRepository.GetUserByIdAsync(id);
+        ApplicationUser? user = await _userRepository.GetUserByIdAsync(id);
 
         if (user == null)
         {
