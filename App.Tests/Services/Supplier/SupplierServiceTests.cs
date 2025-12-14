@@ -213,6 +213,7 @@ public class SupplierServiceTests
             .Build();
 
         result.Should().BeEquivalentTo(expected);
+        supplier.Name.Should().NotBe(editSupplierViewModel.Name);
 
         _supplierRepoMock.Verify(s => s.GetSupplierByIdAsync(It.IsAny<int>()), Times.Once);
         _supplierRepoMock.Verify(s => s.SaveChangesSupplierAsync(), Times.Never);
