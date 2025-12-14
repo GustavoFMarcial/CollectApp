@@ -1,6 +1,6 @@
 using CollectApp.ViewModels;
 
-namespace CollectApp.Tests.Builders;
+namespace CollectAppTests.Builders;
 
 public class CreateUserViewModelBuilder
 {
@@ -8,7 +8,7 @@ public class CreateUserViewModelBuilder
     private string _username = "joao.silva";
     private string _password = "Senha@123";
     private string _confirmPassword = "Senha@123";
-    private string _role = "User";
+    private string _role = "Comrprador";
 
     public CreateUserViewModelBuilder WithFullName(string fullName)
     {

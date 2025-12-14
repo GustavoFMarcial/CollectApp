@@ -3,11 +3,11 @@ using CollectApp.Repositories;
 using CollectApp.Services;
 using CollectApp.Tests.Builders;
 using CollectApp.ViewModels;
+using CollectAppTests.Builders;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Moq;
 
-namespace CollectAppTests.Builders;
+namespace CollectAppTests.Services;
 
 public class SupplierServiceTests
 {

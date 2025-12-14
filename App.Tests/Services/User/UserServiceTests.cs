@@ -2,12 +2,11 @@ using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.Services;
 using CollectApp.ViewModels;
+using CollectAppTests.Builders;
 using FluentAssertions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using Moq;
 
-namespace CollectAppTests.Builders;
+namespace CollectAppTests.Services;
 
 public class UserServiceTests
 {
@@ -164,5 +163,35 @@ public class UserServiceTests
         _userRepoMock.Verify(u => u.UnlockOutUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
         _userRepoMock.Verify(u => u.LockOutUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
         _userRepoMock.Verify(u => u.SaveChangesUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateUser_WhenUserExistIsTrue_ShouldNotCreateUser()
+    {
+        var createUserViewModel = new CreateUserViewModelBuilder().Build();
+
+        _userRepoMock
+            .Setup(u => u.AnyUserAsync(It.IsAny<string>(), null))
+            .ReturnsAsync(true);
+
+        var service = new UserService(
+            _userRepoMock.Object
+        );
+
+        var result = await service.CreateUser(createUserViewModel);
+        
+        var expected = 
+            new OperationResultBuilder()
+            .WithSuccess(false)
+            .WithMessage("Já existe um usuário com o nome completo informado.")
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+
+        _userRepoMock.Verify(u => u.AnyUserAsync(It.IsAny<string>(), null), Times.Once);
+        _userRepoMock.Verify(u => u.SetUserNameAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        _userRepoMock.Verify(u => u.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
+        _userRepoMock.Verify(u => u.SetLockoutEnabledAsync(It.IsAny<ApplicationUser>(), It.IsAny<bool>()), Times.Never);
+        _userRepoMock.Verify(u => u.AddRoleToUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
     }
 }
