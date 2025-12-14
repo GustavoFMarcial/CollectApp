@@ -270,4 +270,42 @@ public class UserServiceTests
         _userRepoMock.Verify(u => u.AddRoleToUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
         _userRepoMock.Verify(u => u.SaveChangesUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
     }
+
+    [Fact]
+    public async Task EditUser_WhenUserExistIsTrue_ShouldNotEditUser()
+    {
+        var editUserViewModel = new EditUserViewModelBuilder().Build();
+        var user = new UserBuilder().Build();
+
+        _userRepoMock
+            .Setup(u => u.GetUserByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(user);
+
+        _userRepoMock
+            .Setup(u => u.AnyUserAsync(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(true);
+
+        var service = new UserService(
+            _userRepoMock.Object
+        );
+
+        var result = await service.EditUser(editUserViewModel);
+
+        var expected = 
+            new OperationResultBuilder()
+            .WithSuccess(false)
+            .WithMessage("Já existe um usuário com o nome completo informado.")
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+        user.FullName.Should().NotBe(editUserViewModel.FullName);
+        user.Role.Should().NotBe(editUserViewModel.FullName);
+
+        _userRepoMock.Verify(u => u.GetUserByIdAsync(It.IsAny<string>()), Times.Once);
+        _userRepoMock.Verify(u => u.AnyUserAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        _userRepoMock.Verify(u => u.GetRolesFromUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
+        _userRepoMock.Verify(u => u.RemoveRolesFromUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<IList<string>>()), Times.Never);
+        _userRepoMock.Verify(u => u.AddRoleToUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
+        _userRepoMock.Verify(u => u.SaveChangesUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
+    }
 }
