@@ -1,6 +1,7 @@
 using CollectApp.Models;
 using CollectApp.Repositories;
 using CollectApp.Services;
+using CollectApp.Tests.Builders;
 using CollectApp.ViewModels;
 using CollectAppTests.Builders;
 using FluentAssertions;
@@ -237,5 +238,36 @@ public class UserServiceTests
         _userRepoMock.Verify(u => u.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
         _userRepoMock.Verify(u => u.SetLockoutEnabledAsync(It.IsAny<ApplicationUser>(), It.IsAny<bool>()), Times.Once);
         _userRepoMock.Verify(u => u.AddRoleToUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task EditUser_WhenUserIsNull_ShouldNotEditUser()
+    {
+        var editUserViewModel = new EditUserViewModelBuilder().Build();
+
+        _userRepoMock
+            .Setup(u => u.GetUserByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync((ApplicationUser?)null);
+
+        var service = new UserService(
+            _userRepoMock.Object
+        );
+
+        var result = await service.EditUser(editUserViewModel);
+
+        var expected = 
+            new OperationResultBuilder()
+            .WithSuccess(false)
+            .WithMessage("Usuário não encontrado.")
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+
+        _userRepoMock.Verify(u => u.GetUserByIdAsync(It.IsAny<string>()), Times.Once);
+        _userRepoMock.Verify(u => u.AnyUserAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        _userRepoMock.Verify(u => u.GetRolesFromUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
+        _userRepoMock.Verify(u => u.RemoveRolesFromUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<IList<string>>()), Times.Never);
+        _userRepoMock.Verify(u => u.AddRoleToUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
+        _userRepoMock.Verify(u => u.SaveChangesUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
     }
 }
