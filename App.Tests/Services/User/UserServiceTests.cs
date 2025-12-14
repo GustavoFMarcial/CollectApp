@@ -4,6 +4,7 @@ using CollectApp.Services;
 using CollectApp.ViewModels;
 using CollectAppTests.Builders;
 using FluentAssertions;
+using Microsoft.AspNetCore.Identity;
 using Moq;
 
 namespace CollectAppTests.Services;
@@ -193,5 +194,48 @@ public class UserServiceTests
         _userRepoMock.Verify(u => u.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
         _userRepoMock.Verify(u => u.SetLockoutEnabledAsync(It.IsAny<ApplicationUser>(), It.IsAny<bool>()), Times.Never);
         _userRepoMock.Verify(u => u.AddRoleToUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task CreateUser_WhenUserExistIsFalse_ShouldCreateUser()
+    {
+        var createUserViewModel = new CreateUserViewModelBuilder().Build();
+        ApplicationUser? userSent = null;
+        string? passwordSent = null;
+
+        _userRepoMock
+            .Setup(u => u.AnyUserAsync(It.IsAny<string>(), null))
+            .ReturnsAsync(false);
+
+        _userRepoMock
+            .Setup(u => u.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+            .Callback<ApplicationUser, string>((u, p) => {
+                userSent = u;
+                passwordSent = p;
+            });
+
+        var service = new UserService(
+            _userRepoMock.Object
+        );
+
+        var result = await service.CreateUser(createUserViewModel);
+        
+        var expected = 
+            new OperationResultBuilder()
+            .WithSuccess(true)
+            .Build();
+
+        result.Should().BeEquivalentTo(expected);
+        userSent.Should().NotBeNull();
+        userSent.FullName.Should().Be(createUserViewModel.FullName);
+        userSent.Role.Should().Be(createUserViewModel.Role);
+        userSent.UserName.Should().Be(createUserViewModel.Username);
+        passwordSent.Should().Be("Senha@123");
+
+        _userRepoMock.Verify(u => u.AnyUserAsync(It.IsAny<string>(), null), Times.Once);
+        _userRepoMock.Verify(u => u.SetUserNameAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+        _userRepoMock.Verify(u => u.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
+        _userRepoMock.Verify(u => u.SetLockoutEnabledAsync(It.IsAny<ApplicationUser>(), It.IsAny<bool>()), Times.Once);
+        _userRepoMock.Verify(u => u.AddRoleToUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
     }
 }
