@@ -100,9 +100,15 @@ public class SupplierServiceTests
     [Fact]
     public async Task CreateSupplier_WhenSupplierExistIsFalse_ShouldCreateSupplier()
     {
+        Supplier? supplierSent = null;
+
         _supplierRepoMock
             .Setup(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(false);
+        
+        _supplierRepoMock
+            .Setup(s => s.AddSupplier(It.IsAny<Supplier>()))
+            .Callback<Supplier>(s => supplierSent = s);
 
         var createSupplierViewModel = new CreateSupplierViewModelBuilder().Build();
 
@@ -119,6 +125,8 @@ public class SupplierServiceTests
             .Build();
 
         result.Should().BeEquivalentTo(expected);
+        supplierSent.Should().NotBeNull();
+        supplierSent.Name.Should().Be(createSupplierViewModel.Name);
 
         _supplierRepoMock.Verify(s => s.AnySupplierAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         _supplierRepoMock.Verify(s => s.AddSupplier(It.IsAny<Supplier>()), Times.Once);
