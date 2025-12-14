@@ -219,7 +219,7 @@ public class SupplierServiceTests
     }
 
     [Fact]
-    public async Task EditSupplier_WhenSupplierIsNotNullAndSupplierExistIsFalse_ShouldNotEditSupplier()
+    public async Task EditSupplier_WhenSupplierIsNotNullAndSupplierExistIsFalse_ShouldEditSupplier()
     {
         var supplier = new SupplierBuilder().Build();
 
