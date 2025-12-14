@@ -119,8 +119,6 @@ public class ProductServiceTests
     [Fact]
     public async Task EditProduct_WhenProductIsNull_ShouldNotEditProduct()
     {
-        var product = new ProductBuilder().Build();
-
         var EditProductViewModel = new EditProductViewModelBuilder().Build();
 
         _productRepoMock
@@ -135,7 +133,6 @@ public class ProductServiceTests
         var result = await service.EditProduct(EditProductViewModel);
 
         result.Should().BeNull();
-        product.Name.Should().NotBe(EditProductViewModel.Name);
 
         _productRepoMock.Verify(p => p.GetProductByIdAsync(It.IsAny<int>()), Times.Once);
         _productRepoMock.Verify(p => p.AnyProductAsync(It.IsAny<string>(), It.IsAny<int>()), Times.Never);
