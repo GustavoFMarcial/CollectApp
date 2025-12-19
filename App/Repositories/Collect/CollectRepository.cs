@@ -1,4 +1,5 @@
 using CollectApp.Data;
+using CollectApp.Dto;
 using CollectApp.Extensions;
 using CollectApp.Models;
 using CollectApp.ViewModels;
@@ -66,5 +67,72 @@ public class CollectRepository : ICollectRepository
     public async Task SaveChangesCollectAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<int> GetTotalCollects(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        int totalCollects = await query
+            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .CountAsync();
+
+        return totalCollects;
+    }
+
+    public async Task<int> GetTotalVolume(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        int totalVolume = await query
+            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .SumAsync(c => c.Volume ?? 0);
+
+        return totalVolume;
+    }
+
+    public async Task<int> GetTotalWeight(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        int totalWeight = await query
+            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .SumAsync(c => c.Weight ?? 0);
+
+        return totalWeight;
+    }
+
+    public async Task<List<CollectPerStatusDto>> GetCollectsPerStatus(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        List<CollectPerStatusDto> collectPerStatusDtoList = await query
+            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .GroupBy(c => c.Status)
+            .Select(c => new CollectPerStatusDto
+            {
+                Status = c.Key,
+                Total = c.Count(),
+            })
+            .ToListAsync();
+
+        return collectPerStatusDtoList;
+    }
+
+    public async Task<List<CollectPerDayDto>> GetCollectsPerDay(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        List<CollectPerDayDto> collectPerDayDtoList = await query
+            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .GroupBy(c => c.CreatedAt)
+            .Select(c => new CollectPerDayDto
+            {
+                Date = c.Key,
+                Total = c.Count(),
+            })
+            .ToListAsync();
+
+        return collectPerDayDtoList;
     }
 }
