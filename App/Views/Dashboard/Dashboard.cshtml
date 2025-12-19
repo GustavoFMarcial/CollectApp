@@ -1,28 +1,251 @@
-<div>
-  <canvas id="myChart"></canvas>
+@{
+  ViewData["Title"] = "Dashboard";
+}
+
+<div class="container">
+  <h1 class="mb-4">Dashboard de Coletas</h1>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row align-items-end">
+        <div class="col-md-4">
+          <label for="startDate" class="form-label">Data Início</label>
+          <input type="date" class="form-control" id="startDate">
+        </div>
+        <div class="col-md-4">
+          <label for="endDate" class="form-label">Data Fim</label>
+          <input type="date" id="endDate" class="form-control">
+        </div>
+        <div class="col-md-4">
+          <button type="button" class="btn btn-primary" id="btnBuscar">
+            Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted">Total de Coletas</h6>
+          <h2 class="card-title" id="totalCollects">-</h2>
+          <p class="text-muted small" id="totalCollectsComparison">Comparando com período anterior</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted">Volume Total (L)</h6>
+          <h2 class="card-title" id="totalVolume">-</h2>
+          <p class="text-muted small" id="totalVolumeComparison">Comparando com período anterior</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted">Peso Total (kg)</h6>
+          <h2 class="card-title" id="totalWeight">-</h2>
+          <p class="text-muted small" id="totalWeightComparison">Comparando com período anterior</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Coletas por Status</h5>
+          <canvas id="chartStatus"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Coletas por Dia</h5>
+          <canvas id="chartPerDay"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  const ctx = document.getElementById('myChart');
+  let chartStatus = null;
+  let chartPerDay = null;
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
+  function formatDateForInput(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function formatDateForDisplay(dateString) {
+    const date = new Date(dateString + 'T00:00:00');
+    return date.toLocaleDateString('pt-BR');
+  }
+
+  function formatNumber(num) {
+    return new Intl.NumberFormat('pt-BR').format(num);
+  }
+
+  const today = new Date();
+  const lastMonth = new Date();
+  lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+  document.getElementById('startDate').value = formatDateForInput(lastMonth);
+  document.getElementById('endDate').value = formatDateForInput(today);
+
+  const statusMap = {
+    0: 'Pendente Aprovar',
+    1: 'Pendente Coletar',
+    2: 'Coletado',
+    3: 'Cancelado',
+  };
+
+  const statusColors = {
+    'Pendente Aprovar': '#ffc107',
+    'Pendente Coletar': '#fd7e14',
+    'Coletado': '#28a745',
+    'Cancelado': '#dc3545',
+  };
+
+  async function fetchDashboardData() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    if (!startDate || !endDate) {
+      alert('Por favor, selecione ambas as datas.');
+      return;
     }
-  });
+
+    try {
+      const response = await fetch(`/Dashboard/GetData?startDate=${startDate}&endDate=${endDate}`);
+
+      if (!response.ok) {
+        throw new Error('Erro ao buscar dados');
+      }
+
+      const data = await response.json();
+      updateDashboard(data);
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Erro ao carregar dados do dashboard');
+    }
+  }
+
+  function updateDashboard(data) {
+    document.getElementById('totalCollects').textContent = formatNumber(data.totalCollects);
+    document.getElementById('totalVolume').textContent = formatNumber(data.totalVolume);
+    document.getElementById('totalWeight').textContent = formatNumber(data.totalWeight);
+
+    updateChartStatus(data.collectPerStatusDto);
+
+    updateChartPerDay(data.collectPerDayDto);
+  }
+
+  function updateChartStatus(statusData) {
+    const ctx = document.getElementById('chartStatus');
+
+    const labels = statusData.map(item => statusMap[item.status] || `Status ${item.status}`);
+    const values = statusData.map(item => item.total);
+    const colors = labels.map(label => statusColors[label] || '#6c757d');
+
+    if (chartStatus) {
+      chartStatus.data.labels = labels;
+      chartStatus.data.datasets[0].data = values;
+      chartStatus.data.datasets[0].backgroundColor = colors;
+      chartStatus.update();
+    } else {
+      chartStatus = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const label = context.label || '';
+                  const value = context.parsed || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${label}: ${value} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  function updateChartPerDay(dayData) {
+    const ctx = document.getElementById('chartPerDay');
+
+    const sortedData = dayData.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const labels = sortedData.map(item => formatDateForDisplay(item.date));
+    const values = sortedData.map(item => item.total);
+
+    if (chartPerDay) {
+      chartPerDay.data.labels = labels;
+      chartPerDay.data.datasets[0].data = values;
+      chartPerDay.update();
+    } else {
+      chartPerDay = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Coletas',
+            data: values,
+            borderColor: '#007bff',
+            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1
+              }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  document.getElementById('btnBuscar').addEventListener('click', fetchDashboardData);
+
+  document.addEventListener('DOMContentLoaded', fetchDashboardData);
 </script>

@@ -1,6 +1,6 @@
 using CollectApp.Models;
 
-namespace CollectApp.Dto;
+namespace CollectApp.Dtos;
 
 public class CollectPerStatusDto
 {

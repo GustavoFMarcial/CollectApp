@@ -1,5 +1,5 @@
 using CollectApp.Data;
-using CollectApp.Dto;
+using CollectApp.Dtos;
 using CollectApp.Extensions;
 using CollectApp.Models;
 using CollectApp.ViewModels;

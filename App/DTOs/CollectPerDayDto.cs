@@ -1,4 +1,4 @@
-namespace CollectApp.Dto;
+namespace CollectApp.Dtos;
 
 public class CollectPerDayDto
 {

@@ -1,4 +1,4 @@
-using CollectApp.Dto;
+using CollectApp.Dtos;
 using CollectApp.Models;
 using CollectApp.ViewModels;
 
