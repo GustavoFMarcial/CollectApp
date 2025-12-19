@@ -38,7 +38,7 @@
     <div class="col-md-4">
       <div class="card text-center">
         <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted">Volume Total (L)</h6>
+          <h6 class="card-subtitle mb-2 text-muted">Volume Total</h6>
           <h2 class="card-title" id="totalVolume">-</h2>
           <p class="text-muted small" id="totalVolumeComparison">Comparando com período anterior</p>
         </div>
@@ -89,8 +89,13 @@
     return `${year}-${month}-${day}`;
   }
 
-  function formatDateForDisplay(dateString) {
-    const date = new Date(dateString + 'T00:00:00');
+  function formatDateForDisplay(dateValue) {
+    const date = typeof dateValue === 'string'
+      ? new Date(dateValue.replace(/(\.\d{3})\d+/, '$1'))
+      : new Date(dateValue);
+
+    if (isNaN(date)) return '';
+
     return date.toLocaleDateString('pt-BR');
   }
 
@@ -201,6 +206,7 @@
 
   function updateChartPerDay(dayData) {
     const ctx = document.getElementById('chartPerDay');
+    console.log(dayData[0].date);
 
     const sortedData = dayData.sort((a, b) => new Date(a.date) - new Date(b.date));
     const labels = sortedData.map(item => formatDateForDisplay(item.date));
