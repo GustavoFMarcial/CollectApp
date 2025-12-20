@@ -30,42 +30,141 @@
       <div class="card text-center">
         <div class="card-body">
           <h6 class="card-subtitle mb-2 text-muted">Total de Coletas</h6>
-          <h2 class="card-title" id="totalCollects">-</h2>
-          <p class="text-muted small" id="totalCollectsComparison">Comparando com período anterior</p>
+          <h2 class="card-title mb-3" id="totalCollects">-</h2>
+
+          <div id="totalCollectsComparisonBox">
+            <span id="totalCollectsArrow" style="font-size: 1.2rem;"></span>
+            <span id="totalCollectsPercentage" style="font-weight: bold; font-size: 1.1rem;"></span>
+            <p class="text-muted small mb-0 mt-1">
+              vs <span id="totalCollectsComparison">-</span> (período anterior)
+            </p>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="col-md-4">
       <div class="card text-center">
         <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted">Volume Total</h6>
-          <h2 class="card-title" id="totalVolume">-</h2>
-          <p class="text-muted small" id="totalVolumeComparison">Comparando com período anterior</p>
+          <h6 class="card-subtitle mb-2 text-muted">Volume Total (L)</h6>
+          <h2 class="card-title mb-3" id="totalVolume">-</h2>
+
+          <div id="totalVolumeComparisonBox">
+            <span id="totalVolumeArrow" style="font-size: 1.2rem;"></span>
+            <span id="totalVolumePercentage" style="font-weight: bold; font-size: 1.1rem;"></span>
+            <p class="text-muted small mb-0 mt-1">
+              vs <span id="totalVolumeComparison">-</span> (período anterior)
+            </p>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="col-md-4">
       <div class="card text-center">
         <div class="card-body">
           <h6 class="card-subtitle mb-2 text-muted">Peso Total (kg)</h6>
-          <h2 class="card-title" id="totalWeight">-</h2>
-          <p class="text-muted small" id="totalWeightComparison">Comparando com período anterior</p>
+          <h2 class="card-title mb-3" id="totalWeight">-</h2>
+
+          <div id="totalWeightComparisonBox">
+            <span id="totalWeightArrow" style="font-size: 1.2rem;"></span>
+            <span id="totalWeightPercentage" style="font-weight: bold; font-size: 1.1rem;"></span>
+            <p class="text-muted small mb-0 mt-1">
+              vs <span id="totalWeightComparison">-</span> (período anterior)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-subtitle mb-3 text-muted text-center">🏭 Fornecedor Mais Coletado</h6>
+
+          <div class="text-center mb-3">
+            <h5 class="mb-1" id="topSupplierName">-</h5>
+            <h3 class="text-primary mb-0" id="topSupplierCount">-</h3>
+            <small class="text-muted">coletas</small>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="text-center text-muted small">
+            <p class="mb-1"><strong>Período anterior:</strong></p>
+            <p class="mb-0">
+              <span id="prevTopSupplierName">-</span>
+              (<span id="prevTopSupplierCount">-</span> coletas)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-subtitle mb-3 text-muted text-center">📦 Produto Mais Coletado</h6>
+
+          <div class="text-center mb-3">
+            <h5 class="mb-1" id="topProductName">-</h5>
+            <h3 class="text-primary mb-0" id="topProductCount">-</h3>
+            <small class="text-muted">coletas</small>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="text-center text-muted small">
+            <p class="mb-1"><strong>Período anterior:</strong></p>
+            <p class="mb-0">
+              <span id="prevTopProductName">-</span>
+              (<span id="prevTopProductCount">-</span> coletas)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-subtitle mb-3 text-muted text-center">🏢 Filial Mais Coletada</h6>
+
+          <div class="text-center mb-3">
+            <h5 class="mb-1" id="topFilialName">-</h5>
+            <h3 class="text-primary mb-0" id="topFilialCount">-</h3>
+            <small class="text-muted">coletas</small>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="text-center text-muted small">
+            <p class="mb-1"><strong>Período anterior:</strong></p>
+            <p class="mb-0">
+              <span id="prevTopFilialName">-</span>
+              (<span id="prevTopFilialCount">-</span> coletas)
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-6 mb-4">
+    <div class="col-md-5 mb-4">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Coletas por Status</h5>
-          <canvas id="chartStatus"></canvas>
+          <div style="max-width: 350px; margin: 0 auto;">
+            <canvas id="chartStatus"></canvas>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-md-6 mb-4">
+    <div class="col-md-7 mb-4">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Coletas por Dia</h5>
@@ -124,6 +223,55 @@
     'Cancelado': '#dc3545',
   };
 
+  function renderComparison(currentValue, previousValue, elementPrefix) {
+    const arrowElement = document.getElementById(elementPrefix + 'Arrow');
+    const percentageElement = document.getElementById(elementPrefix + 'Percentage');
+    const comparisonElement = document.getElementById(elementPrefix + 'Comparison');
+
+    let percentage = 0;
+    let arrow = '';
+    let color = '';
+    let sign = '';
+
+    if (previousValue === 0) {
+      if (currentValue === 0) {
+        percentage = 0;
+        arrow = '─';
+        color = '#6c757d';
+        sign = '';
+      } else {
+        percentage = 100;
+        arrow = '▲';
+        color = '#28a745';
+        sign = '+';
+      }
+    } else {
+      percentage = ((currentValue - previousValue) / previousValue) * 100;
+
+      if (percentage > 0) {
+        arrow = '▲';
+        color = '#28a745';
+        sign = '+';
+      } else if (percentage < 0) {
+        arrow = '▼';
+        color = '#dc3545';
+        sign = '';
+      } else {
+        arrow = '─';
+        color = '#6c757d';
+        sign = '';
+      }
+    }
+
+    arrowElement.textContent = arrow;
+    arrowElement.style.color = color;
+
+    percentageElement.textContent = sign + percentage.toFixed(1) + '%';
+    percentageElement.style.color = color;
+
+    comparisonElement.textContent = formatNumber(previousValue);
+  }
+
   async function fetchDashboardData() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
@@ -149,12 +297,30 @@
   }
 
   function updateDashboard(data) {
-    document.getElementById('totalCollects').textContent = formatNumber(data.totalCollects);
-    document.getElementById('totalVolume').textContent = formatNumber(data.totalVolume);
-    document.getElementById('totalWeight').textContent = formatNumber(data.totalWeight);
+    document.getElementById('totalCollects').textContent = formatNumber(data.currentTotalCollects);
+    document.getElementById('totalVolume').textContent = formatNumber(data.currentTotalVolume);
+    document.getElementById('totalWeight').textContent = formatNumber(data.currentTotalWeight);
+
+    renderComparison(data.currentTotalCollects, data.previousTotalCollects, 'totalCollects');
+    renderComparison(data.currentTotalVolume, data.previousTotalVolume, 'totalVolume');
+    renderComparison(data.currentTotalWeight, data.previousTotalWeight, 'totalWeight');
+
+    document.getElementById('topSupplierName').textContent = data.currentTopSupplier.name || 'N/A';
+    document.getElementById('topSupplierCount').textContent = formatNumber(data.currentTopSupplier.count);
+    document.getElementById('prevTopSupplierName').textContent = data.previousTopSupplier.name || 'N/A';
+    document.getElementById('prevTopSupplierCount').textContent = formatNumber(data.previousTopSupplier.count);
+
+    document.getElementById('topProductName').textContent = data.currentTopProduct.name || 'N/A';
+    document.getElementById('topProductCount').textContent = formatNumber(data.currentTopProduct.count);
+    document.getElementById('prevTopProductName').textContent = data.previousTopProduct.name || 'N/A';
+    document.getElementById('prevTopProductCount').textContent = formatNumber(data.previousTopProduct.count);
+
+    document.getElementById('topFilialName').textContent = data.currentTopFilial.name || 'N/A';
+    document.getElementById('topFilialCount').textContent = formatNumber(data.currentTopFilial.count);
+    document.getElementById('prevTopFilialName').textContent = data.previousTopFilial.name || 'N/A';
+    document.getElementById('prevTopFilialCount').textContent = formatNumber(data.previousTopFilial.count);
 
     updateChartStatus(data.collectPerStatusDto);
-
     updateChartPerDay(data.collectPerDayDto);
   }
 
@@ -206,7 +372,6 @@
 
   function updateChartPerDay(dayData) {
     const ctx = document.getElementById('chartPerDay');
-    console.log(dayData);
 
     const sortedData = dayData.sort((a, b) => new Date(a.date) - new Date(b.date));
     const labels = sortedData.map(item => formatDateForDisplay(item.date));
@@ -255,3 +420,16 @@
 
   document.addEventListener('DOMContentLoaded', fetchDashboardData);
 </script>
+
+<style>
+  #topSupplierName,
+  #topProductName {
+    font-weight: 600;
+    color: #212529;
+  }
+
+  #topSupplierCount,
+  #topProductCount {
+    font-weight: 700;
+  }
+</style>

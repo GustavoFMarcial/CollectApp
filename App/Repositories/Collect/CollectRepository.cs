@@ -109,10 +109,10 @@ public class CollectRepository : ICollectRepository
         List<CollectPerStatusDto> collectPerStatusDtoList = await query
             .Where(c => c.CollectAt >= startDate && c.CollectAt < endDate.AddDays(1))
             .GroupBy(c => c.Status)
-            .Select(c => new CollectPerStatusDto
+            .Select(g => new CollectPerStatusDto
             {
-                Status = c.Key,
-                Total = c.Count(),
+                Status = g.Key,
+                Total = g.Count(),
             })
             .ToListAsync();
 
@@ -126,13 +126,71 @@ public class CollectRepository : ICollectRepository
         List<CollectPerDayDto> collectPerDayDtoList = await query
             .Where(c => c.CollectAt >= startDate && c.CollectAt < endDate.AddDays(1))
             .GroupBy(c => c.CollectAt)
-            .Select(c => new CollectPerDayDto
+            .Select(g => new CollectPerDayDto
             {
-                Date = c.Key,
-                Total = c.Count(),
+                Date = g.Key,
+                Total = g.Count(),
             })
             .ToListAsync();
 
         return collectPerDayDtoList;
+    }
+
+    public async Task<TopProductDto> GetTopProduct(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        var topProduct = await query
+            .Where(c => c.CollectAt >= startDate && c.CollectAt < endDate.AddDays(1))
+            .GroupBy(c => c.Product.Name)
+            .Select(g =>
+            new TopProductDto
+            {
+                Name = g.Key,
+                Count = g.Count()
+            })
+            .OrderByDescending(x => x.Count)
+            .FirstOrDefaultAsync();
+
+
+        return topProduct ?? new TopProductDto { Name = "N/A", Count = 0 };
+    }
+
+    public async Task<TopSupplierDto> GetTopSupplier(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        var topSupplier = await query
+            .Where(c => c.CollectAt >= startDate && c.CollectAt < endDate.AddDays(1))
+            .GroupBy(c => c.Supplier.Name)
+            .Select(g =>
+            new TopSupplierDto
+            {
+                Name = g.Key,
+                Count = g.Count()
+            })
+            .OrderByDescending(x => x.Count)
+            .FirstOrDefaultAsync();
+
+        return topSupplier ?? new TopSupplierDto { Name = "N/A", Count = 0 };
+    }
+
+    public async Task<TopFilialDto> GetTopFilial(DateTime startDate, DateTime endDate)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        var topFilial = await query
+            .Where(c => c.CollectAt >= startDate && c.CollectAt < endDate.AddDays(1))
+            .GroupBy(c => c.Filial.Name)
+            .Select(g =>
+            new TopFilialDto
+            {
+                Name = g.Key,
+                Count = g.Count()
+            })
+            .OrderByDescending(x => x.Count)
+            .FirstOrDefaultAsync();
+
+        return topFilial ?? new TopFilialDto { Name = "N/A", Count = 0 };
     }
 }

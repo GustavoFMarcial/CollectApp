@@ -16,4 +16,7 @@ public interface ICollectRepository
     public Task<int> GetTotalWeight(DateTime startDate, DateTime endDate);
     public Task<List<CollectPerStatusDto>> GetCollectsPerStatus(DateTime startDate, DateTime endDate);
     public Task<List<CollectPerDayDto>> GetCollectsPerDay(DateTime startDate, DateTime endDate);
+    public Task<TopProductDto> GetTopProduct(DateTime startDate, DateTime endDate);
+    public Task<TopSupplierDto> GetTopSupplier(DateTime startDate, DateTime endDate);
+    public Task<TopFilialDto> GetTopFilial(DateTime startDate, DateTime endDate);
 }
