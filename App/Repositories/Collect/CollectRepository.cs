@@ -74,7 +74,7 @@ public class CollectRepository : ICollectRepository
         IQueryable<Collect> query = _context.Collects.AsQueryable();
 
         int totalCollects = await query
-            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .Where(c => c.CollectAt >= startDate && c.CollectAt <= endDate)
             .CountAsync();
 
         return totalCollects;
@@ -85,7 +85,7 @@ public class CollectRepository : ICollectRepository
         IQueryable<Collect> query = _context.Collects.AsQueryable();
 
         int totalVolume = await query
-            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .Where(c => c.CollectAt >= startDate && c.CollectAt <= endDate)
             .SumAsync(c => c.Volume ?? 0);
 
         return totalVolume;
@@ -96,7 +96,7 @@ public class CollectRepository : ICollectRepository
         IQueryable<Collect> query = _context.Collects.AsQueryable();
 
         int totalWeight = await query
-            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .Where(c => c.CollectAt >= startDate && c.CollectAt <= endDate)
             .SumAsync(c => c.Weight ?? 0);
 
         return totalWeight;
@@ -107,7 +107,7 @@ public class CollectRepository : ICollectRepository
         IQueryable<Collect> query = _context.Collects.AsQueryable();
 
         List<CollectPerStatusDto> collectPerStatusDtoList = await query
-            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .Where(c => c.CollectAt >= startDate && c.CollectAt <= endDate)
             .GroupBy(c => c.Status)
             .Select(c => new CollectPerStatusDto
             {
@@ -124,7 +124,7 @@ public class CollectRepository : ICollectRepository
         IQueryable<Collect> query = _context.Collects.AsQueryable();
 
         List<CollectPerDayDto> collectPerDayDtoList = await query
-            .Where(c => c.CollectAt >= startDate && c.CreatedAt <= endDate)
+            .Where(c => c.CollectAt >= startDate && c.CollectAt <= endDate)
             .GroupBy(c => c.CreatedAt)
             .Select(c => new CollectPerDayDto
             {
