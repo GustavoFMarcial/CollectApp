@@ -14,7 +14,7 @@ public static class CollectQueryExtensions
 
         if (filters.StartCreation.HasValue && filters.EndCreation.HasValue)
         {
-            query = query.Where(c => c.CreatedAt >= filters.StartCreation.Value && c.CreatedAt <= filters.EndCreation.Value);
+            query = query.Where(c => c.CreatedAt >= filters.StartCreation.Value && c.CreatedAt < filters.EndCreation.Value.AddDays(1));
         }
 
         if (!string.IsNullOrEmpty(filters.User))
@@ -29,7 +29,7 @@ public static class CollectQueryExtensions
 
         if (filters.StartCollect.HasValue && filters.EndCollect.HasValue)
         {
-            query = query.Where(c => c.CollectAt >= filters.StartCollect.Value && c.CollectAt <= filters.EndCollect.Value);
+            query = query.Where(c => c.CollectAt >= filters.StartCollect.Value && c.CollectAt < filters.EndCollect.Value.AddDays(1));
         }
 
         if (!string.IsNullOrEmpty(filters.Product))
@@ -54,7 +54,7 @@ public static class CollectQueryExtensions
 
         if (!string.IsNullOrEmpty(filters.Filial))
         {
-            query = query.Where(c => c.Filial.Name == filters.Filial);
+            query = query.Where(c => c.Filial.Name.Contains(filters.Filial));
         }
 
         return query;
