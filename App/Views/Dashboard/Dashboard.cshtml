@@ -206,7 +206,7 @@
 
   function updateChartPerDay(dayData) {
     const ctx = document.getElementById('chartPerDay');
-    console.log(dayData[0].date);
+    console.log(dayData);
 
     const sortedData = dayData.sort((a, b) => new Date(a.date) - new Date(b.date));
     const labels = sortedData.map(item => formatDateForDisplay(item.date));
