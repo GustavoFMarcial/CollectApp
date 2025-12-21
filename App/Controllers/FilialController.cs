@@ -67,7 +67,7 @@ public class FilialController : Controller
             return NotFound();
         }
 
-        return RedirectToAction(nameof(ListFilials));
+        return View(epvm);
     }
 
     [HttpPost]
