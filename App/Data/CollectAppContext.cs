@@ -7,18 +7,17 @@ namespace CollectApp.Data;
 public class CollectAppContext : IdentityDbContext<ApplicationUser>
 {
     private readonly IHttpContextAccessor? _httpContextAccessor;
+    public DbSet<Collect> Collects { get; set; } = default!;
+    public DbSet<Supplier> Suppliers { get; set; } = default!;
+    public DbSet<Product> Products { get; set; } = default!;
+    public DbSet<Filial> Filials { get; set; } = default!;
+    public DbSet<AuditLog> AuditLogs { get; set; } = default!;
 
     public CollectAppContext(DbContextOptions<CollectAppContext> options, IHttpContextAccessor? httpContextAccessor = null)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;
     }
-
-    public DbSet<Collect> Collects { get; set; } = default!;
-    public DbSet<Supplier> Suppliers { get; set; } = default!;
-    public DbSet<Product> Products { get; set; } = default!;
-    public DbSet<Filial> Filials { get; set; } = default!;
-    public DbSet<AuditLog> AuditLogs { get; set; } = default!;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

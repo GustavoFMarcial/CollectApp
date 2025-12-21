@@ -8,10 +8,18 @@ namespace CollectApp.Services;
 public class AuditLogService : IAuditLogService
 {
     private readonly IAuditLogRepository _auditLogRepository;
+    private readonly ISupplierRepository _supplierRepository;
+    private readonly IProductRepository _productRepository;
+    private readonly IFilialRepository _filialRepository;
+    private readonly IAuditLogTranslatorService _auditLogTranslatorService;
 
-    public AuditLogService(IAuditLogRepository auditLogRepository)
+    public AuditLogService(IAuditLogRepository auditLogRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IFilialRepository filialRepository, IAuditLogTranslatorService auditLogTranslatorService)
     {
         _auditLogRepository = auditLogRepository;
+        _supplierRepository = supplierRepository;
+        _productRepository = productRepository;
+        _filialRepository = filialRepository;
+        _auditLogTranslatorService = auditLogTranslatorService;
     }
 
     public async Task<PagedResultViewModel<AuditLogViewModel, object>> SetPagedResultAuditLogViewModel(string entityName, string entityId, int pageNum = 1, int pageSize = 10)
@@ -30,6 +38,24 @@ public class AuditLogService : IAuditLogService
             if (log.NewValue == "PendenteAprovar" || log.NewValue == "PendenteColetar")
             {
                 log.NewValue = LogStatusValue.LogStatusValueSpaceBetween(log.NewValue);
+            }
+        }
+
+        foreach (var log in logs.items)
+        {
+            if (await _auditLogTranslatorService.TranslateAsync(log, "SupplierId", id => _supplierRepository.GetSupplierByIdAsync(id), s => s.Name))
+            {
+                continue;
+            }
+
+            if (await _auditLogTranslatorService.TranslateAsync( log, "ProductId", id => _productRepository.GetProductByIdAsync(id), p => p.Name))
+            {
+                continue;
+            }
+
+            if (await _auditLogTranslatorService.TranslateAsync( log, "FilialId", id => _filialRepository.GetFilialByIdAsync(id), f => f.Name))
+            {
+                continue;
             }
         }
 

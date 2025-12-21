@@ -33,6 +33,7 @@ builder.Services.AddScoped<IAuthorizationHandler, MustBeCollectOwnerHandler>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IAuditLogTranslatorService, AuditLogTranslatorService>();
 
 var connectionString = builder.Configuration.GetConnectionString("CollectAppContext") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<CollectAppContext>(options =>
