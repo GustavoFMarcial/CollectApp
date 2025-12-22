@@ -12,10 +12,18 @@ namespace CollectAppTests.Services;
 public class AuditLogServiceTests
 {
     private readonly Mock<IAuditLogRepository> _auditLogRepoMock;
+    private readonly Mock<ISupplierRepository> _supplierRepoMock;
+    private readonly Mock<IProductRepository> _productRepoMock;
+    private readonly Mock<IFilialRepository> _filialRepoMock;
+    private readonly Mock<IAuditLogTranslatorService> _auditLogTranslatorServMock;
 
     public AuditLogServiceTests()
     {
         _auditLogRepoMock = new Mock<IAuditLogRepository>();
+        _supplierRepoMock = new Mock<ISupplierRepository>();
+        _productRepoMock = new Mock<IProductRepository>();
+        _filialRepoMock = new Mock<IFilialRepository>();
+        _auditLogTranslatorServMock = new Mock<IAuditLogTranslatorService>();
     }
 
     [Fact]
@@ -47,7 +55,11 @@ public class AuditLogServiceTests
             .ReturnsAsync((auditLogList, 3));
 
         var service = new AuditLogService(
-            _auditLogRepoMock.Object
+            _auditLogRepoMock.Object,
+            _supplierRepoMock.Object,
+            _productRepoMock.Object,
+            _filialRepoMock.Object,
+            _auditLogTranslatorServMock.Object
         );
 
         var result = await service.SetPagedResultAuditLogViewModel("Supplier", "1", 1, 10);
@@ -72,7 +84,11 @@ public class AuditLogServiceTests
             .ReturnsAsync(([], 0));
 
         var service = new AuditLogService(
-            _auditLogRepoMock.Object
+            _auditLogRepoMock.Object,
+            _supplierRepoMock.Object,
+            _productRepoMock.Object,
+            _filialRepoMock.Object,
+            _auditLogTranslatorServMock.Object
         );
 
         var result = await service.SetPagedResultAuditLogViewModel("Supplier", "1", 1, 10);
