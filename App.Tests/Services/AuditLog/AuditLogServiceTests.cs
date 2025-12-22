@@ -33,11 +33,13 @@ public class AuditLogServiceTests
         {
             new AuditLogBuilder().Build(),
             new AuditLogBuilder()
+                .WithId(2)
                 .WithField("Volume")
                 .WithOldValue("50")
                 .WithNewValue("100")
                 .Build(),
             new AuditLogBuilder()
+                .WithId(3)
                 .WithField("Weight")
                 .WithOldValue("100")
                 .WithNewValue("50")
