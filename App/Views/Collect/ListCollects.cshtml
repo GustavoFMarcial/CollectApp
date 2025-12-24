@@ -9,11 +9,12 @@
 
     @if (!User.IsInRole("Gestor"))
     {
-        <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Collect" asp-action="CreateCollect">Inserir coleta</a>
+        <a class="nav-link text-primary mb-4 d-inline-block" asp-area="" asp-controller="Collect"
+            asp-action="CreateCollect">Inserir coleta</a>
     }
 
     <div>@await Html.PartialAsync("_CollectFilters", Model.Filters)</div>
-    
+
     <table class="table table-hover" style="table-layout: fixed;">
         <thead>
             <tr>
@@ -31,30 +32,34 @@
             </tr>
         </thead>
         <tbody>
-    @foreach (CollectListViewModel collect in Model.Items)
-    {
-            <tr>
-                <td>@Html.DisplayFor(item => collect.Id)</td>
-                <td>@Html.DisplayFor(item => collect.CreatedAt)</td>
-                <td>@Html.DisplayFor(item => collect.FullName)</td>
-                <td>@Html.DisplayFor(item => collect.SupplierName)</td>
-                <td>@Html.DisplayFor(item => collect.CollectAt)</td>
-                <td>@Html.DisplayFor(Item => collect.ProductDescription)</td>
-                <td>@Html.DisplayFor(item => collect.Status)</td>
-                <td>@Html.DisplayFor(item => collect.Volume)</td>
-                <td>@Html.DisplayFor(item => collect.Weigth)</td>
-                <td>@Html.DisplayFor(item => collect.Filial)</td>
-                <td>@await Html.PartialAsync("_CollectsButtons", collect.ChangeCollect)</td>
-            </tr>
-    }   
-        </tbody>     
+            @foreach (CollectListViewModel collect in Model.Items)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => collect.Id)</td>
+                    <td>@Html.DisplayFor(item => collect.CreatedAt)</td>
+                    <td>@Html.DisplayFor(item => collect.FullName)</td>
+                    <td>@Html.DisplayFor(item => collect.SupplierName)</td>
+                    <td>@Html.DisplayFor(item => collect.CollectAt)</td>
+                    <td>@Html.DisplayFor(Item => collect.ProductDescription)</td>
+                    <td>@Html.DisplayFor(item => collect.Status)</td>
+                    <td>@Html.DisplayFor(item => collect.Volume)</td>
+                    <td>@Html.DisplayFor(item => collect.Weigth)</td>
+                    <td>@Html.DisplayFor(item => collect.Filial)</td>
+                    <td>@await Html.PartialAsync("_CollectsButtons", collect.ChangeCollect)</td>
+                </tr>
+            }
+        </tbody>
     </table>
 
-    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage = Model.PageNum })
+    @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage
+        = Model.PageNum })
+
+    <div class="mt-5 text-center"><button class="p-0 border-0 bg-transparent report-button">Gerar relatório
+            Excel</button></div>
 </div>
 
 <script>
-    document.addEventListener("click", function(e) {
+    document.addEventListener("click", function (e) {
         if (!e.target.classList.contains("page-button")) return;
 
         const page = e.target.value;
@@ -67,4 +72,34 @@
 
         window.location.href = `${window.location.pathname}?${params.toString()}`;
     });
+
+    async function downloadExcel(URL) {
+        const response = await fetch(URL);
+
+        if (!response.ok) {
+            throw new Error('Erro ao baixar o arquivo');
+        }
+
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+
+        a.href = url;
+        a.download = 'relatorio.xlsx';
+
+        document.body.appendChild(a);
+        a.click();
+
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    }
+
+    document.addEventListener("click", async function (e) {
+        if (e.target.classList.contains("report-button")) {
+            await downloadExcel("/Report/GetXLSXReport");
+        }
+
+
+    })
 </script>
