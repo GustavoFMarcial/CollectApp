@@ -54,8 +54,11 @@
     @await Html.PartialAsync("_PaginationButtons", new PaginationViewModel { TotalPages = Model.TotalPages, CurrentPage
         = Model.PageNum })
 
-    <div class="mt-5 text-center"><button class="p-0 border-0 bg-transparent report-button">Gerar relatório
-            Excel</button></div>
+    <div class="mt-5 text-center">
+        <button type="button" class="btn btn-primary btn-sm report-button">
+            Gerar Relatório Excel
+        </button>
+    </div>
 </div>
 
 <script>

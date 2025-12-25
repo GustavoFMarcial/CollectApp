@@ -1,13 +1,37 @@
 @using CollectApp.ViewModels
 @model PaginationViewModel
 
+@{
+    int pageWindow = 10;
+
+    int halfWindow = pageWindow / 2;
+
+    int startPage = Model.CurrentPage - halfWindow;
+    int endPage = Model.CurrentPage + halfWindow - 1;
+
+    if (startPage < 1)
+    {
+        startPage = 1;
+        endPage = Math.Min(pageWindow, Model.TotalPages);
+    }
+
+    if (endPage > Model.TotalPages)
+    {
+        endPage = Model.TotalPages;
+        startPage = Math.Max(1, endPage - pageWindow + 1);
+    }
+}
+
 <nav aria-label="pagination">
     <ul class="pagination justify-content-center">
-        @for (int i = 1; i <= Model.TotalPages; i++)
+        @for (int i = startPage; i <= endPage; i++)
         {
             var activeClass = i == Model.CurrentPage ? "custom-active" : "";
+
             <li class="page-item">
-                <button class="page-link page-button @activeClass" value="@i">@i</button>
+                <button class="page-link page-button @activeClass" value="@i">
+                    @i
+                </button>
             </li>
         }
     </ul>
