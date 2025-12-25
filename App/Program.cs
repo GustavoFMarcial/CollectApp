@@ -34,6 +34,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IAuditLogTranslatorService, AuditLogTranslatorService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 var connectionString = builder.Configuration.GetConnectionString("CollectAppContext") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<CollectAppContext>(options =>

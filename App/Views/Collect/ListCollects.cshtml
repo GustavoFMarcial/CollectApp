@@ -73,7 +73,37 @@
         window.location.href = `${window.location.pathname}?${params.toString()}`;
     });
 
-    async function downloadExcel(URL) {
+    async function downloadExcel() {
+        const id = document.getElementById("Id").value;
+        const startCreation = document.getElementById("StartCreation").value;
+        const endCreation = document.getElementById("EndCreation").value;
+        const user = document.getElementById("User").value;
+        const supplier = document.getElementById("Supplier").value;
+        const startCollect = document.getElementById("StartCollect").value;
+        const endCollect = document.getElementById("EndCollect").value;
+        const product = document.getElementById("Product").value;
+        const status = document.getElementById("Status").value;
+        const volume = document.getElementById("Volume").value;
+        const weight = document.getElementById("Weight").value;
+        const filial = document.getElementById("Filial").value;
+
+        const params = new URLSearchParams({
+            id,
+            startCreation,
+            endCreation,
+            user,
+            supplier,
+            startCollect,
+            endCollect,
+            product,
+            status,
+            volume,
+            weight,
+            filial
+        });
+
+        const URL = `/Report/GetXLSXReport?${params.toString()}`;
+
         const response = await fetch(URL);
 
         if (!response.ok) {
@@ -97,7 +127,7 @@
 
     document.addEventListener("click", async function (e) {
         if (e.target.classList.contains("report-button")) {
-            await downloadExcel("/Report/GetXLSXReport");
+            await downloadExcel();
         }
 
 

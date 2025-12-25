@@ -48,6 +48,24 @@ public class CollectRepository : ICollectRepository
         return (items, totalCount);
     }
 
+    public async Task<List<Collect>> ToCollectListAsync(CollectFilterViewModel filters)
+    {
+        IQueryable<Collect> query = _context.Collects.AsQueryable();
+
+        query = query
+            .Include(c => c.Supplier)
+            .Include(c => c.Product)
+            .Include(c => c.Filial)
+            .Include(c => c.User)
+            .ApplyFilters(filters);
+
+        List<Collect> items = await query.ToListAsync();
+
+        int totalCount = await query.CountAsync();
+
+        return items;
+    }
+
     public async Task<bool> AnyCollectAsync(string type, int? id)
     {
         return type switch
